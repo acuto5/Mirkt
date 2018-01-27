@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar-items class="hidden-sm-and-down">
+    <v-toolbar-items >
         <!-- Login dialog-->
         <login-form-dialog/>
 
