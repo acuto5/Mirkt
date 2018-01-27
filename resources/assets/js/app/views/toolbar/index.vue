@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar dark color="brown darken-4" dense app fixed clipped-left>
+    <v-toolbar dark color="brown darken-4" app fixed clipped-left>
         <v-toolbar-title >
             <router-link :to="{name: 'home'}" class="blue--text text--lighten-4">Mirkt</router-link>
         </v-toolbar-title>
