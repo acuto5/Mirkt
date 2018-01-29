@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <toolbar />
+        <toolbar/>
         <v-content>
             <router-view />
         </v-content>
@@ -9,8 +9,8 @@
 </template>
 
 <script>
-	import MainFooter from "./main-footer";
-	import Toolbar from "../toolbar/index";
+	import MainFooter from "./footer";
+	import Toolbar from "../../toolbar/index";
 
 	export default {
 		components: {Toolbar, MainFooter},

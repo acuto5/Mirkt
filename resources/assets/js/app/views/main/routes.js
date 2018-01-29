@@ -11,7 +11,7 @@ childs = childs.concat(UserRoutes);
 export default [
 	{
 		path: '/',
-		component: require('../layouts/main-layout.vue'),
+		component: require('../layouts/main/layout.vue'),
 		children: childs
 	}
 ]

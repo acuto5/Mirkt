@@ -13,7 +13,7 @@ childs = childs.concat(ArticlesRoutes);
 export default [
 	{
 		path: '/dashboard',
-		component: require('../layouts/dashboard-layout.vue'), // Main layout
+		component: require('../layouts/dashboard/layout.vue'), // Main layout
 		children: childs
 	}
 ]

@@ -19,7 +19,7 @@
             </v-list-tile>
 
             <!-- Dashboard tile -->
-            <v-list-tile v-if="imGod" :to="{name:'dashboard.articles.all'}">
+            <v-list-tile v-if="isIAmGod" :to="{name:'dashboard.articles.all'}">
                 <v-list-tile-action>
                     <v-icon>dashboard</v-icon>
                 </v-list-tile-action>
@@ -50,7 +50,7 @@
 			}
 		},
         computed: {
-			imGod(){
+			isIAmGod(){
 				return (!!this.User.is_admin || !!this.User.is_moderator);
             }
         },

@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer fixed clipped app width="250" dark class="brown darken-3">
+    <v-navigation-drawer fixed temporary clipped app width="250" dark class="brown darken-3" v-model="tempValue">
         <v-list subheader>
             <v-list-group v-for="(group, index) in groups" :value="isGroupActive(index)" :key="group.title">
                 <v-list-tile slot="item" @click="" ripple="">
@@ -29,14 +29,18 @@
 <script>
 	export default {
 		name: 'dashboard-menu',
+		props: {
+			value: Boolean
+		},
 		data() {
 			return {
+				tempValue: false,
 				activeSubGroupClass: 'brown darken-4 white--text',
 				groups: [
 					{
 						title: 'Straipsniai',
 						icon: 'library_books',
-                        routeName: 'dashboard.articles',
+						routeName: 'dashboard.articles',
 						subGroups: [
 							{
 								title: 'Visi',
@@ -98,10 +102,18 @@
 				]
 			}
 		},
+		watch: {
+			value(newValue){
+				this.tempValue = newValue;
+            },
+			tempValue(newValue) {
+                this.$emit('input', newValue);
+			}
+		},
 		methods: {
-			isGroupActive(index){
+			isGroupActive(index) {
 				return this.groups[index].routeName === this.$route.meta.parentName;
-            }
-        }
+			}
+		}
 	}
 </script>  
