@@ -1,6 +1,5 @@
 <template>
     <v-dialog v-model="isVisible" max-width="500px" persistent>
-        <v-btn slot="activator" color="blue lighten-4" outline>Registracija</v-btn>
         <v-card dark color="brown darken-4">
             <v-form @submit.prevent="register()">
                 <v-card-title>
@@ -44,6 +43,9 @@
 <script>
 	export default {
 		name: "register-form-dialog",
+		props: {
+			value: Boolean
+		},
 		data() {
 			return {
 				inputs: {},
@@ -52,6 +54,11 @@
 				Errors: new window.Errors({name: [], message: '', password_confirmation: [], password: [], email: []})
 			}
 		},
+		watch: {
+			value(newValue){
+				this.isVisible = newValue;
+            }
+        },
 		methods: {
 			register: function () {
 				axios.post(this.registerURL, this.inputs)
@@ -61,7 +68,7 @@
 			hideMe: function () {
 				this.inputs = {};
 				this.Errors.clear();
-				this.isVisible = false;
+				this.$emit('input', false);
 			}
 		}
 	}

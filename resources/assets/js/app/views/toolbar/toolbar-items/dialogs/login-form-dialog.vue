@@ -1,6 +1,5 @@
 <template>
     <v-dialog v-model="isVisible" persistent max-width="600px">
-        <v-btn outline slot="activator" color="blue lighten-4">Prisijungti</v-btn>
         <!-- Dialog content-->
         <v-card dark color="brown darken-4">
             <v-form @submit.prevent="login()">
@@ -34,12 +33,14 @@
             </v-form>
         </v-card>
     </v-dialog>
-
 </template>
 
 <script>
 	export default {
 		name: "login-form-dialog",
+        props: {
+			value: Boolean
+        },
 		data() {
 			return {
 				inputs: {},
@@ -48,6 +49,11 @@
 				Errors: new window.Errors({remember: [], password: [], email: [], message: ''})
 			}
 		},
+        watch: {
+			value(newValue){
+				this.isVisible = newValue;
+            }
+        },
 		methods: {
 			login: function () {
 				if (!this.loginURL) {
@@ -61,7 +67,7 @@
 			hideMe: function () {
 				this.inputs = {};
 				this.Errors.clear();
-				this.isVisible = false;
+				this.$emit('input', false);
 			}
 		}
 	}

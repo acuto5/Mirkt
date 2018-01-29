@@ -1,10 +1,12 @@
 <template>
-    <v-toolbar-items >
+    <v-toolbar-items>
         <!-- Login dialog-->
-        <login-form-dialog/>
+        <v-btn flat @click.native="isLoginDialogVisible = true">Prisijungti</v-btn>
+        <login-form-dialog v-model="isLoginDialogVisible"/>
 
         <!-- Register dialog -->
-        <register-form-dialog/>
+        <v-btn flat @click.native="isRegistrationDialogVisible = true">Registracija</v-btn>
+        <register-form-dialog v-model="isRegistrationDialogVisible"/>
     </v-toolbar-items>
 </template>
 
@@ -13,10 +15,13 @@
 	import RegisterFormDialog from "./dialogs/register-form-dialog";
 
 	export default {
-		components: {
-			RegisterFormDialog,
-			LoginFormDialog
-		},
-		name: "guest-toolbar-items"
+		name: "guest-toolbar-items",
+		components: { RegisterFormDialog, LoginFormDialog },
+		data(){
+			return{
+				isLoginDialogVisible: false,
+				isRegistrationDialogVisible: false
+            }
+        }
 	}
 </script>

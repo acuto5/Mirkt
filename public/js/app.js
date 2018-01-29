@@ -1966,6 +1966,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/guest-toolbar-items.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items__);
 //
 //
 //
@@ -1985,44 +1987,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: 'toolbar',
-	components: { GuestToolbarItems: __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items___default.a, UserToolbarItems: __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items___default.a },
+	components: { LinksToolbarItems: __WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items___default.a, GuestToolbarItems: __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items___default.a, UserToolbarItems: __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items___default.a },
 	props: {
 		value: Boolean,
 		inMainLayout: Boolean
 	},
 	data: function data() {
 		return {
-			items: ['Kriminalai', 'Orai'],
 			User: window.USER,
 			isLoginDialogVisible: false,
-			isRegisterDialogVisible: false,
-			linkToMyGitHub: 'https://github.com/TSmulkys'
+			isRegisterDialogVisible: false
 		};
 	},
 
@@ -2078,11 +2059,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: "login-form-dialog",
+	props: {
+		value: Boolean
+	},
 	data: function data() {
 		return {
 			inputs: {},
@@ -2092,6 +2074,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		};
 	},
 
+	watch: {
+		value: function value(newValue) {
+			this.isVisible = newValue;
+		}
+	},
 	methods: {
 		login: function login() {
 			var _this = this;
@@ -2109,7 +2096,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		hideMe: function hideMe() {
 			this.inputs = {};
 			this.Errors.clear();
-			this.isVisible = false;
+			this.$emit('input', false);
 		}
 	}
 });
@@ -2163,10 +2150,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: "register-form-dialog",
+	props: {
+		value: Boolean
+	},
 	data: function data() {
 		return {
 			inputs: {},
@@ -2176,6 +2165,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		};
 	},
 
+	watch: {
+		value: function value(newValue) {
+			this.isVisible = newValue;
+		}
+	},
 	methods: {
 		register: function register() {
 			var _this = this;
@@ -2189,7 +2183,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		hideMe: function hideMe() {
 			this.inputs = {};
 			this.Errors.clear();
-			this.isVisible = false;
+			this.$emit('input', false);
 		}
 	}
 });
@@ -2215,16 +2209,69 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	components: {
-		RegisterFormDialog: __WEBPACK_IMPORTED_MODULE_1__dialogs_register_form_dialog___default.a,
-		LoginFormDialog: __WEBPACK_IMPORTED_MODULE_0__dialogs_login_form_dialog___default.a
-	},
-	name: "guest-toolbar-items"
+	name: "guest-toolbar-items",
+	components: { RegisterFormDialog: __WEBPACK_IMPORTED_MODULE_1__dialogs_register_form_dialog___default.a, LoginFormDialog: __WEBPACK_IMPORTED_MODULE_0__dialogs_login_form_dialog___default.a },
+	data: function data() {
+		return {
+			isLoginDialogVisible: false,
+			isRegistrationDialogVisible: false
+		};
+	}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	name: "links-toolbar-items",
+	data: function data() {
+		return {
+			articlesCategories: window.Categories,
+			linkToMyGitHub: 'https://github.com/TSmulkys',
+			routerLinkToContactsPage: { name: 'contacts' }
+		};
+	}
 });
 
 /***/ }),
@@ -2275,6 +2322,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: "user-toolbar-items",
@@ -2282,7 +2331,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return {
 			User: window.USER,
 			logoutURL: window.URLS.logout,
-			FlashMessages: window.FlashMessages
+			FlashMessages: window.FlashMessages,
+			activeSubGroupClass: 'brown darken-4 blue--text text--lighten-4'
 		};
 	},
 
@@ -20083,6 +20133,90 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0105f71a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-toolbar-items",
+    { staticClass: "ml-3" },
+    [
+      _c(
+        "v-menu",
+        { attrs: { "offset-y": "" } },
+        [
+          _c(
+            "v-btn",
+            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
+            [_vm._v("Straipsniai")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list",
+            _vm._l(_vm.items, function(page, index) {
+              return _c(
+                "v-list-tile",
+                { key: index },
+                [_c("v-list-tile-title", [_vm._v(_vm._s(page))])],
+                1
+              )
+            })
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-menu",
+        { attrs: { "offset-y": "" } },
+        [
+          _c(
+            "v-btn",
+            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
+            [_vm._v("Apie mane")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list",
+            [
+              _c(
+                "v-list-tile",
+                { attrs: { href: _vm.linkToMyGitHub } },
+                [_c("v-list-tile-title", [_vm._v("GitHub")])],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list-tile",
+                { attrs: { to: _vm.routerLinkToContactsPage } },
+                [_c("v-list-tile-title", [_vm._v("Kontaktai")])],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0105f71a", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-183f8375\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/login-form-dialog.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20103,15 +20237,6 @@ var render = function() {
       }
     },
     [
-      _c(
-        "v-btn",
-        {
-          attrs: { slot: "activator", outline: "", color: "blue lighten-4" },
-          slot: "activator"
-        },
-        [_vm._v("Prisijungti")]
-      ),
-      _vm._v(" "),
       _c(
         "v-card",
         { attrs: { dark: "", color: "brown darken-4" } },
@@ -20373,86 +20498,99 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-menu",
+    "v-toolbar-items",
     [
       _c(
-        "v-btn",
-        { attrs: { slot: "activator", flat: "" }, slot: "activator" },
-        [
-          _c("v-icon", { attrs: { left: "" } }, [_vm._v("account_circle")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "blue--text text--lighten-4" }, [
-            _vm._v(_vm._s(_vm.User.name))
-          ]),
-          _vm._v(" "),
-          _c("v-icon", { attrs: { dark: "", color: "blue lighten-4" } }, [
-            _vm._v("arrow_drop_down")
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-list",
-        { staticClass: "brown darken-3", attrs: { dark: "" } },
+        "v-menu",
+        { attrs: { "offset-y": "" } },
         [
           _c(
-            "v-list-tile",
-            { attrs: { to: { name: "user.edit-profile" } } },
+            "v-btn",
+            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
             [
-              _c("v-list-tile-action", [_c("v-icon", [_vm._v("edit")])], 1),
+              _c("v-icon", { attrs: { left: "", color: "blue lighten-4" } }, [
+                _vm._v("account_circle")
+              ]),
               _vm._v(" "),
-              _c("v-list-tile-title", {
-                staticClass: "blue--text text--lighten-4",
-                domProps: { textContent: _vm._s("Redaguoti profili") }
-              })
+              _c("span", [_vm._v(_vm._s(_vm.User.name))]),
+              _vm._v(" "),
+              _c("v-icon", { attrs: { dark: "" } }, [_vm._v("arrow_drop_down")])
             ],
             1
           ),
           _vm._v(" "),
-          _vm.isIAmGod
-            ? _c(
+          _c(
+            "v-list",
+            { staticClass: "brown darken-3", attrs: { dark: "" } },
+            [
+              _c(
                 "v-list-tile",
-                { attrs: { to: { name: "dashboard.articles.all" } } },
+                {
+                  attrs: {
+                    to: { name: "user.edit-profile" },
+                    "active-class": _vm.activeSubGroupClass
+                  }
+                },
                 [
-                  _c(
-                    "v-list-tile-action",
-                    [_c("v-icon", [_vm._v("dashboard")])],
-                    1
-                  ),
+                  _c("v-list-tile-action", [_c("v-icon", [_vm._v("edit")])], 1),
                   _vm._v(" "),
                   _c("v-list-tile-title", {
-                    staticClass: "blue--text text--lighten-4",
-                    domProps: { textContent: _vm._s("Valdymo skydelis") }
+                    domProps: { textContent: _vm._s("Redaguoti profili") }
                   })
                 ],
                 1
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "v-list-tile",
-            {
-              on: {
-                click: function($event) {
-                  _vm.logout()
-                }
-              }
-            },
-            [
-              _c(
-                "v-list-tile-action",
-                [_c("v-icon", [_vm._v("exit_to_app")])],
-                1
               ),
               _vm._v(" "),
+              _vm.isIAmGod
+                ? _c(
+                    "v-list-tile",
+                    {
+                      attrs: {
+                        to: { name: "dashboard.articles.all" },
+                        "active-class": _vm.activeSubGroupClass
+                      }
+                    },
+                    [
+                      _c(
+                        "v-list-tile-action",
+                        [_c("v-icon", [_vm._v("dashboard")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-list-tile-title", {
+                        domProps: { textContent: _vm._s("Valdymo skydelis") }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c(
-                "v-list-tile-content",
+                "v-list-tile",
+                {
+                  on: {
+                    click: function($event) {
+                      _vm.logout()
+                    }
+                  }
+                },
                 [
-                  _c("v-list-tile-title", {
-                    staticClass: "red--text text--lighten-2",
-                    domProps: { textContent: _vm._s("Atsijungti") }
-                  })
+                  _c(
+                    "v-list-tile-action",
+                    [_c("v-icon", [_vm._v("exit_to_app")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile-content",
+                    [
+                      _c("v-list-tile-title", {
+                        staticClass: "red--text text--lighten-2",
+                        domProps: { textContent: _vm._s("Atsijungti") }
+                      })
+                    ],
+                    1
+                  )
                 ],
                 1
               )
@@ -20772,7 +20910,53 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-toolbar-items",
-    [_c("login-form-dialog"), _vm._v(" "), _c("register-form-dialog")],
+    [
+      _c(
+        "v-btn",
+        {
+          attrs: { flat: "" },
+          nativeOn: {
+            click: function($event) {
+              _vm.isLoginDialogVisible = true
+            }
+          }
+        },
+        [_vm._v("Prisijungti")]
+      ),
+      _vm._v(" "),
+      _c("login-form-dialog", {
+        model: {
+          value: _vm.isLoginDialogVisible,
+          callback: function($$v) {
+            _vm.isLoginDialogVisible = $$v
+          },
+          expression: "isLoginDialogVisible"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          attrs: { flat: "" },
+          nativeOn: {
+            click: function($event) {
+              _vm.isRegistrationDialogVisible = true
+            }
+          }
+        },
+        [_vm._v("Registracija")]
+      ),
+      _vm._v(" "),
+      _c("register-form-dialog", {
+        model: {
+          value: _vm.isRegistrationDialogVisible,
+          callback: function($$v) {
+            _vm.isRegistrationDialogVisible = $$v
+          },
+          expression: "isRegistrationDialogVisible"
+        }
+      })
+    ],
     1
   )
 }
@@ -21081,62 +21265,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "v-menu",
-        { attrs: { "offset-y": "" } },
-        [
-          _c(
-            "v-btn",
-            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
-            [_vm._v("Straipsniai")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list",
-            _vm._l(_vm.items, function(page, index) {
-              return _c(
-                "v-list-tile",
-                { key: index },
-                [_c("v-list-tile-title", [_vm._v(_vm._s(page))])],
-                1
-              )
-            })
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-menu",
-        { attrs: { "offset-y": "" } },
-        [
-          _c(
-            "v-btn",
-            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
-            [_vm._v("Apie mane")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list",
-            [
-              _c(
-                "v-list-tile",
-                { attrs: { href: _vm.linkToMyGitHub } },
-                [_c("v-list-tile-title", [_vm._v("GitHub")])],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-list-tile",
-                [_c("v-list-tile-title", [_vm._v("Kontaktai")])],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
+      _c("links-toolbar-items"),
       _vm._v(" "),
       _c("v-spacer"),
       _vm._v(" "),
@@ -21177,15 +21306,6 @@ var render = function() {
       }
     },
     [
-      _c(
-        "v-btn",
-        {
-          attrs: { slot: "activator", color: "blue lighten-4", outline: "" },
-          slot: "activator"
-        },
-        [_vm._v("Registracija")]
-      ),
-      _vm._v(" "),
       _c(
         "v-card",
         { attrs: { dark: "", color: "brown darken-4" } },
@@ -53033,6 +53153,55 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-742238d2", Component.options)
   } else {
     hotAPI.reload("data-v-742238d2", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0105f71a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\app\\views\\toolbar\\toolbar-items\\links-toolbar-items.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0105f71a", Component.options)
+  } else {
+    hotAPI.reload("data-v-0105f71a", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true

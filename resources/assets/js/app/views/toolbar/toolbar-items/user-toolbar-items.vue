@@ -1,42 +1,44 @@
 <template>
-    <v-menu>
-        <!-- Icon and user nickname -->
-        <v-btn slot="activator" flat>
-            <v-icon left>account_circle</v-icon>
-            <span class="blue--text text--lighten-4">{{User.name}}</span>
-            <v-icon dark color="blue lighten-4">arrow_drop_down</v-icon>
-        </v-btn>
+    <v-toolbar-items>
+        <v-menu offset-y>
+            <!-- Icon and user nickname -->
+            <v-btn slot="activator" flat>
+                <v-icon left color="blue lighten-4">account_circle</v-icon>
+                <span >{{User.name}}</span>
+                <v-icon dark>arrow_drop_down</v-icon>
+            </v-btn>
 
-        <!-- Drop down menu-->
-        <v-list class="brown darken-3" dark>
+            <!-- Drop down menu-->
+            <v-list class="brown darken-3" dark>
 
-            <!-- Edit profile tile  -->
-            <v-list-tile :to="{name: 'user.edit-profile'}">
-                <v-list-tile-action>
-                    <v-icon>edit</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-title class="blue--text text--lighten-4" v-text="'Redaguoti profili'"/>
-            </v-list-tile>
+                <!-- Edit profile tile  -->
+                <v-list-tile :to="{name: 'user.edit-profile'}" :active-class="activeSubGroupClass">
+                    <v-list-tile-action>
+                        <v-icon>edit</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title  v-text="'Redaguoti profili'"/>
+                </v-list-tile>
 
-            <!-- Dashboard tile -->
-            <v-list-tile v-if="isIAmGod" :to="{name:'dashboard.articles.all'}">
-                <v-list-tile-action>
-                    <v-icon>dashboard</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-title class="blue--text text--lighten-4" v-text="'Valdymo skydelis'"/>
-            </v-list-tile>
+                <!-- Dashboard tile -->
+                <v-list-tile v-if="isIAmGod" :to="{name:'dashboard.articles.all'}" :active-class="activeSubGroupClass">
+                    <v-list-tile-action>
+                        <v-icon>dashboard</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title v-text="'Valdymo skydelis'"/>
+                </v-list-tile>
 
-            <!-- Logout tile -->
-            <v-list-tile @click="logout()">
-                <v-list-tile-action>
-                    <v-icon>exit_to_app</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                    <v-list-tile-title class="red--text text--lighten-2" v-text="'Atsijungti'"/>
-                </v-list-tile-content>
-            </v-list-tile>
-        </v-list>
-    </v-menu>
+                <!-- Logout tile -->
+                <v-list-tile @click="logout()">
+                    <v-list-tile-action>
+                        <v-icon>exit_to_app</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title class="red--text text--lighten-2" v-text="'Atsijungti'"/>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-menu>
+    </v-toolbar-items>
 </template>
 
 <script>
@@ -46,7 +48,8 @@
 			return {
 				User: window.USER,
 				logoutURL: window.URLS.logout,
-				FlashMessages: window.FlashMessages
+				FlashMessages: window.FlashMessages,
+				activeSubGroupClass: 'brown darken-4 blue--text text--lighten-4'
 			}
 		},
         computed: {

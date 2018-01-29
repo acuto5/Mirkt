@@ -5,6 +5,9 @@
             <router-link :to="{name: 'home'}" class="blue--text text--lighten-4" style="text-decoration: none;">Mirkt</router-link>
         </v-toolbar-title>
 
+        <!-- Links -->
+        <links-toolbar-items/>
+
         <v-spacer/>
 
         <!-- If user is logged in -->
@@ -17,20 +20,17 @@
 <script>
 	import UserToolbarItems from "./toolbar-items/user-toolbar-items";
 	import GuestToolbarItems from "./toolbar-items/guest-toolbar-items";
+	import LinksToolbarItems from "./toolbar-items/links-toolbar-items";
 
 	export default {
 		name: 'toolbar',
-		components: {
-			GuestToolbarItems,
-			UserToolbarItems
-		},
+		components: { LinksToolbarItems, GuestToolbarItems, UserToolbarItems },
 		props: {
 			value: Boolean,
             inMainLayout: Boolean
 		},
 		data() {
 			return {
-				items: ['Kriminalai', 'Orai'],
 				User: window.USER,
 				isLoginDialogVisible: false,
 				isRegisterDialogVisible: false,
