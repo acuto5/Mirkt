@@ -5236,16 +5236,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: 'toolbar',
-	components: {
-		GuestToolbarItems: __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items___default.a,
-		UserToolbarItems: __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items___default.a
-	},
+	components: { GuestToolbarItems: __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items___default.a, UserToolbarItems: __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items___default.a },
 	props: {
 		value: Boolean,
 		inMainLayout: Boolean
@@ -5255,7 +5275,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			items: ['Kriminalai', 'Orai'],
 			User: window.USER,
 			isLoginDialogVisible: false,
-			isRegisterDialogVisible: false
+			isRegisterDialogVisible: false,
+			linkToMyGitHub: 'https://github.com/TSmulkys'
 		};
 	},
 
@@ -28269,6 +28290,63 @@ var render = function() {
               attrs: { to: { name: "home" } }
             },
             [_vm._v("Mirkt")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-menu",
+        { attrs: { "offset-y": "" } },
+        [
+          _c(
+            "v-btn",
+            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
+            [_vm._v("Straipsniai")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list",
+            _vm._l(_vm.items, function(page, index) {
+              return _c(
+                "v-list-tile",
+                { key: index },
+                [_c("v-list-tile-title", [_vm._v(_vm._s(page))])],
+                1
+              )
+            })
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-menu",
+        { attrs: { "offset-y": "" } },
+        [
+          _c(
+            "v-btn",
+            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
+            [_vm._v("Apie mane")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list",
+            [
+              _c(
+                "v-list-tile",
+                { attrs: { href: _vm.linkToMyGitHub } },
+                [_c("v-list-tile-title", [_vm._v("GitHub")])],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list-tile",
+                [_c("v-list-tile-title", [_vm._v("Kontaktai")])],
+                1
+              )
+            ],
+            1
           )
         ],
         1
@@ -65022,12 +65100,59 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/app/views/main/about-me/contacts/index.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\app\\views\\main\\about-me\\contacts\\index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/app/views/main/about-me/routes.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__contacts_index__ = __webpack_require__("./resources/assets/js/app/views/main/about-me/contacts/index.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__contacts_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__contacts_index__);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ([{
+	name: 'contacts', path: 'contacts', component: __WEBPACK_IMPORTED_MODULE_0__contacts_index___default.a
+}]);
+
+/***/ }),
+
 /***/ "./resources/assets/js/app/views/main/articles/routes.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__single_index_vue__ = __webpack_require__("./resources/assets/js/app/views/main/articles/single/index.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__single_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__single_index_vue__);
+
 
 /* harmony default export */ __webpack_exports__["a"] = ([{
 	name: 'articles.single', path: 'articles/single/:id', component: __WEBPACK_IMPORTED_MODULE_0__single_index_vue___default.a
@@ -65273,17 +65398,20 @@ module.exports = Component.exports
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_routes__ = __webpack_require__("./resources/assets/js/app/views/main/home/routes.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__articles_routes__ = __webpack_require__("./resources/assets/js/app/views/main/articles/routes.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_routes__ = __webpack_require__("./resources/assets/js/app/views/main/user/routes.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__about_me_routes__ = __webpack_require__("./resources/assets/js/app/views/main/about-me/routes.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__articles_routes__ = __webpack_require__("./resources/assets/js/app/views/main/articles/routes.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_routes__ = __webpack_require__("./resources/assets/js/app/views/main/user/routes.js");
 
- //Articles
- // User
+
+
+
 
 var childs = [];
 
 childs = childs.concat(__WEBPACK_IMPORTED_MODULE_0__home_routes__["a" /* default */]);
-childs = childs.concat(__WEBPACK_IMPORTED_MODULE_1__articles_routes__["a" /* default */]);
-childs = childs.concat(__WEBPACK_IMPORTED_MODULE_2__user_routes__["a" /* default */]);
+childs = childs.concat(__WEBPACK_IMPORTED_MODULE_1__about_me_routes__["a" /* default */]);
+childs = childs.concat(__WEBPACK_IMPORTED_MODULE_2__articles_routes__["a" /* default */]);
+childs = childs.concat(__WEBPACK_IMPORTED_MODULE_3__user_routes__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = ([{
 	path: '/',
