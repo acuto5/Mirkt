@@ -13,7 +13,7 @@
         <!-- If user is logged in -->
         <user-toolbar-items v-if="User.id"/>
 
-        <!-- If user not logged in -->
+        <!-- If user not logged inn -->
         <guest-toolbar-items v-else/>
     </v-toolbar>
 </template>
