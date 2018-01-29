@@ -20156,11 +20156,11 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-list",
-            _vm._l(_vm.items, function(page, index) {
+            _vm._l(_vm.articlesCategories, function(category, index) {
               return _c(
                 "v-list-tile",
                 { key: index },
-                [_c("v-list-tile-title", [_vm._v(_vm._s(page))])],
+                [_c("v-list-tile-title", [_vm._v(_vm._s(category.name))])],
                 1
               )
             })

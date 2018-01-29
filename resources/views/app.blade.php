@@ -26,7 +26,9 @@
         </div>
 
         <script>
-            window.URLS = {!! App\Http\Controllers\RoutesController::getRoutes() !!};
+            window.Categories = {!! getAllCategories() !!};
+
+            window.URLS = {!! getAllRoutes() !!};
 
             @if(Auth::check())
                 window.USER = {!! Auth::user() !!};
