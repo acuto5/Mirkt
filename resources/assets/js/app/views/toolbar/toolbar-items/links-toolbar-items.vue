@@ -4,8 +4,8 @@
         <v-menu offset-y>
             <v-btn flat slot="activator">Straipsniai</v-btn>
             <v-list>
-                <v-list-tile v-for="(page,index) in items" :key="index">
-                    <v-list-tile-title>{{page}}</v-list-tile-title>
+                <v-list-tile v-for="(category,index) in articlesCategories" :key="index">
+                    <v-list-tile-title>{{category.name}}</v-list-tile-title>
                 </v-list-tile>
             </v-list>
         </v-menu>
