@@ -5252,6 +5252,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	data: function data() {
 		return {
+			items: ['Kriminalai', 'Orai'],
 			User: window.USER,
 			isLoginDialogVisible: false,
 			isRegisterDialogVisible: false
@@ -28264,6 +28265,7 @@ var render = function() {
             "router-link",
             {
               staticClass: "blue--text text--lighten-4",
+              staticStyle: { "text-decoration": "none" },
               attrs: { to: { name: "home" } }
             },
             [_vm._v("Mirkt")]

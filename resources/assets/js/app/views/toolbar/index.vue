@@ -2,7 +2,7 @@
     <v-toolbar dark color="brown darken-4" app dense fixed clipped-left>
         <v-toolbar-side-icon v-if="inMainLayout" @click.native="toggleDashboardMenu()"/>
         <v-toolbar-title>
-            <router-link :to="{name: 'home'}" class="blue--text text--lighten-4">Mirkt</router-link>
+            <router-link :to="{name: 'home'}" class="blue--text text--lighten-4" style="text-decoration: none;">Mirkt</router-link>
         </v-toolbar-title>
 
         <v-spacer/>
@@ -30,6 +30,7 @@
 		},
 		data() {
 			return {
+				items: ['Kriminalai', 'Orai'],
 				User: window.USER,
 				isLoginDialogVisible: false,
 				isRegisterDialogVisible: false,
