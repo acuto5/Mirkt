@@ -16,7 +16,6 @@ export default [
 				meta: {
 					parentName: 'dashboard.marking'
 				}
-
 			},
 			{
 				name: 'sub-categories',
@@ -25,7 +24,6 @@ export default [
 				meta: {
 					parentName: 'dashboard.marking'
 				}
-
 			},
 			{
 				name: 'tags',
@@ -34,7 +32,6 @@ export default [
 				meta: {
 					parentName: 'dashboard.marking'
 				}
-
 			}
 		]
 	}

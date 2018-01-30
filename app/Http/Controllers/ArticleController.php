@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-	const ARTICLES_PER_PAGE = 10;
+	const ARTICLES_PER_PAGE = 2;
 	
 	/**
 	 * @param GetArticleRequest $request
@@ -49,12 +49,17 @@ class ArticleController extends Controller
 	public function getAll(GetAllArticlesRequest $request)
 	{
 		$orderBy = 'created_at';
-		$where   = ['is_draft', false];
+		$where   = [['is_draft', false]];
 		$select  = ['id', 'title', 'sub_category_id', 'created_at'];
 		$isDesc  = (isset($request->order_by) && $request->order_by === 'oldest') ? 'asc' : 'desc';
 		
+		// if sub_category_id selected
+		if (isset($request->sub_category_id)) {
+			$where[] = ['sub_category_id', $request->sub_category_id];
+		}
+		
 		$articles = Article::select($select)
-			->where([$where])
+			->where($where)
 			->with('headerImage')
 			->orderBy($orderBy, $isDesc)
 			->paginate(self::ARTICLES_PER_PAGE);
@@ -292,9 +297,9 @@ class ArticleController extends Controller
 	
 	/**
 	 * @param \Illuminate\Http\Request $request
-	 * @param boolean                  $searchInDraft
+	 * @param                          $searchInDraft
 	 *
-	 * @return LengthAwarePaginator
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	private function searchArticles(Request $request, $searchInDraft)
 	{
@@ -307,49 +312,30 @@ class ArticleController extends Controller
 	
 	/**
 	 * @param \Illuminate\Http\Request $request
-	 * @param  boolean                 $searchInDraft
+	 * @param                          $searchInDraft
 	 *
-	 * @return LengthAwarePaginator
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	private function searchArticlesWithoutSubCategory(Request $request, $searchInDraft)
 	{
-		$articles = Article::search($request->title)
+		return Article::search($request->title)
 			->where('is_draft', (int)$searchInDraft)
-			->get();
-		
-		// Scout paginate is bugged
-		return $this->paginateArticles($articles, $request->get('page'));
+			->paginate(self::ARTICLES_PER_PAGE);
 	}
 	
 	/**
 	 * @param \Illuminate\Http\Request $request
-	 * @param  boolean                 $searchInDraft
+	 * @param                          $searchInDraft
 	 *
-	 * @return LengthAwarePaginator
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
 	private function searchArticlesWithSubCategory(Request $request, $searchInDraft)
 	{
-		$articles = Article::search($request->title)
+		return Article::search($request->title)
 			->where('is_draft', (int)$searchInDraft)
 			->where('sub_category_id', $request->sub_category_id)
-			->get();
+			->paginate(self::ARTICLES_PER_PAGE);
 		
-		// Scout paginate is bugged
-		return $this->paginateArticles($articles, $request->get('page'));
-	}
-	
-	/**
-	 * @param Collection $articles
-	 * @param integer    $currentPage
-	 *
-	 * @return \Illuminate\Pagination\LengthAwarePaginator
-	 */
-	private function paginateArticles($articles, $currentPage)
-	{
-		$page = $currentPage ?: (Paginator::resolveCurrentPage() ?: 1);
-		
-		return new LengthAwarePaginator($articles->forPage($page, self::ARTICLES_PER_PAGE), $articles->count(),
-										self::ARTICLES_PER_PAGE);
 	}
 	
 	/**

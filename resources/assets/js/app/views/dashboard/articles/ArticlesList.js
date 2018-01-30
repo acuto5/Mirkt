@@ -1,5 +1,17 @@
 import {deleteArticle} from "./views/single/SingleArticle";
 
+function searchPublishedArticlesAxiosRequest(inputs) {
+	const url = window.URLS.searchInPublishedArticles;
+
+	return axios.get(url, {params: inputs});
+}
+
+function getAllPublishedArticlesAxiosRequest(query) {
+	const url = window.URLS.getAllArticles;
+
+	return axios.get(url, {params: query});
+}
+
 //--------------------------------
 // Private vars
 //--------------------------------
@@ -40,7 +52,6 @@ const $_setPaginationVars = function (currentPage, lastPage, perPage) {
 	(lastPage < currentPage) ? this.goToPage(lastPage) : false;
 	this.currentPage = currentPage;
 	this.lastPage = lastPage;
-	this.perPage = perPage;
 };
 
 const $_getQueryObjFromSearchInputs = function () {
@@ -89,14 +100,13 @@ class ArticlesList {
 		this.Articles = [];
 
 		// Search inputs
-		this[$_SearchInputs] = {
-			title: $route.query.title,
-			order_by: (!!$route.query.title) ? $route.query.title : 'newest',
-			sub_category_id: $route.query.sub_category_id
-		};
+		this[$_SearchInputs] = {};
+		// 	title: $route.query.title,
+		// 	order_by: (!!$route.query.title) ? $route.query.title : 'newest',
+		// 	sub_category_id: $route.query.sub_category_id
+		// };
 
 		// Paginate
-		this.perPage = 1;
 		this.lastPage = 1;
 		this.currentPage = 1;
 
@@ -120,19 +130,15 @@ class ArticlesList {
 	}
 
 	viewMounted() {
-		let $query = {
-			page: this[$_Route].query.page,
-			title: this[$_Route].query.title,
-			order_by: this[$_Route].query.order_by,
-			sub_category_id: this[$_Route].query.sub_category_id
-		};
-		// Check if page is set in query
-		if ($query.page) {
-			this[$_SearchInputs] = $query;
+		this[$_SearchInputs] = Object.assign({}, this[$_Route].query);
 
-			this.goToPage($query.page);
+		// Check if page is set in query
+		if (this[$_SearchInputs].page) {
+			this.goToPage(this[$_SearchInputs].page);
 		} else {
-			this[$_Router].replace({query: {page: 1}});
+			this[$_SearchInputs]['page'] = 1;
+
+			this[$_Router].replace({query: this[$_SearchInputs]});
 		}
 	}
 
@@ -140,17 +146,12 @@ class ArticlesList {
 	//--------------------------------
 	// Get published articles
 	//--------------------------------
-	getAllArticles(page) {
+	getAllArticles() {
 		$_clearErrors.call(this);
-
-		let params = {
-			page: page,
-			order_by: this[$_SearchInputs].order_by
-		};
 
 		let url = $_getGetAllArticlesUrl.call(this);
 
-		axios.get(url, {params: params})
+		axios.get(url, {params: this[$_SearchInputs]})
 			.then(response => $_successGetArticles.call(this, response))
 			.catch(error => $_setErrors.call(this, error));
 	}
@@ -159,15 +160,15 @@ class ArticlesList {
 	//--------------------------------
 	// Search articles
 	//--------------------------------
-	searchArticles(SearchInputs, page = this.currentPage) {
+	searchArticles(SearchInputs, page) {
 		$_clearErrors.call(this);
 
 		this[$_SearchInputs] = SearchInputs;
 		this[$_SearchInputs].page = page;
 
-		if (!this[$_SearchInputs].title && !this[$_SearchInputs].sub_category_id) {
+		if (!this[$_SearchInputs].title) {
 			// if no search inputs
-			this.getAllArticles(1);
+			this.getAllArticles();
 		} else {
 			let url = $_getSearchArticlesUrl.call(this);
 
@@ -182,12 +183,7 @@ class ArticlesList {
 	// Search articles
 	//--------------------------------
 	goToPage(page) {
-		// If search form not empty
-		if (!!this[$_SearchInputs].title || !!this[$_SearchInputs].sub_category_id) {
-			this.searchArticles(this[$_SearchInputs], page);
-		} else {
-			this.getAllArticles(page);
-		}
+		this.searchArticles(this[$_SearchInputs], page);
 	}
 
 	pushToQuery(page = 1, SearchInputs = this[$_SearchInputs]) {
@@ -278,4 +274,5 @@ class ArticlesList {
 	}
 }
 
+export {searchPublishedArticlesAxiosRequest, getAllPublishedArticlesAxiosRequest};
 export default ArticlesList;

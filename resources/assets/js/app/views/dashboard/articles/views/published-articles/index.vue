@@ -52,8 +52,8 @@
 			}
 		},
 		watch: {
-			'$route'($route) {
-				this.PublishedArticlesObj.goToPage($route.query.page);
+			'$route.query'($query) {
+				this.PublishedArticlesObj.goToPage($query.page);
 			},
 			'PublishedArticlesObj.currentPage'(newValue) {
 				this.PublishedArticlesObj.pushToQuery(newValue);

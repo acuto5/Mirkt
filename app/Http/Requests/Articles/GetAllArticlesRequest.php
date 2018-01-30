@@ -23,7 +23,7 @@ class GetAllArticlesRequest extends FormRequest
 	{
 		return [
 			'order_by' => 'nullable|string|min:6|max:6',
-		
+			'sub_category_id' => 'nullable|numeric|exists:sub_categories,id'
 		];
 	}
 }

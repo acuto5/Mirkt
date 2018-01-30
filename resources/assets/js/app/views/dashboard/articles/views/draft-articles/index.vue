@@ -42,9 +42,6 @@
 			this.DraftArticlesObj.viewMounted();
 		},
 		methods: {
-			goToPage: function (page) {
-				this.DraftArticlesObj.pushToQuery(page);
-			},
 			searchArticles: function (SearchFormInputs) {
 				this.DraftArticlesObj.pushToQuery(1, SearchFormInputs); // show results from first page
 			},
@@ -53,8 +50,8 @@
 			}
 		},
 		watch: {
-			'$route': function ($route) {
-				this.DraftArticlesObj.goToPage($route.query.page);
+			'$route.query'($query) {
+				this.DraftArticlesObj.goToPage($query.page);
 			},
 			'DraftArticlesObj.currentPage'(newValue) {
 				this.DraftArticlesObj.pushToQuery(newValue);
