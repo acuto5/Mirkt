@@ -54,9 +54,16 @@
         },
         methods: {
 			async deleteArticle(){
+				console.log('Delete article');
 				this.isLoading = true;
 
 				this.isDialogVisible = !await this.DraftArticlesObj.deleteArticle(this.id);
+
+				if(!this.isDialogVisible){
+					let $_query = Object.assign({}, this.$route.query);
+
+					this.DraftArticlesObj.searchArticles($_query);
+                }
 
 				this.isLoading = false;
 			}

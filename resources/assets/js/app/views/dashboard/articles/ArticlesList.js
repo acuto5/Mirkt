@@ -15,16 +15,8 @@ function getAllPublishedArticlesAxiosRequest(query) {
 //--------------------------------
 // Private vars
 //--------------------------------
-// Route
-const $_Route = Symbol();
-
-// Router
-const $_Router = Symbol();
-
+// Article type
 const $_isArticlesPublished = Symbol();
-
-// Search articles
-const $_SearchInputs = Symbol();
 
 // Errors
 const $_FlashMessages = Symbol();
@@ -42,28 +34,7 @@ const $_searchInPublishedArticlesURL = Symbol();
 //--------------------------------
 const $_successGetArticles = function (response) {
 	this.Articles = response.data.data;
-	$_setPaginationVars.call(this, response.data.current_page, response.data.last_page, this.per_page);
-};
-
-//--------------------------------
-// Paginate
-//--------------------------------
-const $_setPaginationVars = function (currentPage, lastPage, perPage) {
-	(lastPage < currentPage) ? this.goToPage(lastPage) : false;
-	this.currentPage = currentPage;
-	this.lastPage = lastPage;
-};
-
-const $_getQueryObjFromSearchInputs = function () {
-	let array = {};
-
-	_.forOwn(this[$_SearchInputs], function (value, key) {
-		if (!!value) {
-			Object.assign(array, {[key]: value});
-		}
-	});
-
-	return array;
+	this.lastPage = response.data.last_page;
 };
 
 //--------------------------------
@@ -93,28 +64,14 @@ const $_clearErrors = function () {
 };
 
 class ArticlesList {
-	constructor($router, $route, isPublished = true) {
+	constructor(isPublished = true) {
 		this[$_isArticlesPublished] = isPublished;
 
 		// Articles
 		this.Articles = [];
 
-		// Search inputs
-		this[$_SearchInputs] = {};
-		// 	title: $route.query.title,
-		// 	order_by: (!!$route.query.title) ? $route.query.title : 'newest',
-		// 	sub_category_id: $route.query.sub_category_id
-		// };
-
 		// Paginate
-		this.lastPage = 1;
-		this.currentPage = 1;
-
-		// Route
-		this[$_Route] = $route;
-
-		// Router
-		this[$_Router] = $router;
+		this.lastPage = 0;
 
 		// Urls
 		this[$_markAsDraftURL] = window.URLS.markArticleAsDraft;
@@ -129,29 +86,16 @@ class ArticlesList {
 		this.Errors = new window.Errors({sub_category_id: [], page: [], title: [], order_by: []})
 	}
 
-	viewMounted() {
-		this[$_SearchInputs] = Object.assign({}, this[$_Route].query);
-
-		// Check if page is set in query
-		if (this[$_SearchInputs].page) {
-			this.goToPage(this[$_SearchInputs].page);
-		} else {
-			this[$_SearchInputs]['page'] = 1;
-
-			this[$_Router].replace({query: this[$_SearchInputs]});
-		}
-	}
-
 
 	//--------------------------------
 	// Get published articles
 	//--------------------------------
-	getAllArticles() {
+	getAllArticles(QueryValues) {
 		$_clearErrors.call(this);
 
 		let url = $_getGetAllArticlesUrl.call(this);
 
-		axios.get(url, {params: this[$_SearchInputs]})
+		axios.get(url, {params: QueryValues})
 			.then(response => $_successGetArticles.call(this, response))
 			.catch(error => $_setErrors.call(this, error));
 	}
@@ -160,19 +104,16 @@ class ArticlesList {
 	//--------------------------------
 	// Search articles
 	//--------------------------------
-	searchArticles(SearchInputs, page) {
+	searchArticles(QueryValues) {
 		$_clearErrors.call(this);
 
-		this[$_SearchInputs] = SearchInputs;
-		this[$_SearchInputs].page = page;
-
-		if (!this[$_SearchInputs].title) {
+		if (!QueryValues.title) {
 			// if no search inputs
-			this.getAllArticles();
+			this.getAllArticles(QueryValues);
 		} else {
 			let url = $_getSearchArticlesUrl.call(this);
 
-			axios.get(url, {params: this[$_SearchInputs]})
+			axios.get(url, {params: QueryValues})
 				.then(response => $_successGetArticles.call(this, response))
 				.catch(error => $_setErrors.call(this, error));
 		}
@@ -180,80 +121,34 @@ class ArticlesList {
 
 
 	//--------------------------------
-	// Search articles
+	// Mark article as draft
 	//--------------------------------
-	goToPage(page) {
-		this.searchArticles(this[$_SearchInputs], page);
-	}
-
-	pushToQuery(page = 1, SearchInputs = this[$_SearchInputs]) {
-		let $query = {page}; // add page by default
-
-		// Add title
-		if (!!SearchInputs.title) {
-			$query.title = SearchInputs.title;
-			this[$_SearchInputs].title = SearchInputs.title;
-		} else {
-			this[$_SearchInputs].title = undefined;
-		}
-
-		// Add order_by
-		if (!!SearchInputs.order_by) {
-			$query.order_by = SearchInputs.order_by;
-			this[$_SearchInputs].order_by = SearchInputs.order_by;
-		}
-
-		// Add sub_category_id
-		if (!!SearchInputs.sub_category_id) {
-			$query.sub_category_id = SearchInputs.sub_category_id;
-			this[$_SearchInputs].sub_category_id = SearchInputs.sub_category_id;
-		} else {
-			this[$_SearchInputs].sub_category_id = undefined;
-		}
-
-		// Push new values
-		this[$_Router].push({query: $query});
-	}
-
-	//--------------------------------
-	// Search articles
-	//--------------------------------
-	markArticleAsDraft(articleID) {
+	async markArticleAsDraft(articleID) {
 		if (this[$_isArticlesPublished]) {
 			$_clearErrors.call(this);
 
-			axios.patch(this[$_markAsDraftURL], {id: articleID})
-				.then(response => this.goToPage(this.currentPage))
+			return await axios.patch(this[$_markAsDraftURL], {id: articleID})
+				.then(response => true)
 				.catch(error => $_setErrors.call(this, error));
 		} else {
 			console.log('Article is already draft.');
 		}
 	}
 
-	markArticleAsPublished(articleID) {
+
+	//--------------------------------
+	// Mark article as published
+	//--------------------------------
+	async markArticleAsPublished(articleID) {
 		if (!this[$_isArticlesPublished]) {
 			$_clearErrors.call(this);
 
-			axios.patch(this[$_markAsPublishedURL], {id: articleID})
-				.then(response => this.goToPage(this.currentPage))
+			return await axios.patch(this[$_markAsPublishedURL], {id: articleID})
+				.then(response => true)
 				.catch(error => $_setErrors.call(this, error));
 		} else {
 			console.log('Article is already published.');
 		}
-	}
-
-	//--------------------------------
-	// Articles list order
-	//--------------------------------
-	changeArticlesOrder(value) {
-		// Change order value
-		this[$_SearchInputs].order_by = value;
-
-		// Get query obj from search inputs (without empty values)
-		let $query = $_getQueryObjFromSearchInputs.call(this);
-
-		// Push values to url (it will trigger watch: "$route" function)
-		this.pushToQuery(1, $query);
 	}
 
 
@@ -265,11 +160,10 @@ class ArticlesList {
 			$_clearErrors.call(this);
 
 			return await deleteArticle(articleID)
-				.then(response => {
-					this.goToPage(this.currentPage);
-					return true;
-				})
+				.then(response => true)
 				.catch(error => $_setErrors.call(this, error));
+		} else {
+			console.error('Article can be deleted only if article is draft.');
 		}
 	}
 }

@@ -6,12 +6,6 @@
 </template>
 <script>
 	export default {
-		props: {
-			onOrderChange: {
-				type: Function,
-				required: true
-			}
-		},
 		data() {
 			return {
 				order_by: (this.$route.query.order_by === 'oldest') ? 'oldest' : 'newest'
@@ -19,7 +13,11 @@
 		},
 		watch: {
 			order_by: function (newValue) {
-				this.onOrderChange(newValue);
+				let $_query = Object.assign({}, this.$route.query);
+
+				$_query['order_by'] = newValue;
+
+				this.$router.push({query: $_query});
 			}
 		}
 	}

@@ -3,22 +3,20 @@
         <v-layout row wrap justify-space-around>
             <v-flex xs12 lg10>
                 <search-articles-form
-                        :searchMethod="searchArticles"
                         :title-errors="DraftArticlesObj.Errors.title"
                         :sub-category-errors="DraftArticlesObj.Errors.sub_category_id"
                 />
             </v-flex>
             <v-flex xs12 lg10 my-2>
-                <order-by :onOrderChange="onOrderChange"/>
+                <order-by />
                 <alert-component class="my-2" type="error" :messages="DraftArticlesObj.Errors.order_by"/>
             </v-flex>
             <v-flex xs12 lg10 class="text-xs-center">
                 <draft-articles-table :draft-articles-obj="DraftArticlesObj"/>
             </v-flex>
-            <v-flex xs12 lg6 my-2 v-if="DraftArticlesObj.Articles.length" class="text-xs-center">
-                <v-pagination
-                        v-model="DraftArticlesObj.currentPage"
-                        :length="DraftArticlesObj.lastPage"/>
+            <v-flex xs12 lg6 my-2 class="text-xs-center">
+                <pagination-with-page-query :last-page="DraftArticlesObj.lastPage" :on-query-change="searchArticles"/>
+
                 <alert-component :messages="DraftArticlesObj.Errors.page" type="error" class="my-2"/>
             </v-flex>
         </v-layout>
@@ -30,31 +28,20 @@
 	import SearchArticlesForm from "../../components/search-form";
 	import AlertComponent from "../../../../components/alert-component";
 	import DraftArticlesTable from "../../components/draft-articles-table";
+	import PaginationWithPageQuery from "../../../../components/pagination-with-page-query";
 
 	export default {
-		components: {DraftArticlesTable, AlertComponent, SearchArticlesForm, OrderBy},
+		components: {
+			PaginationWithPageQuery,
+			DraftArticlesTable, AlertComponent, SearchArticlesForm, OrderBy},
 		data() {
 			return {
-				DraftArticlesObj: new ArticlesListClass(this.$router, this.$route, false)
+				DraftArticlesObj: new ArticlesListClass(false)
 			}
-		},
-		mounted() {
-			this.DraftArticlesObj.viewMounted();
 		},
 		methods: {
-			searchArticles: function (SearchFormInputs) {
-				this.DraftArticlesObj.pushToQuery(1, SearchFormInputs); // show results from first page
-			},
-			onOrderChange: function (value) {
-				this.DraftArticlesObj.changeArticlesOrder(value);
-			}
-		},
-		watch: {
-			'$route.query'($query) {
-				this.DraftArticlesObj.goToPage($query.page);
-			},
-			'DraftArticlesObj.currentPage'(newValue) {
-				this.DraftArticlesObj.pushToQuery(newValue);
+			searchArticles: function (SearchFormInputs, page) {
+				this.DraftArticlesObj.searchArticles(SearchFormInputs, page);
 			}
 		}
 	}

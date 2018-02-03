@@ -27,8 +27,14 @@
             }
         },
         methods:{
-			markArticleAsPublish(){
-				this.DraftArticlesObj.markArticleAsPublished(this.id);
+			async markArticleAsPublish(){
+				let $_result = await this.DraftArticlesObj.markArticleAsPublished(this.id);
+
+				if($_result){
+					let $_query = Object.assign({}, this.$route.query);
+
+					this.DraftArticlesObj.searchArticles($_query);
+                }
             }
         }
 	}

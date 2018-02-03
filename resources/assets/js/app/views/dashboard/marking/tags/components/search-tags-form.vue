@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="TagsObj.searchTags()">
+    <v-form @submit.prevent="pushToQuery()">
         <v-list dark class="brown darken-3">
             <v-list-tile>
                 <!-- Search button -->
@@ -13,7 +13,7 @@
                         <v-list-tile-content>
                             <v-text-field
                                     label="Ieškoti"
-                                    v-model="TagsObj.searchInput"
+                                    v-model="input"
                                     :error-messages="TagsObj.UpdateListErrors.tag"
                             />
                         </v-list-tile-content>
@@ -32,8 +32,18 @@
 				required: true
 			}
 		},
-		mounted() {
-			this.TagsObj.searchInput = this.$route.query.searchKey || null;
+        data(){
+			return {
+				input: this.$route.query.tag || null
+            }
+        },
+		methods: {
+			pushToQuery(){
+				let $_query = Object.assign({}, this.$route.query);
+				$_query.tag = this.input;
+
+				this.$router.push({query: $_query});
+            }
 		}
 	}
 </script>

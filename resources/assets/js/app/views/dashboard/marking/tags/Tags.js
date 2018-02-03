@@ -14,9 +14,8 @@ function getAllTagsPromise() {
 //--------------------
 // Route
 const $_router = Symbol();
+const $_route = Symbol();
 
-// Paginate
-const $_nextPage = Symbol();
 
 // Urls
 const $_addTagURL = Symbol();
@@ -38,13 +37,16 @@ const $_clearSearchInputs = function () {
 // List
 //--------------------
 const $_successUpdateList = function (response) {
+	// Check if page exists
 	if(response.data.current_page > response.data.last_page){
-		this.pushToQuery(response.data.last_page);
+		let $_query = Object.assign({}, this[$_route].query);
+		$_query.page = response.data.last_page;
+
+		// Go to last page
+		this[$_router].push({query: $_query});
 	} else {
 		this.Tags = response.data.data;
 		this.lastPage = response.data.last_page;
-		this[$_nextPage] = response.data.current_page;
-		this.currentPage = response.data.current_page;
 	}
 };
 
@@ -94,7 +96,6 @@ const $_errorEditTag = function (error) {
 // Delete tag
 //-------------------
 const $_successDeletion = function () {
-	this.updateList();
 	$_clearSearchInputs.call(this);
 	this[$_FlashMessages].setMessage('warning', 'Ištrinta.');
 
@@ -119,22 +120,17 @@ const $_clearErrors = function () {
 };
 
 class Tags {
-	constructor($router) {
+	constructor($router, $route) {
 		this.Tags = [];
 
 		// route
 		this[$_router] = $router;
+		this[$_route] = $route;
 
 		// Search tag
-		this.searchInput = '';
 
 		// Paginate
 		this.lastPage = 1;
-		this[$_nextPage] = 1;
-		this.currentPage = 1;
-
-		// Add tag
-		this.newTagName = '';
 
 		// Urls
 		this[$_addTagURL] = window.URLS.addTag;
@@ -187,40 +183,15 @@ class Tags {
 			.catch(error => $_errorDeleteTag.call(this, error));
 	}
 
-
-	//--------------------
-	// Search
-	//--------------------
-	searchTags() {
-		this[$_router].push({name: 'tags', query: {page:1, searchKey: this.searchInput}});
-	}
-
-
-	//--------------------
-	// Pagination
-	//--------------------
-	goToPage(page = this.currentPage, searchKey = this.searchInput) {
-		this[$_nextPage] = page;
-		this.updateList(searchKey);
-	}
-
 	//--------------------
 	// List
 	//--------------------
-	updateList(searchKey = null) {
+	updateList(searchKey = null, page = 1) {
 		$_clearErrors.call(this);
 
-		axios.get(this[$_getTagsURL], {params: {page: this[$_nextPage], tag: searchKey}})
+		axios.get(this[$_getTagsURL], {params: {page: page, tag: searchKey}})
 			.then(response => $_successUpdateList.call(this, response))
 			.catch(error => $_errorUpdateList.call(this, error));
-	}
-
-	pushToQuery(page, searchKey = this.searchInput){
-		if(!!searchKey) {
-			this[$_router].push({name: 'tags', query: {page: page, searchKey: searchKey}});
-		} else {
-			this[$_router].push({name: 'tags', query: {page: page}});
-		}
 	}
 }
 

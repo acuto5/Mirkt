@@ -49,6 +49,10 @@
 
 				this.isDialogVisible = ! await this.TagsObj.deleteTag(this.tag);
 
+				if(!this.isDialogVisible){
+
+                }
+
 				this.isLoading = false;
             }
         }
