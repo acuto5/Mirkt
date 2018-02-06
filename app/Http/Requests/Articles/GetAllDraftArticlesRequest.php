@@ -23,6 +23,7 @@ class GetAllDraftArticlesRequest extends FormRequest
 	{
 		return [
 			'order_by' => 'nullable|string|min:6|max:6',
+			'page' => 'nullable|numeric'
 		];
 	}
 }

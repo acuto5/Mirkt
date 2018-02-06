@@ -12,10 +12,23 @@
                 <alert-component class="my-2" type="error" :messages="PublishedArticlesObj.Errors.order_by"/>
             </v-flex>
             <v-flex xs12 lg10 class="text-xs-center">
-                <published-articles-table :published-articles-obj="PublishedArticlesObj"/>
+                <published-articles-table
+                        :published-articles-obj="PublishedArticlesObj"
+                        v-show="!PublishedArticlesObj.isRequestInProgress"
+                />
+
+                <v-progress-circular
+                        fill
+                        indeterminate
+                        color="brown darken-3"
+                        :width="4"
+                        :size="50"
+                        v-if="PublishedArticlesObj.isRequestInProgress"
+                />
             </v-flex>
             <v-flex xs12 lg6 my-2 class="text-xs-center">
                 <pagination-with-page-query
+                        v-show="!PublishedArticlesObj.isRequestInProgress"
                         :last-page="PublishedArticlesObj.lastPage"
                         :on-query-change="searchArticles"
                 />
@@ -25,12 +38,12 @@
     </v-container>
 </template>
 <script>
-	import ArticlesListClass from '../../ArticlesList';
 	import AlertComponent from "../../../../components/alert-component";
-	import OrderBy from '../../components/order-by.vue';
-	import SearchArticlesForm from '../../components/search-form.vue';
-	import PublishedArticlesTable from "../../components/published-articles-table";
 	import PaginationWithPageQuery from "../../../../components/pagination-with-page-query";
+	import ArticlesListClass from '../../ArticlesList';
+	import OrderBy from '../../components/order-by.vue';
+	import PublishedArticlesTable from "../../components/published-articles-table";
+	import SearchArticlesForm from '../../components/search-form.vue';
 
 	export default {
 		components: {

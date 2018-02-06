@@ -27,6 +27,7 @@ class SearchDraftArticlesRequest extends FormRequest
 			'order_by'        => 'nullable|string|min:6|max:6',
 			'title'           => 'nullable|string|min:3|max:200',
 			'sub_category_id' => 'nullable|numeric|exists:sub_categories,id',
+			'page'            => 'nullable|numeric',
         ];
     }
 }

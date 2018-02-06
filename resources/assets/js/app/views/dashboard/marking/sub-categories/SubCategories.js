@@ -31,11 +31,15 @@ const $_errorGetCategories = function (error) {
 //--------------------
 const $_successUpdateSubCategories = function (response) {
 	this.subCategories = response.data;
+
+	this.isRequestInProgress = false;
 };
 
 const $_errorUpdateSubCategories = function (error) {
 	this.UpdateSubCategoriesErrors.setLarevelErrors(error);
 	this[$_FlashMessages].setError(error.response.data.message);
+
+	this.isRequestInProgress = false;
 };
 
 //--------------------
@@ -120,6 +124,9 @@ class SubCategories {
 		// Sub-categories
 		this.subCategories = [];
 
+		// Show progress circle
+		this.isRequestInProgress = true;
+
 		// Urls
 		this[$_levelUpURL] = window.URLS.levelUpSubCategory;
 		this[$_getCategoriesURL] = window.URLS.getCategories;
@@ -145,6 +152,7 @@ class SubCategories {
 	// Categories
 	//--------------------
 	getCategories() {
+
 		$_clearErrors.call(this);
 
 		getCategories()
@@ -157,6 +165,8 @@ class SubCategories {
 	// Sub-categories list
 	//--------------------
 	updateSubCategoriesList() {
+		this.isRequestInProgress = true;
+
 		$_clearErrors.call(this);
 
 		axios.get(this[$_getSubCategoriesURL], {params: {'id': this.selectedCategoryID}})

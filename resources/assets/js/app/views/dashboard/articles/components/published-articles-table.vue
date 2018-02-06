@@ -1,5 +1,5 @@
 <template>
-    <v-list dark class="brown darken-3" v-if="PublishedArticlesObj.Articles.length">
+    <v-list dark class="brown darken-3">
         <template v-for="(article, index) in PublishedArticlesObj.Articles">
             <v-divider v-if="index >= 1"/>
             <v-list-tile avatar @click="" :key="article.id">
@@ -28,7 +28,6 @@
             </v-list-tile>
         </template>
     </v-list>
-    <v-progress-circular fill indeterminate color="brown darken-3" :width="4" :size="50"  v-else/>
 </template>
 <script>
 

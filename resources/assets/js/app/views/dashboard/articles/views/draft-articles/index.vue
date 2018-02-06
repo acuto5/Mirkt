@@ -12,10 +12,25 @@
                 <alert-component class="my-2" type="error" :messages="DraftArticlesObj.Errors.order_by"/>
             </v-flex>
             <v-flex xs12 lg10 class="text-xs-center">
-                <draft-articles-table :draft-articles-obj="DraftArticlesObj"/>
+                <draft-articles-table
+                        :draft-articles-obj="DraftArticlesObj"
+                        v-show="!DraftArticlesObj.isRequestInProgress"
+                />
+                <v-progress-circular
+                        fill
+                        indeterminate
+                        color="brown darken-3"
+                        :width="4"
+                        :size="50"
+                        v-if="DraftArticlesObj.isRequestInProgress"
+                />
             </v-flex>
             <v-flex xs12 lg6 my-2 class="text-xs-center">
-                <pagination-with-page-query :last-page="DraftArticlesObj.lastPage" :on-query-change="searchArticles"/>
+                <pagination-with-page-query
+                        :last-page="DraftArticlesObj.lastPage"
+                        :on-query-change="searchArticles"
+                        v-show="!DraftArticlesObj.isRequestInProgress"
+                />
 
                 <alert-component :messages="DraftArticlesObj.Errors.page" type="error" class="my-2"/>
             </v-flex>

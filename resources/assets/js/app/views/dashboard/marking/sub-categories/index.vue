@@ -9,17 +9,29 @@
 
             <!-- Sub-categories list -->
             <v-flex d-flex xs12 sm10>
-
                 <!-- List -->
-                <sub-categories-list :sub-categories-obj="SubCategoriesObj" v-if="SubCategoriesObj.subCategories.length"/>
-
+                <sub-categories-list
+                        :sub-categories-obj="SubCategoriesObj"
+                        v-show="!SubCategoriesObj.isRequestInProgress"
+                />
+                <v-progress-circular
+                        fill
+                        indeterminate
+                        color="brown darken-3"
+                        :width="4"
+                        :size="50"
+                        v-if="SubCategoriesObj.isRequestInProgress && SubCategoriesObj.selectedCategoryID > 0"
+                />
                 <!-- Errors -->
                 <error-caption-list :error-messages="SubCategoriesObj.UpdateSubCategoriesErrors.id"/>
             </v-flex>
 
             <!-- Add new sub-category -->
             <v-flex d-flex xs10 sm8 md6 lg4 v-if="SubCategoriesObj.selectedCategoryID > 0">
-                <add-sub-category-dialog-form :sub-categories-obj="SubCategoriesObj" />
+                <add-sub-category-dialog-form
+                        :sub-categories-obj="SubCategoriesObj"
+                        v-show="!SubCategoriesObj.isRequestInProgress && SubCategoriesObj.selectedCategoryID > 0"
+                />
             </v-flex>
         </v-layout>
     </v-container>

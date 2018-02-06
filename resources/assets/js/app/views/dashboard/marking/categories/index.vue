@@ -2,10 +2,21 @@
     <v-container fluid>
         <v-layout row wrap justify-space-around>
             <v-flex d-flex xs12 sm10>
-                <categories-table :categories-obj="CategoriesObj"/>
+                <categories-table
+                        :categories-obj="CategoriesObj"
+                        v-show="!CategoriesObj.isRequestInProgress"
+                />
+                <v-progress-circular
+                        fill
+                        indeterminate
+                        color="brown darken-3"
+                        :width="4"
+                        :size="50"
+                        v-if="CategoriesObj.isRequestInProgress"
+                />
             </v-flex>
             <v-flex d-flex xs10 sm8 md6 lg4>
-                <add-category-form-dialog :categories-obj="CategoriesObj"/>
+                <add-category-form-dialog :categories-obj="CategoriesObj" v-show="!CategoriesObj.isRequestInProgress"/>
             </v-flex>
         </v-layout>
     </v-container>

@@ -1,16 +1,18 @@
 <template>
     <v-form @submit.prevent="searchArticles()">
-        <v-text-field
-                clearable
-                type="text"
-                single-line
-                class="my-3"
-                hide-details
-                label="Ieškoti"
-                v-model="input"
-                prepend-icon="search"
-                :prepend-icon-cb="searchArticles"
-        />
+        <v-toolbar-items>
+            <v-text-field
+                    clearable
+                    type="text"
+                    single-line
+                    class="my-3"
+                    hide-details
+                    label="Ieškoti"
+                    v-model="input"
+                    prepend-icon="search"
+                    :prepend-icon-cb="searchArticles"
+            />
+        </v-toolbar-items>
     </v-form>
 </template>
 
@@ -25,10 +27,15 @@
         methods: {
 			searchArticles(){
 				let $_query = {};
+
 				if(this.input){
 					$_query['title'] = this.input;
                 }
-                this.$router.push({name: 'articles.search', query: $_query});
+
+				this.$router.push( {
+					name : 'articles.search',
+					query: $_query,
+				} );
             }
         }
 	}

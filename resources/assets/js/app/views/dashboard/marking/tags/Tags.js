@@ -12,10 +12,6 @@ function getAllTagsPromise() {
 //--------------------
 // Global vars
 //--------------------
-// Route
-const $_router = Symbol();
-const $_route = Symbol();
-
 
 // Urls
 const $_addTagURL = Symbol();
@@ -27,32 +23,20 @@ const $_deleteTagURL = Symbol();
 const $_FlashMessages = Symbol();
 
 //--------------------
-// Search
-//--------------------
-const $_clearSearchInputs = function () {
-	this.searchInput = '';
-};
-
-//--------------------
 // List
 //--------------------
 const $_successUpdateList = function (response) {
-	// Check if page exists
-	if(response.data.current_page > response.data.last_page){
-		let $_query = Object.assign({}, this[$_route].query);
-		$_query.page = response.data.last_page;
+	this.Tags = response.data.data;
+	this.lastPage = response.data.last_page;
 
-		// Go to last page
-		this[$_router].push({query: $_query});
-	} else {
-		this.Tags = response.data.data;
-		this.lastPage = response.data.last_page;
-	}
+	this.isRequestInProgress = false;
 };
 
 const $_errorUpdateList = function (error) {
 	this.UpdateListErrors.setLarevelErrors(error);
 	this[$_FlashMessages].setError(error.response.data.message);
+
+	this.isRequestInProgress = false;
 };
 
 //-------------------
@@ -60,7 +44,6 @@ const $_errorUpdateList = function (error) {
 //-------------------
 const $_successAddTag = function () {
 	$_clearSearchInputs.call(this);
-	this[$_router].push({query: {page: 1}});
 	this[$_FlashMessages].setSuccess('Pridėta.');
 
 	return true;
@@ -120,17 +103,14 @@ const $_clearErrors = function () {
 };
 
 class Tags {
-	constructor($router, $route) {
+	constructor() {
 		this.Tags = [];
-
-		// route
-		this[$_router] = $router;
-		this[$_route] = $route;
-
-		// Search tag
 
 		// Paginate
 		this.lastPage = 1;
+
+		// Show progress circle
+		this.isRequestInProgress = true;
 
 		// Urls
 		this[$_addTagURL] = window.URLS.addTag;
@@ -187,6 +167,8 @@ class Tags {
 	// List
 	//--------------------
 	updateList(searchKey = null, page = 1) {
+		this.isRequestInProgress = true;
+
 		$_clearErrors.call(this);
 
 		axios.get(this[$_getTagsURL], {params: {page: page, tag: searchKey}})

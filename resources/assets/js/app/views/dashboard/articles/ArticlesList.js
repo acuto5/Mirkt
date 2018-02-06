@@ -35,6 +35,7 @@ const $_searchInPublishedArticlesURL = Symbol();
 const $_successGetArticles = function (response) {
 	this.Articles = response.data.data;
 	this.lastPage = response.data.last_page;
+	this.isRequestInProgress = false;
 };
 
 //--------------------------------
@@ -55,6 +56,8 @@ const $_setErrors = function (error) {
 	this.Errors.setLarevelErrors(error);
 	this[$_FlashMessages].setError(error.response.data.message);
 
+	this.isRequestInProgress = false;
+
 	return false;
 };
 
@@ -72,6 +75,8 @@ class ArticlesList {
 
 		// Paginate
 		this.lastPage = 0;
+
+		this.isRequestInProgress = true;
 
 		// Urls
 		this[$_markAsDraftURL] = window.URLS.markArticleAsDraft;
@@ -91,6 +96,7 @@ class ArticlesList {
 	// Get published articles
 	//--------------------------------
 	getAllArticles(QueryValues) {
+		this.isRequestInProgress = true;
 		$_clearErrors.call(this);
 
 		let url = $_getGetAllArticlesUrl.call(this);
@@ -105,6 +111,7 @@ class ArticlesList {
 	// Search articles
 	//--------------------------------
 	searchArticles(QueryValues) {
+		this.isRequestInProgress = true;
 		$_clearErrors.call(this);
 
 		if (!QueryValues.title) {

@@ -147,11 +147,11 @@ class Categories {
 	constructor() {
 		this.Categories = [];
 
-		// Add category
-		this.newCategoryName = '';
-
 		// FlashMessages
 		this[$_FlashMessages] = window.FlashMessages;
+
+		// Show progress circle
+		this.isRequestInProgress = true;
 
 		// Urls
 		this[$_addCategoryURL] = window.URLS.addCategory;
@@ -173,11 +173,19 @@ class Categories {
 	// Categories list
 	//-------------------------
 	updateCategoriesList() {
+		this.isRequestInProgress = true;
+
 		$_clearErrors.call(this);
 
 		getCategories()
-			.then(response => this.Categories = response.data)
-			.catch(error => this[$_FlashMessages].setError(error.response.data.message));
+			.then(response => {
+				this.Categories = response.data;
+				this.isRequestInProgress = false;
+			})
+			.catch(error => {
+				this[$_FlashMessages].setError(error.response.data.message);
+				this.isRequestInProgress = false;
+			});
 	}
 
 	//-------------------------

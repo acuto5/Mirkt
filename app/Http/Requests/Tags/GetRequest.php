@@ -22,7 +22,8 @@ class GetRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'tag' => 'nullable|string|min:2|max:200',
+			'tag'  => 'nullable|string|min:2|max:200',
+			'page' => 'nullable|numeric',
 		];
 	}
 }

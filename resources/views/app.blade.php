@@ -27,14 +27,14 @@
 
         <script>
             window.Categories = Object.freeze({!! getAllCategories() !!});
-            window.Categories.map(category => Object.freeze(category));
+            window.Categories.map( category => Object.freeze( category ) );
 
             window.URLS = Object.freeze({!! getAllRoutes() !!});
 
             @if(Auth::check())
                 window.USER = Object.freeze({!! Auth::user() !!});
             @else
-                window.USER =  Object.freeze({});
+                window.USER = Object.freeze( {} );
             @endif
         </script>
 
