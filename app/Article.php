@@ -20,9 +20,6 @@ class Article extends Model
 	
 	protected $fillable = ['title', 'content', 'sub_category_id', 'user_id'];
 	
-	// Search settings
-	
-	
 	public function storeImages(Request $request, $nameOfImagesArray)
 	{
 		if ($request->images) {
