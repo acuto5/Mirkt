@@ -1,6 +1,6 @@
 <template>
-    <v-toolbar dark color="" app dense fixed clipped-left>
-        <v-btn icon  v-if="inDashboardLayout" @click.native="toggleDashboardMenu()">
+    <v-toolbar app dark dense fixed clipped-left>
+        <v-btn icon v-if="inDashboardLayout" @click.native="toggleDashboardMenu()">
             <v-icon>dashboard</v-icon>
         </v-btn>
 
@@ -20,7 +20,7 @@
         <v-spacer/>
 
         <!-- Search articles -->
-        <!--<search-articles-toolbar-items/>-->
+        <search-articles-toolbar-items/>
 
         <!-- If user is logged in -->
         <user-toolbar-items v-if="User.id"/>

@@ -3122,6 +3122,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: "search-articles-toolbar-items",
@@ -22286,46 +22289,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-form",
-    {
-      on: {
-        submit: function($event) {
-          $event.preventDefault()
-          _vm.searchArticles()
-        }
-      }
-    },
-    [
-      _c(
-        "v-toolbar-items",
-        [
-          _c("v-text-field", {
-            staticClass: "my-3",
-            attrs: {
-              clearable: "",
-              type: "text",
-              "single-line": "",
-              "hide-details": "",
-              label: "Ieškoti",
-              "prepend-icon": "search",
-              "prepend-icon-cb": _vm.searchArticles,
-              color: "teal accent-2"
-            },
-            model: {
-              value: _vm.input,
-              callback: function($$v) {
-                _vm.input = $$v
-              },
-              expression: "input"
+  return _vm.$vuetify.breakpoint.mdAndUp
+    ? _c(
+        "v-form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.searchArticles()
             }
-          })
+          }
+        },
+        [
+          _c(
+            "v-toolbar-items",
+            [
+              _c("v-text-field", {
+                staticClass: "my-3",
+                attrs: {
+                  clearable: "",
+                  type: "text",
+                  "single-line": "",
+                  "hide-details": "",
+                  label: "Ieškoti",
+                  "prepend-icon": "search",
+                  "prepend-icon-cb": _vm.searchArticles,
+                  color: "teal accent-2"
+                },
+                model: {
+                  value: _vm.input,
+                  callback: function($$v) {
+                    _vm.input = $$v
+                  },
+                  expression: "input"
+                }
+              })
+            ],
+            1
+          )
         ],
         1
       )
-    ],
-    1
-  )
+    : _c(
+        "v-btn",
+        { attrs: { icon: "", to: { name: "articles.search" } } },
+        [_c("v-icon", [_vm._v("search")])],
+        1
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -23773,16 +23783,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-toolbar",
-    {
-      attrs: {
-        dark: "",
-        color: "",
-        app: "",
-        dense: "",
-        fixed: "",
-        "clipped-left": ""
-      }
-    },
+    { attrs: { app: "", dark: "", dense: "", fixed: "", "clipped-left": "" } },
     [
       _vm.inDashboardLayout
         ? _c(
@@ -23821,6 +23822,8 @@ var render = function() {
       _c("links-toolbar-items"),
       _vm._v(" "),
       _c("v-spacer"),
+      _vm._v(" "),
+      _c("search-articles-toolbar-items"),
       _vm._v(" "),
       _vm.User.id ? _c("user-toolbar-items") : _c("guest-toolbar-items")
     ],

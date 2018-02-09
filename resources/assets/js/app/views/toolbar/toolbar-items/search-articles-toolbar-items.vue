@@ -1,5 +1,5 @@
 <template>
-    <v-form @submit.prevent="searchArticles()">
+    <v-form @submit.prevent="searchArticles()" v-if="$vuetify.breakpoint.mdAndUp">
         <v-toolbar-items>
             <v-text-field
                     clearable
@@ -15,6 +15,9 @@
             />
         </v-toolbar-items>
     </v-form>
+    <v-btn icon :to="{name: 'articles.search'}" v-else>
+        <v-icon>search</v-icon>
+    </v-btn>
 </template>
 
 <script>
