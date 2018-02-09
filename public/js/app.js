@@ -2623,11 +2623,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -2639,7 +2634,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	components: { SearchArticlesToolbarItems: __WEBPACK_IMPORTED_MODULE_2__toolbar_items_search_articles_toolbar_items___default.a, LinksToolbarItems: __WEBPACK_IMPORTED_MODULE_1__toolbar_items_links_toolbar_items___default.a, GuestToolbarItems: __WEBPACK_IMPORTED_MODULE_0__toolbar_items_guest_toolbar_items___default.a, UserToolbarItems: __WEBPACK_IMPORTED_MODULE_3__toolbar_items_user_toolbar_items___default.a },
 	props: {
 		value: Boolean,
-		inMainLayout: Boolean
+		inDashboardLayout: Boolean
 	},
 	data: function data() {
 		return {
@@ -2743,6 +2738,125 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			this.inputs = {};
 			this.Errors.clear();
 			this.$emit('input', false);
+		}
+	}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	name: "mobile-links-dialog",
+	props: {
+		categoriesWithSubCategories: {
+			type: Array,
+			required: true
+		}
+	},
+	data: function data() {
+		return {
+			isVisible: false,
+			linkToMyGitHub: 'https://github.com/TSmulkys',
+			routerLinkToContactsPage: { name: 'contacts' }
+		};
+	},
+
+	methods: {
+		getCategoryRouteParams: function getCategoryRouteParams(category) {
+			return {
+				name: 'articles.categoryArticles',
+				params: { 'categoryName': category.name.toLowerCase() }
+			};
+		},
+		getSubCategoryRouteParams: function getSubCategoryRouteParams(category, subCategory) {
+			return {
+				name: 'articles.subCategoryArticles',
+				params: {
+					categoryName: category.name.toLowerCase(),
+					subCategoryName: subCategory.name.toLowerCase()
+				}
+			};
 		}
 	}
 });
@@ -2883,6 +2997,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dialogs_mobileLinksDialog__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dialogs_mobileLinksDialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__dialogs_mobileLinksDialog__);
 //
 //
 //
@@ -2941,12 +3057,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+	components: { MobileLinksDialog: __WEBPACK_IMPORTED_MODULE_0__dialogs_mobileLinksDialog___default.a },
 	name: "links-toolbar-items",
 	data: function data() {
 		return {
+			isToolbarSideIconVisible: false,
 			isMenuVisible: false,
 			categoriesWithSubCategories: window.CategoriesWithSubCategories,
 			linkToMyGitHub: 'https://github.com/TSmulkys',
@@ -3074,6 +3197,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: "user-toolbar-items",
@@ -3126,6 +3252,21 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 // module
 exports.push([module.i, "\n.card-title[data-v-4b1b2235] {\n    background: rgba(0, 0, 0, 0.5);\n    position: absolute;\n    bottom: 0;\n    width: 100%;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ed9e72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -21717,105 +21858,117 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-toolbar-items",
-    { staticClass: "ml-3" },
-    [
-      _c(
-        "v-menu",
-        {
-          attrs: { "offset-y": "" },
-          model: {
-            value: _vm.isMenuVisible,
-            callback: function($$v) {
-              _vm.isMenuVisible = $$v
-            },
-            expression: "isMenuVisible"
-          }
-        },
+  return _vm.$vuetify.breakpoint.smAndUp
+    ? _c(
+        "v-toolbar-items",
+        { staticClass: "ml-3" },
         [
           _c(
-            "v-btn",
-            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
-            [_vm._v("Straipsniai")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-list",
-            { attrs: { dark: "" } },
-            _vm._l(_vm.categoriesWithSubCategories, function(category, index) {
-              return _c(
-                "v-list-tile",
-                {
-                  key: index,
-                  attrs: { to: _vm.getCategoryRouteParams(category), exact: "" }
+            "v-menu",
+            {
+              attrs: { "offset-y": "" },
+              model: {
+                value: _vm.isMenuVisible,
+                callback: function($$v) {
+                  _vm.isMenuVisible = $$v
                 },
-                [
-                  _c(
-                    "v-list-tile-content",
-                    [_c("v-list-tile-title", [_vm._v(_vm._s(category.name))])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-list-tile-action",
+                expression: "isMenuVisible"
+              }
+            },
+            [
+              _c(
+                "v-btn",
+                { attrs: { slot: "activator", flat: "" }, slot: "activator" },
+                [_vm._v("Straipsniai")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list",
+                _vm._l(_vm.categoriesWithSubCategories, function(
+                  category,
+                  index
+                ) {
+                  return _c(
+                    "v-list-tile",
+                    {
+                      key: index,
+                      attrs: {
+                        to: _vm.getCategoryRouteParams(category),
+                        exact: ""
+                      }
+                    },
                     [
                       _c(
-                        "v-menu",
-                        { attrs: { "offset-x": "", "open-on-hover": "" } },
+                        "v-list-tile-content",
+                        [
+                          _c("v-list-tile-title", [
+                            _vm._v(_vm._s(category.name))
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-tile-action",
                         [
                           _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                slot: "activator",
-                                icon: "",
-                                color: "white--text"
-                              },
-                              slot: "activator"
-                            },
-                            [_c("v-icon", [_vm._v("play_arrow")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list",
-                            { attrs: { dark: "" } },
-                            _vm._l(category.sub_categories, function(
-                              sub_category,
-                              index
-                            ) {
-                              return _c(
-                                "v-list-tile",
+                            "v-menu",
+                            { attrs: { "offset-x": "", "open-on-hover": "" } },
+                            [
+                              _c(
+                                "v-btn",
                                 {
-                                  key: index,
                                   attrs: {
-                                    to: _vm.getSubCategoryRouteParams(
-                                      category,
-                                      sub_category
-                                    ),
-                                    exact: ""
+                                    slot: "activator",
+                                    icon: "",
+                                    color: "white--text"
                                   },
-                                  nativeOn: {
-                                    click: function($event) {
-                                      _vm.isMenuVisible = false
-                                    }
-                                  }
+                                  slot: "activator"
                                 },
-                                [
-                                  _c(
-                                    "v-list-tile-content",
+                                [_c("v-icon", [_vm._v("play_arrow")])],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list",
+                                _vm._l(category.sub_categories, function(
+                                  sub_category,
+                                  index
+                                ) {
+                                  return _c(
+                                    "v-list-tile",
+                                    {
+                                      key: index,
+                                      attrs: {
+                                        to: _vm.getSubCategoryRouteParams(
+                                          category,
+                                          sub_category
+                                        ),
+                                        exact: ""
+                                      },
+                                      nativeOn: {
+                                        click: function($event) {
+                                          _vm.isMenuVisible = false
+                                        }
+                                      }
+                                    },
                                     [
-                                      _c("v-list-tile-title", [
-                                        _vm._v(_vm._s(sub_category.name))
-                                      ])
+                                      _c(
+                                        "v-list-tile-content",
+                                        [
+                                          _c("v-list-tile-title", [
+                                            _vm._v(_vm._s(sub_category.name))
+                                          ])
+                                        ],
+                                        1
+                                      )
                                     ],
                                     1
                                   )
-                                ],
-                                1
+                                })
                               )
-                            })
+                            ],
+                            1
                           )
                         ],
                         1
@@ -21823,40 +21976,39 @@ var render = function() {
                     ],
                     1
                   )
-                ],
-                1
+                })
               )
-            })
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-menu",
-        { attrs: { "offset-y": "" } },
-        [
-          _c(
-            "v-btn",
-            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
-            [_vm._v("Apie mane")]
+            ],
+            1
           ),
           _vm._v(" "),
           _c(
-            "v-list",
-            { attrs: { dark: "" } },
+            "v-menu",
+            { attrs: { "offset-y": "" } },
             [
               _c(
-                "v-list-tile",
-                { attrs: { href: _vm.linkToMyGitHub } },
-                [_c("v-list-tile-title", [_vm._v("GitHub")])],
-                1
+                "v-btn",
+                { attrs: { slot: "activator", flat: "" }, slot: "activator" },
+                [_vm._v("Apie mane")]
               ),
               _vm._v(" "),
               _c(
-                "v-list-tile",
-                { attrs: { to: _vm.routerLinkToContactsPage } },
-                [_c("v-list-tile-title", [_vm._v("Kontaktai")])],
+                "v-list",
+                [
+                  _c(
+                    "v-list-tile",
+                    { attrs: { href: _vm.linkToMyGitHub } },
+                    [_c("v-list-tile-title", [_vm._v("GitHub")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile",
+                    { attrs: { to: _vm.routerLinkToContactsPage } },
+                    [_c("v-list-tile-title", [_vm._v("Kontaktai")])],
+                    1
+                  )
+                ],
                 1
               )
             ],
@@ -21865,9 +22017,11 @@ var render = function() {
         ],
         1
       )
-    ],
-    1
-  )
+    : _c("mobile-links-dialog", {
+        attrs: {
+          "categories-with-sub-categories": _vm.categoriesWithSubCategories
+        }
+      })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -22492,30 +22646,37 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-toolbar-items",
-    { staticClass: "ml-2" },
     [
       _c(
         "v-menu",
-        { attrs: { "offset-y": "" } },
+        { staticClass: "ml-2", attrs: { "offset-y": "" } },
         [
-          _c(
-            "v-btn",
-            { attrs: { slot: "activator", flat: "" }, slot: "activator" },
-            [
-              _c("v-icon", { attrs: { left: "", color: "teal accent-2" } }, [
-                _vm._v("account_circle")
-              ]),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.User.name))]),
-              _vm._v(" "),
-              _c("v-icon", { attrs: { dark: "" } }, [_vm._v("arrow_drop_down")])
-            ],
-            1
-          ),
+          _vm.$vuetify.breakpoint.mdAndDown
+            ? _c(
+                "v-btn",
+                { attrs: { slot: "activator", icon: "" }, slot: "activator" },
+                [_c("v-icon", [_vm._v("menu")])],
+                1
+              )
+            : _c(
+                "v-btn",
+                { attrs: { slot: "activator", flat: "" }, slot: "activator" },
+                [
+                  _c(
+                    "v-icon",
+                    { attrs: { left: "", color: "teal accent-2" } },
+                    [_vm._v("account_circle")]
+                  ),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(_vm.User.name))]),
+                  _vm._v(" "),
+                  _c("v-icon", [_vm._v("arrow_drop_down")])
+                ],
+                1
+              ),
           _vm._v(" "),
           _c(
             "v-list",
-            { attrs: { dark: "" } },
             [
               _c(
                 "v-list-tile",
@@ -22908,6 +23069,229 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-5db04dd8", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-60ed9e72\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      model: {
+        value: _vm.isVisible,
+        callback: function($$v) {
+          _vm.isVisible = $$v
+        },
+        expression: "isVisible"
+      }
+    },
+    [
+      _c("v-toolbar-side-icon", {
+        staticClass: "hidden-sm-and-up",
+        attrs: { slot: "activator" },
+        slot: "activator"
+      }),
+      _vm._v(" "),
+      _c(
+        "v-expansion-panel",
+        [
+          _c(
+            "v-expansion-panel-content",
+            { staticClass: "grey darken-4", attrs: { "hide-actions": "" } },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "teal--text text--accent-2",
+                  staticStyle: { "text-decoration": "none" },
+                  attrs: { slot: "header", to: { name: "home" } },
+                  nativeOn: {
+                    click: function($event) {
+                      _vm.isVisible = false
+                    }
+                  },
+                  slot: "header"
+                },
+                [_vm._v("Mirkt\n            ")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-expansion-panel-content",
+            { staticClass: "grey darken-4" },
+            [
+              _c("div", { attrs: { slot: "header" }, slot: "header" }, [
+                _vm._v("Straipsniai")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-expansion-panel",
+                { attrs: { popout: "" } },
+                _vm._l(_vm.categoriesWithSubCategories, function(
+                  category,
+                  index
+                ) {
+                  return _c(
+                    "v-expansion-panel-content",
+                    { key: index, staticClass: "grey darken-2" },
+                    [
+                      _c(
+                        "div",
+                        { attrs: { slot: "header" }, slot: "header" },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "white--text",
+                              staticStyle: { "text-decoration": "none" },
+                              attrs: {
+                                to: _vm.getCategoryRouteParams(category)
+                              },
+                              nativeOn: {
+                                click: function($event) {
+                                  _vm.isVisible = false
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(category.name) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list",
+                        { staticClass: "grey darken-1" },
+                        _vm._l(category.sub_categories, function(
+                          sub_category,
+                          index
+                        ) {
+                          return _c(
+                            "v-list-tile",
+                            {
+                              key: index,
+                              attrs: {
+                                to: _vm.getSubCategoryRouteParams(
+                                  category,
+                                  sub_category
+                                ),
+                                exact: ""
+                              },
+                              nativeOn: {
+                                click: function($event) {
+                                  _vm.isVisible = false
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "v-list-tile-content",
+                                [
+                                  _c("v-list-tile-title", [
+                                    _vm._v(_vm._s(sub_category.name))
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        })
+                      )
+                    ],
+                    1
+                  )
+                })
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-expansion-panel-content",
+            { staticClass: "grey darken-4" },
+            [
+              _c("div", { attrs: { slot: "header" }, slot: "header" }, [
+                _vm._v("Apie mane")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-list",
+                { staticClass: "grey darken-3" },
+                [
+                  _c(
+                    "v-list-tile",
+                    { attrs: { href: _vm.linkToMyGitHub } },
+                    [
+                      _c(
+                        "v-list-tile-content",
+                        [_c("v-list-tile-title", [_vm._v("GitHub")])],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-tile",
+                    {
+                      attrs: { to: _vm.routerLinkToContactsPage },
+                      nativeOn: {
+                        click: function($event) {
+                          _vm.isVisible = false
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "v-list-tile-content",
+                        [
+                          _c(
+                            "v-list-tile-title",
+                            { staticClass: "white--text" },
+                            [_vm._v("Kontaktai")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-60ed9e72", module.exports)
   }
 }
 
@@ -23400,54 +23784,45 @@ var render = function() {
       }
     },
     [
-      _vm.inMainLayout
-        ? _c("v-toolbar-side-icon", {
-            nativeOn: {
-              click: function($event) {
-                _vm.toggleDashboardMenu()
+      _vm.inDashboardLayout
+        ? _c(
+            "v-btn",
+            {
+              attrs: { icon: "" },
+              nativeOn: {
+                click: function($event) {
+                  _vm.toggleDashboardMenu()
+                }
               }
-            }
-          })
+            },
+            [_c("v-icon", [_vm._v("dashboard")])],
+            1
+          )
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "v-toolbar-title",
-        [
-          _c(
-            "router-link",
-            {
-              staticClass: "hidden-sm-and-down teal--text text--accent-2",
-              staticStyle: { "text-decoration": "none" },
-              attrs: { to: { name: "home" } }
-            },
-            [_vm._v("Mirkt\n        ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass: "hidden-md-and-up",
-              staticStyle: { "text-decoration": "none" },
-              attrs: { to: { name: "home" } }
-            },
+      !_vm.inDashboardLayout || _vm.$vuetify.breakpoint.smAndUp
+        ? _c(
+            "v-toolbar-title",
             [
-              _c("v-icon", { attrs: { color: "teal accent-2" } }, [
-                _vm._v("home")
-              ])
+              _c(
+                "router-link",
+                {
+                  staticClass: "teal--text text--accent-2",
+                  staticStyle: { "text-decoration": "none" },
+                  attrs: { to: { name: "home" } }
+                },
+                [_vm._v("Mirkt\n        ")]
+              )
             ],
             1
           )
-        ],
-        1
-      ),
+        : _vm._e(),
       _vm._v(" "),
       _c("links-toolbar-items"),
       _vm._v(" "),
       _c("v-spacer"),
       _vm._v(" "),
-      _c("search-articles-toolbar-items", {
-        staticClass: "hidden-sm-and-down"
-      }),
+      _c("search-articles-toolbar-items"),
       _vm._v(" "),
       _vm.User.id ? _c("user-toolbar-items") : _c("guest-toolbar-items")
     ],
@@ -26370,6 +26745,33 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b1b2235\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./article-card.vue", function() {
      var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b1b2235\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./article-card.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ed9e72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ed9e72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("37446028", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../../../node_modules/css-loader/index.js!../../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ed9e72\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./mobileLinksDialog.vue", function() {
+     var newContent = require("!!../../../../../../../../node_modules/css-loader/index.js!../../../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ed9e72\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./mobileLinksDialog.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -57026,6 +57428,59 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-183f8375", Component.options)
   } else {
     hotAPI.reload("data-v-183f8375", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ed9e72\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-60ed9e72\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/toolbar/toolbar-items/dialogs/mobileLinksDialog.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-60ed9e72"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\app\\views\\toolbar\\toolbar-items\\dialogs\\mobileLinksDialog.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-60ed9e72", Component.options)
+  } else {
+    hotAPI.reload("data-v-60ed9e72", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true

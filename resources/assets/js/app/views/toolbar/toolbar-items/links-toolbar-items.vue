@@ -1,9 +1,9 @@
 <template>
-    <v-toolbar-items class="ml-3">
-        <!-- Articles menu -->
+    <v-toolbar-items class="ml-3" v-if="$vuetify.breakpoint.smAndUp">
+         <!--Articles menu -->
         <v-menu offset-y v-model="isMenuVisible">
             <v-btn flat slot="activator">Straipsniai</v-btn>
-            <v-list dark>
+            <v-list>
                 <!-- Categories -->
                 <v-list-tile
                         v-for="(category,index) in categoriesWithSubCategories"
@@ -19,7 +19,7 @@
                             <v-btn icon color="white--text" slot="activator">
                                 <v-icon>play_arrow</v-icon>
                             </v-btn>
-                            <v-list dark>
+                            <v-list>
                                 <!-- Sub categories -->
                                 <v-list-tile
                                         v-for="(sub_category,index) in category.sub_categories"
@@ -40,9 +40,9 @@
         </v-menu>
 
         <!-- About me -->
-        <v-menu offset-y>
+        <v-menu offset-y >
             <v-btn flat slot="activator">Apie mane</v-btn>
-            <v-list dark>
+            <v-list>
                 <!-- Link to GitHub-->
                 <v-list-tile :href="linkToMyGitHub">
                     <v-list-tile-title>GitHub</v-list-tile-title>
@@ -54,21 +54,28 @@
             </v-list>
         </v-menu>
     </v-toolbar-items>
+
+    <!-- For mobile -->
+    <mobile-links-dialog v-else :categories-with-sub-categories="categoriesWithSubCategories"/>
 </template>
 
 <script>
 
+	import MobileLinksDialog from "./dialogs/mobileLinksDialog";
+
 	export default {
-		name: "links-toolbar-items",
+		components: { MobileLinksDialog },
+		name      : "links-toolbar-items",
 		data() {
 			return {
+				isToolbarSideIconVisible   : false,
 				isMenuVisible              : false,
 				categoriesWithSubCategories: window.CategoriesWithSubCategories,
 				linkToMyGitHub             : 'https://github.com/TSmulkys',
 				routerLinkToContactsPage   : { name: 'contacts' },
 			}
 		},
-		methods: {
+		methods   : {
 			getCategoryRouteParams ( category ) {
 				return {
 					name  : 'articles.categoryArticles',

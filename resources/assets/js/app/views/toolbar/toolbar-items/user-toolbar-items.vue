@@ -1,16 +1,19 @@
 <template>
-    <v-toolbar-items class="ml-2">
-        <v-menu offset-y>
+    <v-toolbar-items>
+        <v-menu offset-y class="ml-2">
             <!-- Icon and user nickname -->
-            <v-btn slot="activator" flat>
-                <v-icon left color="teal accent-2">account_circle</v-icon>
+            <v-btn icon v-if="$vuetify.breakpoint.mdAndDown" slot="activator">
+                <v-icon>menu</v-icon>
+            </v-btn>
+
+            <v-btn flat slot="activator" v-else>
+                <v-icon  left color="teal accent-2">account_circle</v-icon>
                 <span >{{User.name}}</span>
-                <v-icon dark>arrow_drop_down</v-icon>
+                <v-icon >arrow_drop_down</v-icon>
             </v-btn>
 
             <!-- Drop down menu-->
-            <v-list dark>
-
+            <v-list>
                 <!-- Edit profile tile  -->
                 <v-list-tile :to="{name: 'user.edit-profile'}" :active-class="activeSubGroupClass">
                     <v-list-tile-action>
