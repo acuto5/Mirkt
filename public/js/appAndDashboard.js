@@ -5771,14 +5771,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/user-toolbar-items.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/guest-toolbar-items.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toolbar_items_search_articles_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/search-articles-toolbar-items.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toolbar_items_search_articles_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__toolbar_items_search_articles_toolbar_items__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar_items_guest_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/guest-toolbar-items.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toolbar_items_guest_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__toolbar_items_guest_toolbar_items__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_items_links_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/links-toolbar-items.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toolbar_items_links_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__toolbar_items_links_toolbar_items__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toolbar_items_search_articles_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/search-articles-toolbar-items.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toolbar_items_search_articles_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__toolbar_items_search_articles_toolbar_items__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toolbar_items_user_toolbar_items__ = __webpack_require__("./resources/assets/js/app/views/toolbar/toolbar-items/user-toolbar-items.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toolbar_items_user_toolbar_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__toolbar_items_user_toolbar_items__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5810,7 +5824,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: 'toolbar',
-	components: { SearchArticlesToolbarItems: __WEBPACK_IMPORTED_MODULE_3__toolbar_items_search_articles_toolbar_items___default.a, LinksToolbarItems: __WEBPACK_IMPORTED_MODULE_2__toolbar_items_links_toolbar_items___default.a, GuestToolbarItems: __WEBPACK_IMPORTED_MODULE_1__toolbar_items_guest_toolbar_items___default.a, UserToolbarItems: __WEBPACK_IMPORTED_MODULE_0__toolbar_items_user_toolbar_items___default.a },
+	components: { SearchArticlesToolbarItems: __WEBPACK_IMPORTED_MODULE_2__toolbar_items_search_articles_toolbar_items___default.a, LinksToolbarItems: __WEBPACK_IMPORTED_MODULE_1__toolbar_items_links_toolbar_items___default.a, GuestToolbarItems: __WEBPACK_IMPORTED_MODULE_0__toolbar_items_guest_toolbar_items___default.a, UserToolbarItems: __WEBPACK_IMPORTED_MODULE_3__toolbar_items_user_toolbar_items___default.a },
 	props: {
 		value: Boolean,
 		inMainLayout: Boolean
@@ -29722,11 +29736,26 @@ var render = function() {
           _c(
             "router-link",
             {
-              staticClass: "teal--text text--accent-2",
+              staticClass: "hidden-sm-and-down teal--text text--accent-2",
               staticStyle: { "text-decoration": "none" },
               attrs: { to: { name: "home" } }
             },
             [_vm._v("Mirkt\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "hidden-md-and-up",
+              staticStyle: { "text-decoration": "none" },
+              attrs: { to: { name: "home" } }
+            },
+            [
+              _c("v-icon", { attrs: { color: "teal accent-2" } }, [
+                _vm._v("home")
+              ])
+            ],
+            1
           )
         ],
         1
@@ -29736,7 +29765,9 @@ var render = function() {
       _vm._v(" "),
       _c("v-spacer"),
       _vm._v(" "),
-      _c("search-articles-toolbar-items"),
+      _c("search-articles-toolbar-items", {
+        staticClass: "hidden-sm-and-down"
+      }),
       _vm._v(" "),
       _vm.User.id ? _c("user-toolbar-items") : _c("guest-toolbar-items")
     ],
