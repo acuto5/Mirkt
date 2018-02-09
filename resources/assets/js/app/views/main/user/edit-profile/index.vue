@@ -7,24 +7,28 @@
                             autofocus
                             type="email"
                             label="El. Paštas"
+                            color="teal accent-2"
                             v-model="inputs.email"
                             :error-messages="Errors.email"
 
                     />
                     <v-text-field
                             type="password"
+                            color="teal accent-2"
                             v-model="inputs.password"
                             label="Dabartinis slaptažodis"
                             :error-messages="Errors.password"
                     />
                     <v-text-field
                             type="password"
+                            color="teal accent-2"
                             label="Naujas slaptažodis"
                             v-model="inputs.new_password"
                             :error-messages="Errors.new_password"
                     />
                     <v-text-field
                             type="password"
+                            color="teal accent-2"
                             label="Pakartokite naują slaptažodį"
                             v-model="inputs.new_password_confirmation"
                             :error-messages="Errors.new_password_confirmation"

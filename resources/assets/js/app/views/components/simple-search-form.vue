@@ -1,6 +1,6 @@
 <template>
     <v-form @submit.prevent="pushToQuery()">
-        <v-list dark class="brown darken-3">
+        <v-list>
             <v-list-tile>
                 <!-- Search button -->
                 <v-list-tile-action>
@@ -15,6 +15,7 @@
                                     clearable
                                     label="Ieškoti"
                                     v-model="input"
+                                    color="teal accent-2"
                                     :error-messages="errorMessages"
                             />
                         </v-list-tile-content>

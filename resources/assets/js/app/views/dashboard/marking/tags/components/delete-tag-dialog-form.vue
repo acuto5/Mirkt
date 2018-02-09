@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="isDialogVisible" class="brown darken-3" max-width="400px">
+    <v-dialog v-model="isDialogVisible" max-width="400px">
         <!-- Activator -->
         <v-btn icon outline slot="activator" color="error">
             <v-icon>delete_forever</v-icon>
@@ -8,7 +8,7 @@
         <v-card>
 
             <!-- Title -->
-            <v-card-title class="red accent-2" v-text="'Dėmesio!'"/>
+            <v-card-title class="title red accent-2" v-text="'Dėmesio!'"/>
 
             <!-- Content -->
             <v-card-text>

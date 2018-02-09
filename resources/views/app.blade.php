@@ -26,8 +26,8 @@
         </div>
 
         <script>
-            window.Categories = Object.freeze({!! getAllCategories() !!});
-            window.Categories.map( category => Object.freeze( category ) );
+            window.CategoriesWithSubCategories = Object.freeze({!! getAllCategoriesWithSubCategories() !!});
+            window.CategoriesWithSubCategories.map( category => Object.freeze( category ) );
 
             window.URLS = Object.freeze({!! getAllRoutes() !!});
 

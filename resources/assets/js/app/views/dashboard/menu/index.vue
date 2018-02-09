@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer fixed temporary clipped app width="250" dark class="brown darken-3" v-model="tempValue">
+    <v-navigation-drawer fixed temporary clipped app width="250" dark v-model="tempValue">
         <v-list subheader>
             <v-list-group v-for="(group, index) in groups" :value="isGroupActive(index)" :key="group.title">
                 <v-list-tile slot="item" @click="" ripple="">
@@ -7,7 +7,7 @@
                         <v-icon v-text="group.icon"/>
                     </v-list-tile-action>
                     <v-list-tile-content>
-                        <v-list-tile-title class="blue--text text--lighten-4" v-text="group.title"/>
+                        <v-list-tile-title v-text="group.title"/>
                     </v-list-tile-content>
                     <v-list-tile-action>
                         <v-icon>keyboard_arrow_down</v-icon>
@@ -19,7 +19,7 @@
                         <v-icon v-text="subGroup.icon"/>
                     </v-list-tile-action>
                     <v-list-tile-content>
-                        <v-list-tile-title class="blue--text text--lighten-4" v-text="subGroup.title"/>
+                        <v-list-tile-title v-text="subGroup.title"/>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list-group>
@@ -35,7 +35,7 @@
 		data() {
 			return {
 				tempValue: false,
-				activeSubGroupClass: 'brown darken-4 white--text',
+				activeSubGroupClass: 'grey darken-2 teal--text text--accent-2',
 				groups: [
 					{
 						title: 'Straipsniai',

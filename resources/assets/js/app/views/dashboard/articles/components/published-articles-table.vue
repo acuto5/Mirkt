@@ -1,5 +1,5 @@
 <template>
-    <v-list dark class="brown darken-3">
+    <v-list dark>
         <template v-for="(article, index) in PublishedArticlesObj.Articles">
             <v-divider v-if="index >= 1"/>
             <v-list-tile avatar @click="" :key="article.id">

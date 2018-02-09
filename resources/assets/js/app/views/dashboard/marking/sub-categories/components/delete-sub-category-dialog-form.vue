@@ -22,9 +22,7 @@
                         Trinti visam laikui
                     </v-btn>
                     <!-- Close dialog -->
-                    <v-btn flat @click="isDialogVisible = false" :loading="isLoading">
-                        Atgal
-                    </v-btn>
+                    <v-btn flat @click="isDialogVisible = false" :loading="isLoading">Atgal</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>

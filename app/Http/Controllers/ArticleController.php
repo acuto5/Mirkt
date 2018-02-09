@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-	const ARTICLES_PER_PAGE = 2;
+	const ARTICLES_PER_PAGE = 12;
 	
 	/**
 	 * @param GetArticleRequest $request
@@ -196,15 +196,15 @@ class ArticleController extends Controller
 	{
 		// Find articles
 		$articles = $this->searchArticles($request, false);
+		$articles->load('headerImage');
 		
 		// If user choose orderBy, by oldest articles
-		$articles = $this->sortByArticlesDates($articles, 'created_at', $request->order_by);
+		$this->sortByArticlesDates($articles, 'created_at', $request->order_by);
 		
 		// Filter, witch columns will be visible
-		$articles = $this->allowColumns($articles, ['id', 'title', 'sub_category_id', 'created_at'],
-										['created_at']);
+		$this->hideColumns($articles, ['content', 'sub_category_id', 'is_draft']);
 		
-		return response()->json($articles);
+		return response()->json($articles->toArray());
 	}
 	
 	/**
@@ -216,13 +216,13 @@ class ArticleController extends Controller
 	{
 		// Find articles
 		$articles = $this->searchArticles($request, true);
+		$articles->load('headerImage');
 		
 		// If user choose orderBy, by oldest articles
-		$articles = $this->sortByArticlesDates($articles, 'created_at', $request->order_by);
+		$this->sortByArticlesDates($articles, 'created_at', $request->order_by);
 		
 		// Filter, witch columns will be visible
-		$articles = $this->allowColumns($articles, ['id', 'title', 'sub_category_id', 'created_at'],
-										['created_at']);
+		$this->hideColumns($articles, ['content', 'sub_category_id', 'is_draft']);
 		
 		return response()->json($articles);
 	}
@@ -339,11 +339,9 @@ class ArticleController extends Controller
 	}
 	
 	/**
-	 * @param LengthAwarePaginator $articles
-	 * @param string               $columnName
-	 * @param string               $sortBy
-	 *
-	 * @return mixed
+	 * @param        $articles
+	 * @param        $columnName
+	 * @param string $sortBy
 	 */
 	private function sortByArticlesDates($articles, $columnName, $sortBy = 'newest')
 	{
@@ -354,31 +352,17 @@ class ArticleController extends Controller
 			$sortedCollection = $articles->sortByDesc($columnName)->values();
 		}
 		
-		return $articles->setCollection($sortedCollection);
+		$articles->setCollection($sortedCollection);
 	}
 	
 	/**
 	 * @param $articles
 	 * @param $columns
-	 * @param $datesColumns
-	 *
-	 * @return mixed
 	 */
-	private function allowColumns($articles, $columns, $datesColumns)
+	private function hideColumns($articles, $columns)
 	{
-		$articles->transform(function ($item) use ($columns, $datesColumns) {
-			$item = $item->only($columns);
-			
-			// Convert dates columns to string, because after 'only()' method, dates became Carbon objects.
-			foreach ($datesColumns as $column) {
-				if (in_array($column, $columns)) {
-					$item[ $column ] = $item[ $column ]->toDateTimeString();
-				}
-			}
-			
-			return $item;
+		$articles->transform(function($article) use($columns){
+			return $article->makeHidden($columns)->toArray();
 		});
-		
-		return $articles;
 	}
 }

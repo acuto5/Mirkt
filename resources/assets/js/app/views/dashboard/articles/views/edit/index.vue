@@ -16,6 +16,7 @@
                         v-model="EditArticleObj.EditArticleInputs.sub_category_id"
                         :items="EditArticleObj.subCategoriesForSelectInput"
                         :error-messages="EditArticleObj.Errors.sub_category_id"
+                        color="teal accent-2"
                 />
             </v-flex>
 
@@ -24,6 +25,7 @@
                 <v-text-field
                         required
                         label="Antraštė"
+                        color="teal accent-2"
                         v-model="EditArticleObj.EditArticleInputs.title"
                         :error-messages="EditArticleObj.Errors.title"
                 />
@@ -35,6 +37,7 @@
                         :rows="15"
                         textarea
                         label="Straipsnis"
+                        color="teal accent-2"
                         v-model="EditArticleObj.EditArticleInputs.content"
                         :error-messages="EditArticleObj.Errors.content"
                 />
@@ -50,6 +53,7 @@
                         deletable-chips
                         item-value="id"
                         item-text="name"
+                        color="teal accent-2"
                         :items="EditArticleObj.Tags"
                         :error-messages="EditArticleObj.Errors.tags_ids"
                         v-model="EditArticleObj.EditArticleInputs.tags_ids"
@@ -71,6 +75,7 @@
             <!-- Actions -->
             <v-flex xs12 class="text-xs-center">
                 <v-btn
+                        outline
                         color="warning"
                         :loading="EditArticleObj.isButtonsDisabled"
                         @click.native="EditArticleObj.updateArticle()">
@@ -80,20 +85,18 @@
         </v-layout>
         <v-layout row wrap justify-space-around v-if="!EditArticleObj.EditArticleInputs.title">
             <v-flex d-flex xs12 class="text-xs-center">
-                <v-progress-circular fill indeterminate color="brown darken-3" :width="4" :size="50"/>
+                <v-progress-circular fill indeterminate color="teal accent-2" :width="4" :size="50"/>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 <script>
 	import EditArticleClass from './EditArticle';
-	import SelectTagsField from "../../components/select-tags-field";
 	import ImagesInputPanel from "../../components/images-input-panel";
 
 	export default {
 		components: {
 			ImagesInputPanel,
-			SelectTagsField
 		},
 		data() {
 			return {

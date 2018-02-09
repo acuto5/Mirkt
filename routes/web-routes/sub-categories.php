@@ -18,7 +18,8 @@ Route::post('/level-up-sub-category', 'SubCategoryController@levelUp')->name('le
 // Level Down sub-category
 Route::post('/level-down-sub-category', 'SubCategoryController@levelDown')->name('levelDownSubCategory')->middleware('auth', 'role:moderator');
 
-
+// Get Articles by sub-category name
+Route::get('/get-articles-by-sub-category-name', 'SubCategoryController@getArticlesBySubCategoryName')->name('getArticlesBySubCategoryName');
 
 
 

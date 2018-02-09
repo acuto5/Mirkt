@@ -1,4 +1,10 @@
-import {getCategories} from '../categories/Categories';
+import { getCategories } from '../categories/Categories';
+
+function getArticlesBySubCategoryName ( query ) {
+	const url = window.URLS.getArticlesBySubCategoryName;
+
+	return axios.get( url, { params: query } );
+}
 
 //--------------------------
 // Global vars
@@ -239,4 +245,5 @@ class SubCategories {
 	}
 }
 
+export { getArticlesBySubCategoryName };
 export default SubCategories;

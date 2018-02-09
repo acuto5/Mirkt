@@ -8,7 +8,7 @@
             </v-btn>
 
             <!-- Dialog content -->
-            <v-card light >
+            <v-card>
 
                 <!-- Title -->
                 <v-card-title class="red accent-3 title" v-text="'Dėmesio!'"/>
@@ -30,7 +30,6 @@
                         Atgal
                     </v-btn>
                 </v-card-actions>
-
             </v-card>
         </v-dialog>
     </v-list-tile-action>

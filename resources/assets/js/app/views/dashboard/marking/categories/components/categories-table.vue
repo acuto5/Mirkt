@@ -1,5 +1,5 @@
 <template>
-    <v-list dark class="brown darken-3">
+    <v-list dark>
         <template v-for="(Category, index) in CategoriesObj.Categories">
             <v-divider v-if="index >=1"/>
             <v-list-tile :key="Category.id">

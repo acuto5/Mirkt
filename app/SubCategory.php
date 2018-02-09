@@ -17,11 +17,15 @@ class SubCategory extends Model
 	
 	public function articles()
 	{
-		return $this->hasMany('App\Article', 'sub_category_id');
+		return $this->hasMany('App\Article', 'sub_category_id')->with('headerImage')->latest();
 	}
 	
 	public function latestSixPublishedArticles()
 	{
-		return $this->hasMany('App\Article', 'sub_category_id')->where('is_draft', 0)->latest()->take(6);
+		return $this->hasMany('App\Article', 'sub_category_id')
+			->where('is_draft', 0)
+			->with('headerImage')
+			->latest()
+			->take(6);
 	}
 }

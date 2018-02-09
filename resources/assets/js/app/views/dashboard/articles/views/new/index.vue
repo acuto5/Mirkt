@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid>
+    <v-container>
         <v-layout row wrap justify-space-around>
             <v-flex xs12 sm10 lg8 class="text-xs-center">
                 <p class="title">Pridėti naują straipsnį</p>
@@ -13,6 +13,7 @@
                         item-text="name"
                         item-value="id"
                         clearable
+                        color="teal accent-2"
                         v-model="NewArticleObj.NewArticleInputs.sub_category_id"
                         :items="NewArticleObj.subCategoriesForSelectInput"
                         :error-messages="NewArticleObj.Errors.sub_category_id"
@@ -24,6 +25,7 @@
                 <v-text-field
                         required
                         label="Antraštė"
+                        color="teal accent-2"
                         v-model="NewArticleObj.NewArticleInputs.title"
                         :error-messages="NewArticleObj.Errors.title"
                 />
@@ -35,6 +37,7 @@
                         :rows="15"
                         textarea
                         label="Straipsnis"
+                        color="teal accent-2"
                         v-model="NewArticleObj.NewArticleInputs.content"
                         :error-messages="NewArticleObj.Errors.content"
                 />
@@ -50,6 +53,7 @@
                         deletable-chips
                         item-value="id"
                         item-text="name"
+                        color="teal accent-2"
                         :items="NewArticleObj.Tags"
                         :error-messages="NewArticleObj.Errors.tags_ids"
                         v-model="NewArticleObj.NewArticleInputs.tags_ids"
@@ -70,12 +74,14 @@
             <!-- Actions -->
             <v-flex xs12 class="text-xs-center">
                 <v-btn
+                        outline
                         color="primary"
                         :loading="NewArticleObj.isButtonsDisabled"
                         @click.native="NewArticleObj.publishNewArticle()">
                     Publikuoti
                 </v-btn>
                 <v-btn
+                        outline
                         color="warning"
                         :loading="NewArticleObj.isButtonsDisabled"
                         @click="NewArticleObj.saveArticleToDraft()">
@@ -87,13 +93,11 @@
 </template>
 <script>
 	import NewArticleClass from './NewArticle';
-	import SelectTagsField from "../../components/select-tags-field";
 	import ImagesInputPanel from "../../components/images-input-panel";
 
 	export default {
 		components: {
 			ImagesInputPanel,
-			SelectTagsField
 		},
 		data() {
 			return {

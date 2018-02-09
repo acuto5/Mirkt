@@ -2,15 +2,21 @@
  * Functions for export
  */
 function getCategories() {
-	let url = window.URLS.getCategories;
+	const url = window.URLS.getCategories;
 
 	return axios.get(url);
 }
 
 function getCategoriesWithSubCategoriesPromise() {
-	let url = window.URLS.getCategoriesAndSubCategories;
+	const url = window.URLS.getCategoriesAndSubCategories;
 
 	return axios.get(url);
+}
+
+function getCategoryArticles ( query ) {
+	const url = window.URLS.getCategoryArticles;
+
+	return axios.get(url, {params: query});
 }
 
 async function getSubCategoriesWithCategoryAsHeader() {
@@ -245,5 +251,5 @@ class Categories {
 	}
 }
 
-export {getCategories, getCategoriesWithSubCategoriesPromise, getSubCategoriesWithCategoryAsHeader}
+export {getCategories, getCategoriesWithSubCategoriesPromise, getSubCategoriesWithCategoryAsHeader, getCategoryArticles}
 export default Categories;

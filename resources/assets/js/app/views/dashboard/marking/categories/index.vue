@@ -9,7 +9,7 @@
                 <v-progress-circular
                         fill
                         indeterminate
-                        color="brown darken-3"
+                        color="teal accent-2"
                         :width="4"
                         :size="50"
                         v-if="CategoriesObj.isRequestInProgress"
@@ -23,16 +23,6 @@
     <!--<div>-->
         <!--<help-list type="danger" :messages="CategoriesObj.LevelUpErrors.id"></help-list>-->
         <!--<help-list type="danger" :messages="CategoriesObj.LevelDownErrors.id"></help-list>-->
-
-        <!--<categories-table :CategoriesObj="CategoriesObj"></categories-table>-->
-
-        <!--<hr/>-->
-
-        <!--<add-category-form :CategoriesObj="CategoriesObj"></add-category-form>-->
-
-        <!--<edit-category-modal-form :CategoriesObj="CategoriesObj"></edit-category-modal-form>-->
-
-        <!--<delete-category-modal-form :CategoriesObj="CategoriesObj"></delete-category-modal-form>-->
     <!--</div>-->
 </template>
 <script>

@@ -1,5 +1,5 @@
 <template>
-    <v-list dark class="brown darken-3">
+    <v-list>
         <template v-for="(Tag,index) in TagsObj.Tags">
             <v-divider v-if="index > 0"/>
             <v-list-tile :key="Tag.id">

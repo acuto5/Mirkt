@@ -1,7 +1,7 @@
 <template>
-    <v-btn-toggle mandatory v-model="order_by" dark class="brown darken-3">
-        <v-btn class="brown darken-3" value="newest">Naujausi</v-btn>
-        <v-btn class="brown darken-3" value="oldest">Seniausi</v-btn>
+    <v-btn-toggle mandatory v-model="order_by" dark>
+        <v-btn value="newest">Naujausi</v-btn>
+        <v-btn value="oldest">Seniausi</v-btn>
     </v-btn-toggle>
 </template>
 <script>

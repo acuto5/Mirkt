@@ -1,59 +1,41 @@
 <template>
-    <v-container grid-list-lg v-if="HomeObj.CategoriesWithSubCategoriesAndArticles">
+    <v-container>
+        <v-layout
+                row
+                wrap
+                :key="catIndex"
+                justify-space-around
+                v-for="(category,catIndex) in HomeObj.CategoriesWithSubCategoriesAndArticles"
+        >
+            <!-- Category->sub-category title-->
+            <v-flex xs12 v-for="(subCategory,subIndex) in category.sub_categories" :key="subIndex">
+                <!-- Breadcrumbs -->
+                <v-divider v-if="!(!catIndex && !subIndex)"/>
+                <v-breadcrumbs class="mx-2">
+                    <v-icon slot="divider">chevron_right</v-icon>
+                    <v-breadcrumbs-item :to="getCategoryRouteParams(category)">
+                        {{ category.name }}
+                    </v-breadcrumbs-item>
+                    <v-breadcrumbs-item :to="getSubCategoryRouteParams(category, subCategory)">
+                        {{ subCategory.name }}
+                    </v-breadcrumbs-item>
+                </v-breadcrumbs>
 
-        <v-layout row wrap v-for="(category,index) in HomeObj.CategoriesWithSubCategoriesAndArticles" :key="index">
-
-            <!-- Category title-->
-            <v-flex d-flex xs12>
-                <h4 class="display-1 deep-purple--text text--lighten-4" v-text="category.name"></h4>
-            </v-flex>
-            <v-flex xs12 v-for="(subCategory,index) in category.sub_categories" :key="index">
-                <v-layout row wrap v-if="isSubCategoryHasArticles(subCategory)">
-                    <v-flex d-flex xs12 sm8 md9>
-                        <v-layout row wrap>
-                            <!-- SubCategory title -->
-                            <v-flex d-flex xs12>
-                                <h6 class="title deep-purple--text text--lighten-2" v-text="subCategory.name"></h6>
-                            </v-flex>
-                            <v-flex d-flex xs12>
-                                <v-layout row wrap>
-                                    <v-flex d-flex xs6 md4 v-for="(article,index) in getArticles(subCategory)"
-                                            :key="index">
-                                        <!-- Article -->
-                                        <v-card :to="getArticleLink(article.id)">
-                                            <v-card-media
-                                                    height="200"
-                                                    :src="getDefaultImageUrl(article.images)"
-                                            />
-                                            <v-card-title primary-title>
-                                                    <h2 class="title" v-text="article.title"></h2>
-                                            </v-card-title>
-                                        </v-card>
-                                    </v-flex>
-                                </v-layout>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
-                    <!-- Ads -->
-                    <v-flex d-flex xs12 sm4 md3>
-                        <v-layout row wrap>
-                            <v-flex d-flex xs12>
-                                <v-card light>
-                                    <v-card-title primary class="title">Reklama</v-card-title>
-                                    <v-card-text
-                                            v-text="lorem">
-                                    </v-card-text>
-                                </v-card>
-                            </v-flex>
-                            <v-flex d-flex xs12 v-if="getArticles(subCategory).length > 3">
-                                <v-card light>
-                                    <v-card-title primary class="title">Reklama</v-card-title>
-                                    <v-card-text
-                                            v-text="lorem">
-                                    </v-card-text>
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
+                <!-- Articles -->
+                <v-layout row wrap>
+                    <v-flex
+                            xs4
+                            pa-2
+                            d-flex
+                            v-for="(article,artIndex) in subCategory.latest_six_published_articles"
+                            :key="artIndex"
+                    >
+                        <article-card
+                                height="250px"
+                                :title="article.title"
+                                :article-id="article.id"
+                                :bg-image-url="getHeaderImage(article.header_image)"
+                        />
                     </v-flex>
                 </v-layout>
             </v-flex>
@@ -61,36 +43,45 @@
     </v-container>
 </template>
 <script>
-	import HomeClass from './Home';
+	import ArticleCard from "../../components/article-card";
+	import HomeClass   from './Home';
 
 	export default {
-		name: 'home',
+		components: { ArticleCard },
+		name      : 'home',
 		data() {
 			return {
 				HomeObj: new HomeClass(),
-				lorem: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam inventore laudantium optio quas quasi\n' +
-				'            voluptatem? Ad animi blanditiis esse, eveniet id, inventore ipsum iure molestias mollitia nisi, repudiandae\n' +
-				'            ut vel?'
 			}
 		},
 		created() {
 			this.HomeObj.getCategoriesWithSubCategoriesAndArticles();
 		},
-		methods: {
-			getArticles(subCategory) {
-				return subCategory.latest_six_published_articles;
+		methods   : {
+			getSubCategoryRouteParams ( category, subCategory ) {
+				return {
+					name  : 'articles.subCategoryArticles',
+					params: {
+						categoryName   : category.name,
+						subCategoryName: subCategory.name,
+					},
+				};
 			},
-			getArticleLink(id) {
-				return {name: 'articles.single', params: {id: id}};
+			getCategoryRouteParams ( category ) {
+				return {
+					name  : 'articles.categoryArticles',
+					params: {
+						categoryName: category.name,
+					},
+				};
 			},
-			getDefaultImageUrl(images) {
-				if (images.length) {
-					return images[0].url;
+			getHeaderImage ( headerImage ) {
+				if (headerImage) {
+					return headerImage.url || '';
 				}
+
+				return '';
 			},
-			isSubCategoryHasArticles(subCategory) {
-				return !!subCategory.latest_six_published_articles.length;
-			}
 		}
 	}
 </script>  

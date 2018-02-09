@@ -13,7 +13,7 @@
                 <v-progress-circular
                         fill
                         indeterminate
-                        color="brown darken-3"
+                        color="teal accent-2"
                         :width="4"
                         :size="50"
                         v-if="TagsObj.isRequestInProgress"

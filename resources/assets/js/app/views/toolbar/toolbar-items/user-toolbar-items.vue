@@ -1,15 +1,15 @@
 <template>
-    <v-toolbar-items>
+    <v-toolbar-items class="ml-2">
         <v-menu offset-y>
             <!-- Icon and user nickname -->
             <v-btn slot="activator" flat>
-                <v-icon left color="blue lighten-4">account_circle</v-icon>
+                <v-icon left color="teal accent-2">account_circle</v-icon>
                 <span >{{User.name}}</span>
                 <v-icon dark>arrow_drop_down</v-icon>
             </v-btn>
 
             <!-- Drop down menu-->
-            <v-list class="brown darken-3" dark>
+            <v-list dark>
 
                 <!-- Edit profile tile  -->
                 <v-list-tile :to="{name: 'user.edit-profile'}" :active-class="activeSubGroupClass">
@@ -33,7 +33,7 @@
                         <v-icon>exit_to_app</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-content>
-                        <v-list-tile-title class="red--text text--lighten-2" v-text="'Atsijungti'"/>
+                        <v-list-tile-title class="red--text text--lighten-1" v-text="'Atsijungti'"/>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
@@ -49,7 +49,7 @@
 				User: window.USER,
 				logoutURL: window.URLS.logout,
 				FlashMessages: window.FlashMessages,
-				activeSubGroupClass: 'brown darken-4 blue--text text--lighten-4'
+				activeSubGroupClass: 'grey darken-2 teal--text text--accent-2'
 			}
 		},
         computed: {

@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="isVisible" max-width="500px" persistent>
-        <v-card dark color="brown darken-4">
+        <v-card dark>
             <v-form @submit.prevent="register()">
                 <v-card-title>
                     <span class="headline">Registracija</span>
@@ -10,29 +10,33 @@
                             required
                             type="text"
                             label="Vardas"
+                            color="teal accent-2"
                             v-model="inputs.name"
                             :error-messages="Errors.name"/>
                     <v-text-field
                             required
                             type="email"
                             label="El. Paštas"
+                            color="teal accent-2"
                             v-model="inputs.email"
                             :error-messages="Errors.email"/>
                     <v-text-field
                             required
                             type="password"
                             label="Slaptažodis"
+                            color="teal accent-2"
                             v-model="inputs.password"
                             :error-messages="Errors.password"/>
                     <v-text-field
                             required
                             type="password"
+                            color="teal accent-2"
                             label="Pakartokite Slaptažodis"
                             v-model="inputs.password_confirmation"
                             :error-messages="Errors.password_confirmation"/>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn rised outline color="blue lighten-4" type="submit">Registruotis</v-btn>
+                    <v-btn rised outline color="teal accent-2" type="submit">Registruotis</v-btn>
                     <v-btn rised outline @click.native="hideMe()">Atgal</v-btn>
                 </v-card-actions>
             </v-form>

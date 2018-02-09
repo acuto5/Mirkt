@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar-items>
+    <v-toolbar-items class="ml-2">
         <!-- Login dialog-->
         <v-btn flat @click.native="isLoginDialogVisible = true">Prisijungti</v-btn>
         <login-form-dialog v-model="isLoginDialogVisible"/>

@@ -1,6 +1,6 @@
 <template>
     <v-form @submit.prevent="pushToQuery()">
-        <v-list dark class="brown darken-3">
+        <v-list>
             <v-list-tile>
                 <!-- Search button -->
                 <v-list-tile-action>
@@ -14,6 +14,7 @@
                             <v-text-field
                                     label="Ieškoti"
                                     v-model="input"
+                                    color="teal accent-2"
                                     :error-messages="TagsObj.UpdateListErrors.tag"
                             />
                         </v-list-tile-content>

@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="isDialogVisible" max-width="400px">
         <!-- Activator button -->
-        <v-btn slot="activator" block color="success">
+        <v-btn outline slot="activator" block color="success">
             <v-icon class="subheading">add</v-icon>
             Pridėti
         </v-btn>
@@ -9,13 +9,14 @@
         <v-card>
             <v-form @submit.prevent="addTag()">
                 <!-- Title -->
-                <v-card-title class="success" v-text="'Pridėti naują žymę'"/>
+                <v-card-title class="title success" v-text="'Pridėti naują žymę'"/>
 
                 <!-- Name -->
                 <v-card-text>
                     <v-text-field
                             label="Pavadinimas"
                             v-model="input"
+                            color="teal accent-2"
                             :error-messages="TagsObj.AddTagErrors.name"
                     />
                 </v-card-text>

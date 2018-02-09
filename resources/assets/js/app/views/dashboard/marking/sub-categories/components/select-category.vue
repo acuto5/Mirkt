@@ -1,5 +1,5 @@
 <template>
-    <v-list dark class="brown darken-3">
+    <v-list dark>
         <v-list-tile>
             <v-list-tile-content>
                 <v-select
@@ -8,6 +8,7 @@
                         label="Kategorija"
                         item-value="id"
                         item-text="name"
+                        color="teal accent-2"
                         v-model="SubCategoriesObj.selectedCategoryID"
                         :items="SubCategoriesObj.categories"
                 />

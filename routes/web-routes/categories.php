@@ -23,3 +23,6 @@ Route::post('/level-down-category', 'CategoriesController@levelDown')->name('lev
 // Get categories and their sub-categories
 Route::get('/get-categories-and-sub-categories', 'CategoriesController@getCategoriesAndSubCategories')
 	->name('getCategoriesAndSubCategories');
+
+// Get category articles
+Route::get('/get-category-articles', 'CategoriesController@getCategoryArticles')->name('getCategoryArticles');

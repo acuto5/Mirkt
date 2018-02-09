@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app dark>
         <toolbar v-model="isDashboardMenuVisible" in-main-layout/>
         <v-content>
             <router-view/>

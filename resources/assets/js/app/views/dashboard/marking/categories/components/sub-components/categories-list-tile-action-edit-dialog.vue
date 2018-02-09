@@ -18,6 +18,7 @@
                         <v-text-field
                                 label="Pavadinimas"
                                 v-model="tempCategory.name"
+                                color="teal accent-2"
                                 :error-messages="CategoriesObj.EditCategoryErrors.name"
                         />
                     </v-card-text>
@@ -26,6 +27,9 @@
                     <v-card-actions>
                         <v-btn type="submit" flat color="warning" :loading="isLoading">
                             Atnaujinti
+                        </v-btn>
+                        <v-btn flat :loading="isLoading" @click="isDialogVisible = false">
+                            Atgal
                         </v-btn>
                     </v-card-actions>
                 </v-form>

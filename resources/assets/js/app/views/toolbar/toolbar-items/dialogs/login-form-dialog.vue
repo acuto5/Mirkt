@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="isVisible" persistent max-width="600px">
         <!-- Dialog content-->
-        <v-card dark color="brown darken-4">
+        <v-card dark>
             <v-form @submit.prevent="login()">
                 <v-card-title>
                 <span class="headline">
@@ -13,21 +13,25 @@
                             required
                             type="email"
                             label="El. Paštas"
+                            color="teal accent-2"
                             v-model="inputs.email"
-                            :error-messages="Errors.email"/>
+                            :error-messages="Errors.email"
+                    />
                     <v-text-field
                             required
                             type="password"
                             label="Slaptažodis"
+                            color="teal accent-2"
                             v-model="inputs.password"
                             :error-messages="Errors.password"/>
                     <v-checkbox
                             label="Prisiminti"
                             input-value="true"
+                            color="teal accent-2"
                             v-model="inputs.remember"/>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn dark rised outline color="blue lighten-4" type="submit">Prisijungti</v-btn>
+                    <v-btn dark rised outline color="teal accent-2" type="submit">Prisijungti</v-btn>
                     <v-btn rised outline @click.native="hideMe()">Atgal</v-btn>
                 </v-card-actions>
             </v-form>

@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="isDialogVisible" max-width="400px">
         <!-- Activator button -->
-        <v-btn slot="activator" block color="success">
+        <v-btn slot="activator" outline block color="success">
             <v-icon class="subheading">add</v-icon>
             Pridėti
         </v-btn>
@@ -16,6 +16,7 @@
                     <v-text-field
                             label="Pavadinimas"
                             v-model="input"
+                            color="teal accent-2"
                             :error-messages="CategoriesObj.AddCategoryErrors.name"
                     />
                 </v-card-text>

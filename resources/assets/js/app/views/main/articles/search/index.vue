@@ -1,19 +1,25 @@
 <template>
     <v-container>
         <v-layout row wrap justify-space-around>
-            <v-flex d-flex xs10>
+            <v-flex d-flex xs12 ma-2>
                 <simple-search-form input-name="title" :error-messages="Errors.title"/>
             </v-flex>
-            <v-flex xs10 class="text-xs-center">
-                <v-list v-if="!isSearchInProgress">
-                    <v-list-tile-title v-for="(article,index) in Articles" :key="index">
-                        <v-list-tile-title>{{article.title}}</v-list-tile-title>
-                    </v-list-tile-title>
-                </v-list>
-                <v-progress-circular fill indeterminate color="brown darken-3" :width="4" :size="50" v-else/>
+            <v-flex xs12 v-show="!isSearchInProgress">
+                <v-layout row wrap>
+                    <v-flex d-flex xs4 pa-2 v-for="(article,index) in Articles" :key="index">
+                        <article-card
+                                height="250px"
+                                :title="article.title"
+                                :article-id="article.id"
+                                :bg-image-url="getHeaderImageUrl(article.header_image)"
+                        />
+                    </v-flex>
+                </v-layout>
             </v-flex>
-            <!--<v-flex xs10></v-flex>-->
-            <v-flex d-flex xs10>
+            <v-flex xs12 v-if="isSearchInProgress" class="text-xs-center">
+                <v-progress-circular fill indeterminate color="teal accent-2" :width="4" :size="50" />
+            </v-flex>
+            <v-flex xs10 class="text-xs-center">
                 <pagination-with-page-query
                         :last-page="lastPage"
                         :on-query-change="searchArticles"
@@ -26,6 +32,7 @@
 </template>
 
 <script>
+	import ArticleCard             from "../../../components/article-card";
 	import ErrorCaptionList        from "../../../components/error-caption-list";
 	import PaginationWithPageQuery from "../../../components/pagination-with-page-query";
 	import SimpleSearchForm        from "../../../components/simple-search-form";
@@ -36,6 +43,7 @@
 
 	export default {
 		components: {
+			ArticleCard,
 			ErrorCaptionList,
 			SimpleSearchForm,
 			PaginationWithPageQuery,
@@ -83,6 +91,13 @@
 
 				this.isSearchInProgress = false;
 			},
+			getHeaderImageUrl(headerImage){
+				if(headerImage){
+					return headerImage.url || '';
+				}
+
+				return '';
+			}
 		}
 	}
 </script>

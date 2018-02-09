@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Requests\SubCategories\DeleteRequest;
 use App\Http\Requests\SubCategories\EditRequest;
+use App\Http\Requests\SubCategories\GetArticlesBySubCategoryNameRequest;
 use App\Http\Requests\SubCategories\GetRequest;
 use App\Http\Requests\SubCategories\LevelDownRequest;
 use App\Http\Requests\SubCategories\LevelUpRequest;
@@ -13,6 +14,8 @@ use App\SubCategory;
 
 class SubCategoryController extends Controller
 {
+	const ARTICLES_PER_PAGE = 12;
+	
 	/**
 	 * @param \App\Http\Requests\SubCategories\GetRequest $request
 	 *
@@ -23,6 +26,15 @@ class SubCategoryController extends Controller
 		$subCategories = Category::find($request->id)->subCategories;
 		
 		return response()->json($subCategories);
+	}
+	
+	public function getArticlesBySubCategoryName(GetArticlesBySubCategoryNameRequest $request)
+	{
+		$sub_category = SubCategory::where('name', $request->sub_category_name)->first();
+		
+		$articles = $sub_category->articles()->with('headerImage')->orderBy('created_at', 'desc')->paginate(self::ARTICLES_PER_PAGE);
+		
+		return response()->json($articles);
 	}
 	
 	/**

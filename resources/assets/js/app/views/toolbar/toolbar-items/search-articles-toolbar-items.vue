@@ -11,6 +11,7 @@
                     v-model="input"
                     prepend-icon="search"
                     :prepend-icon-cb="searchArticles"
+                    color="teal accent-2"
             />
         </v-toolbar-items>
     </v-form>

@@ -1,8 +1,8 @@
 <template>
-    <v-toolbar dark color="brown darken-4" app dense fixed clipped-left>
+    <v-toolbar dark color="" app dense fixed clipped-left>
         <v-toolbar-side-icon v-if="inMainLayout" @click.native="toggleDashboardMenu()"/>
         <v-toolbar-title>
-            <router-link :to="{name: 'home'}" class="blue--text text--lighten-4" style="text-decoration: none;">Mirkt
+            <router-link :to="{name: 'home'}" class="teal--text text--accent-2" style="text-decoration: none;">Mirkt
             </router-link>
         </v-toolbar-title>
 

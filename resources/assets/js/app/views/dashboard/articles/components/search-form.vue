@@ -1,6 +1,6 @@
 <template>
     <v-form @submit.prevent="search()">
-        <v-list dark class="brown darken-3">
+        <v-list dark>
             <v-list-tile>
                 <v-list-tile-action>
                     <v-btn icon large type="submit">
@@ -13,6 +13,7 @@
                             <v-text-field
                                     v-model="searchInputs.title"
                                     label="Paieška"
+                                    color="teal accent-2"
                                     :error-messages="titleErrors"
                             />
                         </v-list-tile-content>
@@ -26,6 +27,7 @@
                                     item-text="name"
                                     item-value="id"
                                     label="Sub-kategorija"
+                                    color="teal accent-2"
                                     :items="selectItems"
                                     :error-messages="subCategoryErrors"
                             />

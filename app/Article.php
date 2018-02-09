@@ -15,8 +15,7 @@ class Article extends Model
 	
 	protected $visible = [
 		'id', 'title', 'content', 'is_draft', 'headerImage', 'sub_category_id', 'subCategory', 'author', 'created_at',
-		'tags',
-		'images',
+		'tags', 'images',
 	];
 	
 	protected $fillable = ['title', 'content', 'sub_category_id', 'user_id'];
@@ -25,6 +24,11 @@ class Article extends Model
 	public function searchableAs()
 	{
 		return 'title';
+	}
+	
+	public function toSearchableArray()
+	{
+		return $this->only('title', 'content');
 	}
 	
 	public function storeImages(Request $request, $nameOfImagesArray)
