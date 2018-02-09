@@ -32,7 +32,7 @@ class SubCategoryController extends Controller
 	{
 		$sub_category = SubCategory::where('name', $request->sub_category_name)->first();
 		
-		$articles = $sub_category->articles()->with('headerImage')->orderBy('created_at', 'desc')->paginate(self::ARTICLES_PER_PAGE);
+		$articles = $sub_category->articles()->where('is_draft', 0)->with('headerImage')->orderBy('created_at', 'desc')->paginate(self::ARTICLES_PER_PAGE);
 		
 		return response()->json($articles);
 	}
