@@ -200,7 +200,6 @@ class ArticleController extends Controller
 		
 		// If user choose orderBy, by oldest articles
 		$this->sortByArticlesDates($articles, 'created_at', $request->order_by);
-		
 		// Filter, witch columns will be visible
 		$this->hideColumns($articles, ['content', 'sub_category_id', 'is_draft']);
 		

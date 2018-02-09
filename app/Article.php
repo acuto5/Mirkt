@@ -21,15 +21,7 @@ class Article extends Model
 	protected $fillable = ['title', 'content', 'sub_category_id', 'user_id'];
 	
 	// Search settings
-	public function searchableAs()
-	{
-		return 'title';
-	}
 	
-	public function toSearchableArray()
-	{
-		return $this->only('title', 'content');
-	}
 	
 	public function storeImages(Request $request, $nameOfImagesArray)
 	{
