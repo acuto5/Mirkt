@@ -30120,11 +30120,27 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
+      !_vm.inDashboardLayout || _vm.$vuetify.breakpoint.smAndUp
+        ? _c(
+            "v-toolbar-title",
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "teal--text text--accent-2",
+                  staticStyle: { "text-decoration": "none" },
+                  attrs: { to: { name: "home" } }
+                },
+                [_vm._v("Mirkt\n        ")]
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c("links-toolbar-items"),
       _vm._v(" "),
       _c("v-spacer"),
-      _vm._v(" "),
-      _c("search-articles-toolbar-items"),
       _vm._v(" "),
       _vm.User.id ? _c("user-toolbar-items") : _c("guest-toolbar-items")
     ],

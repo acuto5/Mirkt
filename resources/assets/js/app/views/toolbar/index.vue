@@ -4,15 +4,15 @@
             <v-icon>dashboard</v-icon>
         </v-btn>
 
-        <!--<v-toolbar-title v-if="!inDashboardLayout || $vuetify.breakpoint.smAndUp">-->
-            <!--&lt;!&ndash; Show app name on md and up&ndash;&gt;-->
-            <!--<router-link-->
-                    <!--:to="{name: 'home'}"-->
-                    <!--class="teal&#45;&#45;text text&#45;&#45;accent-2"-->
-                    <!--style="text-decoration: none;"-->
-            <!--&gt;Mirkt-->
-            <!--</router-link>-->
-        <!--</v-toolbar-title>-->
+        <v-toolbar-title v-if="!inDashboardLayout || $vuetify.breakpoint.smAndUp">
+            <!-- Show app name on md and up-->
+            <router-link
+                    :to="{name: 'home'}"
+                    class="teal--text text--accent-2"
+                    style="text-decoration: none;"
+            >Mirkt
+            </router-link>
+        </v-toolbar-title>
 
         <!-- Links -->
         <links-toolbar-items/>
@@ -20,7 +20,7 @@
         <v-spacer/>
 
         <!-- Search articles -->
-        <search-articles-toolbar-items/>
+        <!--<search-articles-toolbar-items/>-->
 
         <!-- If user is logged in -->
         <user-toolbar-items v-if="User.id"/>
