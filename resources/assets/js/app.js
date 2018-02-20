@@ -4,7 +4,4 @@ import Messages from "./app/flash-messages";
 const app = new Vue({
     el:'#app',
 	router: router,
-	data: {
-		messages: new Messages()
-	}
 });

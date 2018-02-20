@@ -32,15 +32,15 @@
             </v-flex>
 
             <!-- Content -->
-            <v-flex xs12 sm10>
-                <v-text-field
-                        :rows="15"
-                        textarea
-                        label="Straipsnis"
-                        color="teal accent-2"
-                        v-model="NewArticleObj.NewArticleInputs.content"
-                        :error-messages="NewArticleObj.Errors.content"
+            <v-flex xs12 sm10 mb-2>
+                <vue2-medium-editor
+                        :class="isContentHasErrors"
+                        class="text-editor pa-2"
+                        :text="NewArticleObj.NewArticleInputs.content"
+                        :options="editorOptions"
+                        @edit="contentChange"
                 />
+                <error-caption-list :error-messages="NewArticleObj.Errors.content"/>
             </v-flex>
 
             <!-- Tags -->
@@ -92,23 +92,70 @@
     </v-container>
 </template>
 <script>
-	import NewArticleClass from './NewArticle';
+    import vue2MediumEditor from 'vue2-medium-editor';
+	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import NewArticleClass  from './NewArticle';
 	import ImagesInputPanel from "../../components/images-input-panel";
 
 	export default {
 		components: {
-			ImagesInputPanel,
-		},
+			ErrorCaptionList,
+			vue2MediumEditor,
+			ImagesInputPanel },
 		data() {
 			return {
 				searchTagInput: '',
-				NewArticleObj: new NewArticleClass()
+				NewArticleObj: new NewArticleClass(),
+				editorOptions : {
+					toolbar: {
+						buttons: [
+							'bold',
+							'italic',
+							'underline',
+							'strikethrough',
+							'subscript',
+							'superscript',
+							'image',
+							'outdent',
+							'indent',
+							'justifyLeft',
+							'justifyCenter',
+							'justifyRight',
+							'justifyFull',
+							'h1',
+							'h2',
+							'h3',
+							'h4',
+							'h5',
+							'h6',
+							'html',
+							'removeFormat'
+						],
+					},
+				},
 			}
 		},
+        computed: {
+			isContentHasErrors(){
+				return {'red-border': !!this.NewArticleObj.Errors.content.length};
+            }
+        },
 		created() {
 			this.NewArticleObj.getTags();
 			this.NewArticleObj.setRouterObj(this.$router);
 			this.NewArticleObj.getSubCategoriesForSelectInput();
-		}
+		},
+        methods: {
+			contentChange(obj){
+				this.NewArticleObj.NewArticleInputs.content = obj.api.elements[0].innerHTML;
+            }
+        }
 	}
-</script>  
+</script>
+
+<style scoped>
+    .red-border, .red-border:hover, .red-border:focus{
+        border-color: #ff5252;
+        outline-color: #ff5252 !important;
+    }
+</style>

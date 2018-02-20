@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Purifier;
 
 class ArticleController extends Controller
 {
@@ -33,9 +34,9 @@ class ArticleController extends Controller
 	 */
 	public function getArticle(GetArticleRequest $request)
 	{
-		$article = Article::select(['id', 'title', 'content', 'user_id', 'sub_category_id', 'created_at', 'updated_at'])
+		$article = Article::select(['id', 'title', 'content', 'user_id', 'is_draft', 'sub_category_id', 'created_at', 'updated_at'])
 			->where('id', $request->id)
-			->with(['author:id,name', 'tags', 'images', 'subCategory' => function($query){
+			->with(['author:id,name', 'headerImage', 'tags', 'images', 'subCategory' => function($query){
 				$query->select('id', 'name', 'category_id')->with('category:id,name');
 			}])
 			->first();
@@ -96,7 +97,7 @@ class ArticleController extends Controller
 	public function store(StoreArticleRequest $request)
 	{
 		// Article will be associated with user
-		$request->merge(['user_id' => Auth::id()]);
+		$request->merge(['user_id' => Auth::id(), 'content' => clean($request->get('content'))]);
 		
 		// Create new Article
 		$article = new Article($request->all());
@@ -125,6 +126,8 @@ class ArticleController extends Controller
 	{
 		// Find article
 		$article = Article::find($request->id);
+		
+		$request->merge(['content' => clean($request->get('content'))]);
 		
 		// update fillable fields
 		$article->update($request->all());

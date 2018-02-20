@@ -1,5 +1,8 @@
 <template>
-    <v-pagination :length="length" v-model="currentPage"/>
+    <div class="text-xs-center">
+        <v-pagination v-show="length > 1" :length="length" v-model="currentPage"/>
+
+    </div>
 </template>
 
 <script>

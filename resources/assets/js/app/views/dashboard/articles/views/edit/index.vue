@@ -1,6 +1,7 @@
+<!--suppress ALL -->
 <template>
     <v-container fluid>
-        <v-layout row wrap justify-space-around v-show="EditArticleObj.EditArticleInputs.title">
+        <v-layout row wrap justify-space-around v-show="!EditArticleObj.isRequestInProgress">
             <v-flex xs12 sm10 lg8 class="text-xs-center">
                 <p class="title">Redaguoti straipsnį</p>
             </v-flex>
@@ -32,15 +33,15 @@
             </v-flex>
 
             <!-- Content -->
-            <v-flex xs12 sm10>
-                <v-text-field
-                        :rows="15"
-                        textarea
-                        label="Straipsnis"
-                        color="teal accent-2"
-                        v-model="EditArticleObj.EditArticleInputs.content"
-                        :error-messages="EditArticleObj.Errors.content"
+            <v-flex xs12 sm10 mb-2>
+                <vue2-medium-editor
+                        :class="isContentHasErrors"
+                        class="text-editor pa-2"
+                        :text="EditArticleObj.EditArticleInputs.content"
+                        :options="editorOptions"
+                        @edit="contentChange"
                 />
+                <error-caption-list :error-messages="EditArticleObj.Errors.content"/>
             </v-flex>
 
             <!-- Tags -->
@@ -83,32 +84,79 @@
                 </v-btn>
             </v-flex>
         </v-layout>
-        <v-layout row wrap justify-space-around v-if="!EditArticleObj.EditArticleInputs.title">
-            <v-flex d-flex xs12 class="text-xs-center">
-                <v-progress-circular fill indeterminate color="teal accent-2" :width="4" :size="50"/>
-            </v-flex>
-        </v-layout>
+
+        <progress-circular v-if="EditArticleObj.isRequestInProgress"/>
     </v-container>
 </template>
 <script>
-	import EditArticleClass from './EditArticle';
+	import vue2MediumEditor from 'vue2-medium-editor';
+
+	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import ProgressCircular from "../../../../components/progress-circular";
 	import ImagesInputPanel from "../../components/images-input-panel";
+	import EditArticleClass from './EditArticle';
 
 	export default {
 		components: {
+			vue2MediumEditor,
+			ErrorCaptionList,
+			ProgressCircular,
 			ImagesInputPanel,
 		},
 		data() {
 			return {
-				EditArticleObj: new EditArticleClass()
+				EditArticleObj: new EditArticleClass(),
+				editorOptions : {
+					toolbar: {
+						buttons: [
+							'bold',
+							'italic',
+							'underline',
+							'strikethrough',
+							'subscript',
+							'superscript',
+							'image',
+                            'outdent',
+                            'indent',
+                            'justifyLeft',
+                            'justifyCenter',
+                            'justifyRight',
+                            'justifyFull',
+                            'h1',
+                            'h2',
+                            'h3',
+                            'h4',
+                            'h5',
+                            'h6',
+                            'html',
+                            'removeFormat'
+						],
+					},
+				},
+			}
+		},
+		computed: {
+			isContentHasErrors(){
+				return {'red-border': !!this.EditArticleObj.Errors.content.length};
 			}
 		},
 		created() {
-			this.router = this.$router;
 			this.EditArticleObj.setRouterObj(this.$router);
 			this.EditArticleObj.getArticle(this.$route.params.id);
 			this.EditArticleObj.getTags();
 			this.EditArticleObj.getSubCategoriesForSelectInput();
-		}
+		},
+		methods   : {
+			contentChange ( obj ) {
+				this.EditArticleObj.EditArticleInputs.content = obj.api.elements[ 0 ].innerHTML;
+			},
+		},
 	}
-</script>  
+</script>
+
+<style scoped>
+    .red-border, .red-border:hover, .red-border:focus{
+        border-color: #ff5252;
+        outline-color: #ff5252 !important;
+    }
+</style>

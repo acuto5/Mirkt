@@ -1,5 +1,5 @@
 <template>
-    <v-list dark>
+    <v-list v-show="SubCategoriesObj.selectedCategoryID > 0">
         <template v-for="(SubCategory,index) in SubCategoriesObj.subCategories">
             <v-divider v-if="parseInt(index) > 0"/>
             <v-list-tile @click="" :key="SubCategory.id">

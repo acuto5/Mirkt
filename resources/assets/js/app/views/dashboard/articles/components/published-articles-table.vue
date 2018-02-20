@@ -16,9 +16,7 @@
                 />
 
                 <!-- Edit article -->
-                <tile-action-edit-article-link-button
-                        :id="article.id"
-                />
+                <tile-action-edit-article-link-button :id="article.id" :articles-obj="PublishedArticlesObj" />
 
                 <!-- Mark article as draft -->
                 <tile-action-mark-article-as-draft-button
@@ -33,8 +31,8 @@
 
 	import TileActionEditArticleLinkButton from "./sub-components/tile-action-edit-article-link-button";
 	import TileActionMarkArticleAsDraftButton from "./sub-components/tile-action-mark-article-as-draft-button";
-	import TileContentTitleAndCreationDate from "./sub-components/tile-content-title-and-creatiion-date";
 	import TileAvatarDefaultArticleImage from "./sub-components/tile-avatar-default-article-image";
+	import TileContentTitleAndCreationDate from "./sub-components/tile-content-title-and-creatiion-date";
 
 	export default {
 		components: {

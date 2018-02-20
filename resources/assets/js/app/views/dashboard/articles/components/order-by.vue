@@ -8,14 +8,14 @@
 	export default {
 		data() {
 			return {
-				order_by: (this.$route.query.order_by === 'oldest') ? 'oldest' : 'newest'
+				order_by: this.order_by = (this.$route.query.order_by === 'oldest') ? 'oldest' : 'newest'
 			}
 		},
 		watch: {
 			order_by: function (newValue) {
 				let $_query = Object.assign({}, this.$route.query);
 
-				$_query['order_by'] = newValue;
+				$_query.order_by = newValue;
 
 				this.$router.push({query: $_query});
 			}

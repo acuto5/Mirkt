@@ -12,5 +12,5 @@ routes = routes.concat([{path: '*', redirect: {name: 'home'}}]);
 export default new VueRouter({
 	routes: routes,
 	mode: 'history',
-	linkActiveClass: 'is-active'
+	linkActiveClass: 'is-active',
 });

@@ -6,6 +6,11 @@ class Errors {
 		for (let field in data) {
 			this[field] = data[field];
 		}
+
+		if(!this.original.message){
+			this.message = '';
+			this.original.message = this.message;
+		}
 	}
 
 	/**
@@ -18,11 +23,11 @@ class Errors {
 		this.add(errors);
 	};
 
-	setLarevelErrors(error){
+	setLarevelErrors(error, flashErrorMessage = true){
 		this.clear();
 		console.error(error);
 		this.add(error.response.data.errors);
-		this.add({message: error.response.data.message});
+		this.setErrorMessage(error.response.data.message, flashErrorMessage);
 	}
 
 	/**
@@ -35,6 +40,16 @@ class Errors {
 			this[field] = errors[field];
 		}
 	};
+
+	setErrorMessage(message, flashErrorMessage){
+		if(message.length){
+			this.message = message;
+
+			if(flashErrorMessage){
+				window.FlashMessages.setError(this.message);
+			}
+		}
+	}
 
 	/**
 	 * Remove all errors

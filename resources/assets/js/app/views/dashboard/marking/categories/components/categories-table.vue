@@ -1,27 +1,32 @@
 <template>
-    <v-list dark>
+    <v-list>
         <template v-for="(Category, index) in CategoriesObj.Categories">
             <v-divider v-if="index >=1"/>
             <v-list-tile :key="Category.id">
 
                 <!-- Category title -->
-                <v-list-tile-title
-                        v-text="Category.name"
-                />
+                <v-list-tile-content>
+                    <v-list-tile-title
+                            v-text="Category.name"
+                    />
+                </v-list-tile-content>
 
                 <!-- Edit category dialog -->
-                <categories-list-tile-action-edit-dialog
-                        :category="Category"
-                        :categories-obj="CategoriesObj"
-                />
+                <v-list-tile-action>
+                    <categories-list-tile-action-edit-dialog
+                            :category="Category"
+                            :categories-obj="CategoriesObj"
+                    />
+                </v-list-tile-action>
 
                 <!-- Delete category dialog -->
-                <categories-list-tile-action-deletion-dialog
-                        :id="Category.id"
-                        :category-name="Category.name"
-                        :categories-obj="CategoriesObj"
-                />
-
+                <v-list-tile-action>
+                    <categories-list-tile-action-deletion-dialog
+                            :id="Category.id"
+                            :category-name="Category.name"
+                            :categories-obj="CategoriesObj"
+                    />
+                </v-list-tile-action>
             </v-list-tile>
         </template>
     </v-list>
@@ -53,7 +58,7 @@
 </template>
 <script>
 	import CategoriesListTileActionDeletionDialog from "./sub-components/categories-list-tile-action-deletion-dialog";
-	import CategoriesListTileActionEditDialog from "./sub-components/categories-list-tile-action-edit-dialog";
+	import CategoriesListTileActionEditDialog     from "./sub-components/categories-list-tile-action-edit-dialog";
 
 	export default{
 		components: {

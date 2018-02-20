@@ -2,6 +2,7 @@
     <v-app dark>
         <toolbar/>
         <v-content>
+            <flash-messages/>
             <router-view />
         </v-content>
         <main-footer/>
@@ -9,11 +10,16 @@
 </template>
 
 <script>
-	import MainFooter from "./footer";
 	import Toolbar from "../../toolbar/index";
+	import FlashMessages from "../components/flash-messages";
+	import MainFooter from "./footer";
 
 	export default {
-		components: {Toolbar, MainFooter},
-		name: "layout"
+		components: {
+			FlashMessages,
+			Toolbar,
+			MainFooter,
+		},
+		name      : "layout",
 	}
 </script>

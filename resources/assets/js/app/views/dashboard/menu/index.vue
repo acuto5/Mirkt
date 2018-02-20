@@ -2,21 +2,18 @@
     <v-navigation-drawer fixed temporary clipped app width="250" dark v-model="tempValue">
         <v-list subheader>
             <v-list-group v-for="(group, index) in groups" :value="isGroupActive(index)" :key="group.title">
-                <v-list-tile slot="item" @click="" ripple="">
+                <v-list-tile slot="activator">
                     <v-list-tile-action>
                         <v-icon v-text="group.icon"/>
                     </v-list-tile-action>
                     <v-list-tile-content>
                         <v-list-tile-title v-text="group.title"/>
                     </v-list-tile-content>
-                    <v-list-tile-action>
-                        <v-icon>keyboard_arrow_down</v-icon>
-                    </v-list-tile-action>
                 </v-list-tile>
-                <v-list-tile dark v-for="subGroup in group.subGroups" :to="subGroup.to"
-                             :active-class="activeSubGroupClass" :key="subGroup.title" @click="" ripple>
+                <v-list-tile v-for="subGroup in group.subGroups" :to="subGroup.to"
+                             :active-class="activeSubGroupClass" :key="subGroup.title" ripple>
                     <v-list-tile-action>
-                        <v-icon v-text="subGroup.icon"/>
+                        <!--<v-icon v-text="subGroup.icon"/>-->
                     </v-list-tile-action>
                     <v-list-tile-content>
                         <v-list-tile-title v-text="subGroup.title"/>

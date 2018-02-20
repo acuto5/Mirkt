@@ -44,17 +44,13 @@
             }
         },
         methods: {
-			async deleteTag(){
+			async deleteTag () {
 				this.isLoading = true;
 
-				this.isDialogVisible = ! await this.TagsObj.deleteTag(this.tag);
-
-				if(!this.isDialogVisible){
-
-                }
+				this.isDialogVisible = !await this.TagsObj.deleteTag( this.tag );
 
 				this.isLoading = false;
-            }
-        }
+			}
+		}
 	}
 </script>  

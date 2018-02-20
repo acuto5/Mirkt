@@ -5,33 +5,49 @@
                 wrap
                 :key="catIndex"
                 justify-space-around
+                v-show="!HomeObj.isRequestInProgress"
                 v-for="(category,catIndex) in HomeObj.CategoriesWithSubCategoriesAndArticles"
         >
             <!-- Category->sub-category title-->
             <v-flex xs12 v-for="(subCategory,subIndex) in category.sub_categories" :key="subIndex">
+
                 <!-- Breadcrumbs -->
-                <v-divider v-if="!(!catIndex && !subIndex)"/>
-                <v-breadcrumbs class="mx-2">
-                    <v-icon slot="divider">chevron_right</v-icon>
-                    <v-breadcrumbs-item :to="getCategoryRouteParams(category)">
+                <div v-if="subCategory.latest_six_published_articles.length" class="ma-2">
+
+                    <!-- Divider -->
+                    <v-divider v-if="!(!catIndex && !subIndex)" class="mb-2"/>
+
+                    <!-- Category -->
+                    <router-link
+                            :to="getCategoryRouteParams(category)"
+                            class="router-link teal--text text--accent-2"
+                    >
                         {{ category.name }}
-                    </v-breadcrumbs-item>
-                    <v-breadcrumbs-item :to="getSubCategoryRouteParams(category, subCategory)">
+                    </router-link>
+
+                    <!-- Right chevron -->
+                    <v-icon class="subheading">chevron_right</v-icon>
+
+                    <!-- Sub-category -->
+                    <router-link
+                            :to="getSubCategoryRouteParams(category, subCategory)"
+                            class="router-link white--text "
+                    >
                         {{ subCategory.name }}
-                    </v-breadcrumbs-item>
-                </v-breadcrumbs>
+                    </router-link>
+                </div>
+
 
                 <!-- Articles -->
                 <v-layout row wrap>
                     <v-flex
-                            xs4
                             pa-2
-                            d-flex
+                            xs6 sm4 lg3
                             v-for="(article,artIndex) in subCategory.latest_six_published_articles"
                             :key="artIndex"
                     >
                         <article-card
-                                height="250px"
+                                :xs-height="100"
                                 :title="article.title"
                                 :article-id="article.id"
                                 :bg-image-url="getHeaderImage(article.header_image)"
@@ -40,14 +56,21 @@
                 </v-layout>
             </v-flex>
         </v-layout>
+
+        <!-- Progress circular -->
+        <progress-circular v-if="HomeObj.isRequestInProgress"/>
     </v-container>
 </template>
 <script>
-	import ArticleCard from "../../components/article-card";
-	import HomeClass   from './Home';
+	import ArticleCard      from "../../components/article-card";
+	import ProgressCircular from "../../components/progress-circular";
+	import HomeClass        from './Home';
 
 	export default {
-		components: { ArticleCard },
+		components: {
+			ProgressCircular,
+			ArticleCard,
+		},
 		name      : 'home',
 		data() {
 			return {
@@ -84,4 +107,4 @@
 			},
 		}
 	}
-</script>  
+</script>

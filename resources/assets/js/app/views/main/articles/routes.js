@@ -1,6 +1,6 @@
-import SingleArticle from './single/index';
-import SearchArticles from  './search/index';
-import CategoryArticles from './category/index';
+import CategoryArticles    from './category/index';
+import SearchArticles      from './search/index';
+import SingleArticle       from './single/index';
 import SubCategoryArticles from './sub-category/index';
 
 export default [
@@ -10,7 +10,12 @@ export default [
 		component: {template: '<router-view/>'},
 		children: [
 			{
-				name: 'articles.single', path: 'single/:id', component: SingleArticle
+				name     : 'articles.single',
+				path     : 'single/:id',
+				component: SingleArticle,
+				meta     : {
+					parentName: 'dashboard.articles',
+				},
 			},
 			{
 				name: 'articles.search', path: 'search', component: SearchArticles

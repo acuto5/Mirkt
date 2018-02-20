@@ -23,7 +23,7 @@
                 </v-list-tile>
 
                 <!-- Dashboard tile -->
-                <v-list-tile v-if="isIAmGod" :to="{name:'dashboard.articles.all'}" :active-class="activeSubGroupClass">
+                <v-list-tile v-if="IAmGod" :to="{name:'dashboard.articles.all'}" :active-class="activeSubGroupClass">
                     <v-list-tile-action>
                         <v-icon>dashboard</v-icon>
                     </v-list-tile-action>
@@ -56,8 +56,8 @@
 			}
 		},
         computed: {
-			isIAmGod(){
-				return (!!this.User.is_admin || !!this.User.is_moderator);
+			IAmGod(){
+				return this.User.is_admin || this.User.is_moderator;
             }
         },
 		methods: {

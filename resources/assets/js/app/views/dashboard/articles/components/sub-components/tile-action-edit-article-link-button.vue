@@ -7,6 +7,7 @@
                 color="grey lighten-1"
                 title="Redaguoti"
                 :to="getRouterLinkParamsToEditArticle"
+                :loading="ArticlesObj.isButtonsLoadingStyle"
         >
             <v-icon color="warning">edit</v-icon>
         </v-btn>
@@ -19,6 +20,10 @@
         props: {
 			id: {
 				type: Number,
+                required: true
+            },
+			ArticlesObj: {
+				type: Object,
                 required: true
             }
         },

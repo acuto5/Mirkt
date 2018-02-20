@@ -1,8 +1,3 @@
-function takeTags(Params) {
-	const url = window.URLS.takeTags;
-
-	return axios.get(url, {params: Params});
-}
 function getAllTagsPromise() {
 	const url = window.URLS.getAllTags;
 
@@ -19,22 +14,18 @@ const $_editTagURL = Symbol();
 const $_getTagsURL = Symbol();
 const $_deleteTagURL = Symbol();
 
-// Errors
-const $_FlashMessages = Symbol();
-
 //--------------------
 // List
 //--------------------
-const $_successUpdateList = function (response) {
+const $_successGetTags = function (response) {
 	this.Tags = response.data.data;
 	this.lastPage = response.data.last_page;
 
 	this.isRequestInProgress = false;
 };
 
-const $_errorUpdateList = function (error) {
+const $_errorGetTags = function (error) {
 	this.UpdateListErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 
 	this.isRequestInProgress = false;
 };
@@ -43,15 +34,14 @@ const $_errorUpdateList = function (error) {
 // Add tag
 //-------------------
 const $_successAddTag = function () {
-	$_clearSearchInputs.call(this);
-	this[$_FlashMessages].setSuccess('Pridėta.');
+	this.getTags('', 1);
+	window.FlashMessages.setSuccess('Pridėta.');
 
 	return true;
 };
 
 const $_errorAddTag = function (error) {
 	this.AddTagErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 
 	return false;
 };
@@ -64,7 +54,7 @@ const $_successEditTag = function (EditedTag) {
 		return (Tag.id === EditedTag.id) ? EditedTag : Tag;
 	});
 
-	this[$_FlashMessages].setSuccess('Atnaujinta.');
+	window.FlashMessages.setSuccess('Atnaujinta.');
 
 	return true;
 };
@@ -79,8 +69,8 @@ const $_errorEditTag = function (error) {
 // Delete tag
 //-------------------
 const $_successDeletion = function () {
-	$_clearSearchInputs.call(this);
-	this[$_FlashMessages].setMessage('warning', 'Ištrinta.');
+	this.getTags('', 1);
+	window.FlashMessages.setWarning('Ištrinta.');
 
 	return true;
 };
@@ -99,7 +89,6 @@ const $_clearErrors = function () {
 	this.AddTagErrors.clear();
 	this.DeleteTagErrors.clear();
 	this.UpdateListErrors.clear();
-	this[$_FlashMessages].clear();
 };
 
 class Tags {
@@ -117,9 +106,6 @@ class Tags {
 		this[$_editTagURL] = window.URLS.editTag;
 		this[$_getTagsURL] = window.URLS.getTags;
 		this[$_deleteTagURL] = window.URLS.deleteTag;
-
-		// FlashMessages
-		this[$_FlashMessages] = window.FlashMessages;
 
 		// Errors
 		this.AddTagErrors = new window.Errors({name: []});
@@ -166,16 +152,16 @@ class Tags {
 	//--------------------
 	// List
 	//--------------------
-	updateList(searchKey = null, page = 1) {
+	getTags(searchKey = null, page = 1) {
 		this.isRequestInProgress = true;
 
 		$_clearErrors.call(this);
 
 		axios.get(this[$_getTagsURL], {params: {page: page, tag: searchKey}})
-			.then(response => $_successUpdateList.call(this, response))
-			.catch(error => $_errorUpdateList.call(this, error));
+			.then(response => $_successGetTags.call(this, response))
+			.catch(error => $_errorGetTags.call(this, error));
 	}
 }
 
-export {takeTags, getAllTagsPromise};
+export {getAllTagsPromise};
 export default Tags;

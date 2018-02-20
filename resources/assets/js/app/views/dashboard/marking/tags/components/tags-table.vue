@@ -1,5 +1,5 @@
 <template>
-    <v-list>
+    <v-list v-show="TagsObj.Tags.length > 0">
         <template v-for="(Tag,index) in TagsObj.Tags">
             <v-divider v-if="index > 0"/>
             <v-list-tile :key="Tag.id">
@@ -21,21 +21,6 @@
             </v-list-tile>
         </template>
     </v-list>
-    <!--<div>-->
-    <!--<help-list type="danger" :messages="TagsObj.UpdateListErrors.page"></help-list>-->
-
-        <!--<article class="message is-primary" v-for="tag in TagsObj.tags" :key="tag.id">-->
-            <!--<div class="message-body">-->
-                <!--<div class="is-pulled-right">-->
-                    <!--<icon iconClass="fa-edit" class="button has-text-warning" title="Redaguoti"-->
-                          <!--@click.native="TagsObj.showEditModal(tag)"></icon>-->
-                    <!--<icon iconClass="fa-trash" class="button has-text-danger" title="Trinti"-->
-                          <!--@click.native="TagsObj.showDeletionModal(tag)"></icon>-->
-                <!--</div>-->
-                <!--<p v-text="tag.name"></p>-->
-            <!--</div>-->
-        <!--</article>-->
-    <!--</div>-->
 </template>
 <script>
 

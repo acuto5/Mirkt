@@ -1,91 +1,224 @@
 <template>
-    <v-container fluid grid-list-md >
-        <v-layout row wrap>
-            <v-flex d-flex xs12 mt-2>
-                <v-layout row wrap >
-                    <v-flex  xs12 sm12 md9 >
-                        <v-layout row wrap>
-                            <v-flex d-flex xs12 hidden-md-and-up>
-                                <h4 class="display-1"  v-text="SingleArticleObj.Article.title"></h4>
-                            </v-flex>
-                            <v-flex d-flex xs12>
-                                <v-card>
-                                    <v-card-media>
-                                        <v-carousel v-if="SingleArticleObj.Article.images.length" :hide-controls="SingleArticleObj.Article.images.length <= 1" hide-delimiters>
-                                            <v-carousel-item v-for="(image,i) in SingleArticleObj.Article.images" :src="image.url" :key="i" >
-                                            </v-carousel-item>
-                                        </v-carousel>
-                                        <span class="headline pa-2 white--text carousel-title hidden-sm-and-down" v-text="SingleArticleObj.Article.title"></span>
-                                    </v-card-media>
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
+    <v-container fluid>
+        <v-layout row wrap justify-space-around v-if="!SingleArticleObj.isRequestInProgress && !errorsExists">
+            <!-- Breadcrumbs & author name -->
+            <v-flex d-flex xs12 md10>
+                <v-layout row justify-space-between>
+
+                    <!-- Breadcrumbs -->
+                    <v-flex xs6 class="text-xs-left">
+                        <!-- Category -->
+                        <router-link
+                                :to="getCategoryRouteParams(SingleArticleObj.Article.sub_category.category)"
+                                class="router-link teal--text text--accent-2"
+                        >
+                            {{ SingleArticleObj.Article.sub_category.category.name }}
+                        </router-link>
+
+                        <!-- Right chevron -->
+                        <v-icon class="subheading">chevron_right</v-icon>
+
+                        <!-- Sub-category -->
+                        <router-link
+                                :to="getSubCategoryRouteParams(SingleArticleObj.Article.sub_category.category, SingleArticleObj.Article.sub_category)"
+                                class="router-link white--text "
+                        >
+                            {{ SingleArticleObj.Article.sub_category.name }}
+                        </router-link>
                     </v-flex>
-                    <v-flex d-flex xs12 sm12 md3>
-                        <v-layout row wrap justify-space-around>
-                            <v-flex d-flex xs12 sm4 md12 v-for="i in 2" :key="i">
-                                <v-card >
-                                    <v-card-text>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta dolore, exercitationem maiores
-                                        maxime nemo placeat totam! Distinctio fugit libero mollitia nesciunt repellendus repudiandae
-                                        saepe sequi! Consequuntur earum error harum maiores!
-                                    </v-card-text>
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
+
+                    <!-- Author name -->
+                    <v-flex xs6 class="text-xs-right">
+                        Autorius:
+                        <b class="teal--text text--accent-2">{{ SingleArticleObj.Article.author.name }}</b>
                     </v-flex>
                 </v-layout>
             </v-flex>
-            <v-flex d-flex xs12>
-                <v-layout row wrap>
-                    <v-flex sm12 md9 pt-3 pr-3>
-                        <p v-text="SingleArticleObj.Article.content"></p>
-                    </v-flex>
-                    <v-flex sm12 md3 >
-                        <v-layout row wrap justify-space-around>
-                            <v-flex xs12 sm4 md12 v-for="i in 3" :key="i">
-                                <v-card>
-                                    <v-card-text>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta dolore, exercitationem maiores
-                                        maxime nemo placeat totam! Distinctio fugit libero mollitia nesciunt repellendus repudiandae
-                                        saepe sequi! Consequuntur earum error harum maiores!
-                                    </v-card-text>
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
-                </v-layout>
+
+            <!-- Divider -->
+            <v-flex xs12 md10 mt-1 mb-2>
+                <v-divider/>
+            </v-flex>
+
+            <!-- Images -->
+            <v-flex xs12 md10 class="text-xs-center">
+                <v-carousel
+                        :cycle="false"
+                        hide-delimiters
+                        v-model="defaultImageIndex"
+                        :hide-controls="isCarouselControlsHidden"
+                >
+                    <v-carousel-item
+                            :src="image.url"
+                            :key="getIndexAndSetDefaultImageIndex(index, image.id)"
+                            v-for="(image,index) in SingleArticleObj.Article.images"
+                    />
+                </v-carousel>
+            </v-flex>
+
+
+            <!-- Title and buttons-->
+            <v-flex d-flex xs12 md10 my-2>
+                <div class="headline" style="margin: auto;">
+
+                    <!-- Title -->
+                    {{ getTitle(this.SingleArticleObj.Article.title) }}
+
+                    <!-- Buttons -->
+                    <div style="display: inline-flex;" v-if="IAmGod">
+                        <v-btn
+                                style="float: right"
+                                icon
+                                flat
+                                class=""
+                                title="Redaguoti"
+                                color="warning"
+                                :to="SingleArticleObj.linkToEditThisArticle"
+                                :loading="SingleArticleObj.isMarkButtonDisabled"
+                        >
+                            <v-icon>edit</v-icon>
+                        </v-btn>
+                        <v-btn
+                                icon
+                                flat
+                                style="float: right"
+
+                                color="error"
+                                title="Perkelti į juodraštį"
+                                v-if="!SingleArticleObj.Article.is_draft"
+                                @click="SingleArticleObj.markArticleAsDraft()"
+                                :loading="SingleArticleObj.isMarkButtonDisabled"
+                        >
+                            <v-icon>directions</v-icon>
+                        </v-btn>
+                        <v-btn
+                                icon
+                                flat
+                                style="float: right"
+                                color="teal accent-2"
+                                title="Paskelbti"
+                                v-if="SingleArticleObj.Article.is_draft"
+                                @click="SingleArticleObj.markArticleAsPublished()"
+                                :loading="SingleArticleObj.isMarkButtonDisabled"
+                        >
+                            <v-icon>check</v-icon>
+                        </v-btn>
+                    </div>
+                </div>
+            </v-flex>
+
+            <!-- Divider -->
+            <v-flex xs12 md10 mb-1>
+                <v-divider/>
+            </v-flex>
+
+            <!-- Content -->
+            <v-flex xs12 md10 my-2 >
+                <div v-html="SingleArticleObj.Article.content"></div>
+                <!--<div class="ql-editor"> {{ SingleArticleObj.Article.content }}</div>-->
+            </v-flex>
+
+            <!-- Divider -->
+            <v-flex xs12 md10 mb-1>
+                <v-divider/>
+            </v-flex>
+
+            <!-- Tags -->
+            <v-flex xs12 md10 v-if="SingleArticleObj.Article.tags.length">
+                <v-chip label v-for="(tag,index) in SingleArticleObj.Article.tags" :key="index">{{tag.name}}</v-chip>
             </v-flex>
         </v-layout>
+
+        <!-- Errors -->
+        <v-layout row wrap justify-space-around v-if="errorsExists">
+            <v-flex xs12 sm10 md8 lg6 xl4>
+                <alert-component :messages="SingleArticleObj.ArticleErrors.id" type="error"/>
+            </v-flex>
+        </v-layout>
+
+        <!-- Loading circle -->
+        <progress-circular v-if="SingleArticleObj.isRequestInProgress"/>
     </v-container>
 </template>
 <script>
-	import SingleArticleClass from './SingleArticle';
+	import AlertComponent   from "../../../components/alert-component";
+	import ProgressCircular from "../../../components/progress-circular";
+	import SingleArticle    from './SingleArticle';
 
-	export default{
-		name: 'singleArticle',
-		data() {
-			return {
-				SingleArticleObj: new SingleArticleClass(this.$route.params.id),
-			}
+	export default {
+		components: {
+			AlertComponent,
+			ProgressCircular,
 		},
-		created(){
-
+		data () {
+			return {
+				User             : window.USER,
+				defaultImageIndex: 0,
+				SingleArticleObj : new SingleArticle( this.$route.params.id ),
+			};
+		},
+		created () {
 			this.SingleArticleObj.getArticle();
 		},
-		computed: {
-			getDefaultImg() {
-				return this.SingleArticleObj.getDefaultImg();
-			}
-		}
-	}
-</script>
+		computed  : {
+			isCarouselControlsHidden () {
+				return this.SingleArticleObj.Article.images.length <= 1;
+			},
+			IAmGod () {
+				return this.User.is_admin || this.User.is_moderator;
+			},
+			errorsExists () {
+				return this.SingleArticleObj.ArticleErrors.id.length;
+			},
+		},
+		watch     : {
+			'SingleArticleObj.ArticleErrors.id' ( errorArray ) {
+				if (errorArray.length) {
+					setTimeout( () => this.$router.go( -1 ), 3000 );
+				}
+			},
+		},
+		methods   : {
+			getIndexAndSetDefaultImageIndex ( index, imageID ) {
+				if (imageID === this.SingleArticleObj.Article.header_image.id) {
+					this.defaultImageIndex = index;
+				}
 
-<style>
-    .carousel-title{
-        background: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-    }
-</style>
+				return index;
+			},
+			getSubCategoryRouteParams ( category, subCategory ) {
+				let $_route = { name: 'home' };
+
+				if (category.name && subCategory.name) {
+					$_route = {
+						name  : 'articles.subCategoryArticles',
+						params: {
+							categoryName   : category.name,
+							subCategoryName: subCategory.name,
+						},
+					};
+				}
+
+				return $_route;
+			},
+			getCategoryRouteParams ( category ) {
+				let $_route = { name: 'home' };
+
+				// If category or sub-category not found
+				if (category.name) {
+					$_route = {
+						name  : 'articles.categoryArticles',
+						params: {
+							categoryName: category.name,
+						},
+					};
+				}
+
+				return $_route;
+			},
+			getTitle ( title ) {
+				return title[ 0 ].toUpperCase() + title.slice( 1 );
+			},
+		},
+	};
+</script>

@@ -50,7 +50,6 @@
 		name: 'editProfile',
 		data(){
 			return {
-				FlashMessages: window.FlashMessages,
 				inputs: {email: window.USER.email}, // From blade template
 				Errors: new window.Errors({
 					email: [],
@@ -73,7 +72,7 @@
 					});
 			},
 			successUpdateProfile: function () {
-				this.FlashMessages.setSuccess('Atnaujinta. Prisijunkite iš naujo.');
+				window.FlashMessages.setSuccess('Atnaujinta. Prisijunkite iš naujo.');
 
 				// Go to home page
 				this.$router.push({name: 'home'});

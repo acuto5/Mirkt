@@ -7,6 +7,7 @@
                 color="grey lighten-1"
                 title="Paskelpti straipsni"
                 @click.native="markArticleAsPublish()"
+                :loading="DraftArticlesObj.isButtonsLoadingStyle"
         >
             <v-icon color="success">check</v-icon>
         </v-btn>
@@ -33,6 +34,7 @@
 				if($_result){
 					let $_query = Object.assign({}, this.$route.query);
 
+					window.FlashMessages.setSuccess('Straipsnis paskelbtas.');
 					this.DraftArticlesObj.searchArticles($_query);
                 }
             }

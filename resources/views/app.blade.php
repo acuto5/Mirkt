@@ -22,9 +22,8 @@
     </head>
     <body>
         <div id="app">
-            <router-view :messages="messages"></router-view>
+            <router-view></router-view>
         </div>
-
         <script>
             window.CategoriesWithSubCategories = Object.freeze({!! getAllCategoriesWithSubCategories() !!});
             window.CategoriesWithSubCategories.map( category => Object.freeze( category ) );

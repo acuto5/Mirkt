@@ -16,7 +16,7 @@
                 />
 
                 <!-- Edit article -->
-                <tile-action-edit-article-link-button
+                <tile-action-edit-article-link-button :articles-obj="DraftArticlesObj"
                         :id="article.id"
                 />
 

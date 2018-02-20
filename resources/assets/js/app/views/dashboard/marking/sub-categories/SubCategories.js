@@ -9,9 +9,6 @@ function getArticlesBySubCategoryName ( query ) {
 //--------------------------
 // Global vars
 //--------------------------
-// FlashMessages
-const $_FlashMessages = Symbol();
-
 // Urls
 const $_levelUpURL = Symbol();
 const $_levelDownURL = Symbol();
@@ -26,10 +23,12 @@ const $_deleteSubCategoryURL = Symbol();
 //--------------------
 const $_successGetCategories = function (response) {
 	this.categories = response.data;
+
+	this.isRequestInProgress = false;
 };
 
 const $_errorGetCategories = function (error) {
-	this[$_FlashMessages].setError(error.response.data.message);
+	window.FlashMessages.setError(error.response.data.message);
 };
 
 //--------------------
@@ -43,7 +42,6 @@ const $_successUpdateSubCategories = function (response) {
 
 const $_errorUpdateSubCategories = function (error) {
 	this.UpdateSubCategoriesErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 
 	this.isRequestInProgress = false;
 };
@@ -53,14 +51,13 @@ const $_errorUpdateSubCategories = function (error) {
 //--------------------
 const $_successAddSubCategory = function () {
 	this.updateSubCategoriesList();
-	this[$_FlashMessages].setSuccess('Pridėta.');
+	window.FlashMessages.setSuccess('Pridėta.');
 
 	return true;
 };
 
 const $_errorAddSubCategory = function (error) {
 	this.AddSubCategoryErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 
 	return false;
 };
@@ -70,7 +67,7 @@ const $_errorAddSubCategory = function (error) {
 //--------------------
 const $_successEditSubCategory = function () {
 	this.updateSubCategoriesList();
-	this[$_FlashMessages].setSuccess('Atnaujinta.');
+	window.FlashMessages.setSuccess('Atnaujinta.');
 
 	return true;
 };
@@ -86,7 +83,7 @@ const $_errorEditSubCategory = function (error) {
 //--------------------------
 const $_successDeleteSubCategory = function () {
 	this.updateSubCategoriesList();
-	this[$_FlashMessages].setSuccess('Ištrinta.');
+	window.FlashMessages.setWarning('Ištrinta.');
 
 	return true;
 };
@@ -102,7 +99,7 @@ const $_errorDeleteSubCategory = function (error) {
 //--------------------
 const $_errorLevelDown = function (error) {
 	this.LevelDownErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
+	window.FlashMessages.setError(error.response.data.message);
 };
 
 //--------------------
@@ -110,14 +107,13 @@ const $_errorLevelDown = function (error) {
 //--------------------
 const $_errorLevelUp = function (error) {
 	this.LevelUpErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 };
 
 //--------------------
 // Errors
 //--------------------
 const $_clearErrors = function () {
-	this[$_FlashMessages].clear();
+	window.FlashMessages.clear();
 	this.UpdateSubCategoriesErrors.clear();
 };
 
@@ -125,7 +121,7 @@ class SubCategories {
 	constructor() {
 		// Categories
 		this.categories = [];
-		this.selectedCategoryID = -1;
+		this.selectedCategoryID = 0;
 
 		// Sub-categories
 		this.subCategories = [];
@@ -141,9 +137,6 @@ class SubCategories {
 		this[$_editSubCategoryURL] = window.URLS.editSubCategory;
 		this[$_getSubCategoriesURL] = window.URLS.getSubCategories;
 		this[$_deleteSubCategoryURL] = window.URLS.deleteSubCategory;
-
-		// FlashMessages
-		this[$_FlashMessages] = window.FlashMessages;
 
 		// Errors
 		this.LevelUpErrors = new window.Errors({id: []});

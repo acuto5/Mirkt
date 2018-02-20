@@ -1,18 +1,22 @@
 <template>
-    <v-list dark>
+    <v-list>
         <v-list-tile>
-            <v-list-tile-content>
-                <v-select
-                        dark
-                        single-line
-                        label="Kategorija"
-                        item-value="id"
-                        item-text="name"
-                        color="teal accent-2"
-                        v-model="SubCategoriesObj.selectedCategoryID"
-                        :items="SubCategoriesObj.categories"
-                />
-            </v-list-tile-content>
+            <v-layout>
+                <v-flex>
+                    <v-list-tile-content>
+                        <v-select
+                                dark
+                                single-line
+                                label="Kategorija"
+                                item-value="id"
+                                item-text="name"
+                                color="teal accent-2"
+                                v-model="SubCategoriesObj.selectedCategoryID"
+                                :items="SubCategoriesObj.categories"
+                        />
+                    </v-list-tile-content>
+                </v-flex>
+            </v-layout>
         </v-list-tile>
     </v-list>
 

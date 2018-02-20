@@ -1,14 +1,17 @@
 <template>
-    <v-container>
-        <v-layout row wrap justify-space-around>
-            <v-flex xs12 ma-2>
+    <v-container fluid>
+        <v-layout row wrap justify-space-around  v-show="!isRequestInProgress && !errorsExists">
+            <!-- Category name -->
+            <v-flex xs12 md10 ma-2>
                 <span class="display-1">{{ getCategoryName }}</span>
             </v-flex>
-            <v-flex xs12 v-show="!isRequestInProgress">
+
+            <!-- Articles -->
+            <v-flex d-flex xs12 md10 >
                 <v-layout row wrap>
-                    <v-flex d-flex xs4 pa-1 v-for="(article,index) in Articles" :key="index">
+                    <v-flex xs6 sm4 lg3 pa-2 v-for="(article,index) in Articles" :key="index">
                         <article-card
-                                height="250px"
+                                :xs-height="100"
                                 :title="article.title"
                                 :article-id="article.id"
                                 :bg-image-url="getHeaderImageUrl(article.header_image)"
@@ -16,33 +19,39 @@
                     </v-flex>
                 </v-layout>
             </v-flex>
-            <v-flex xs10 class="text-xs-center" mb-2 v-if="isRequestInProgress">
-                <v-progress-circular
-                        fill
-                        indeterminate
-                        color="teal accent-2"
-                        :width="4"
-                        :size="50"
-                />
-            </v-flex>
+
+            <!-- Pagination -->
             <v-flex xs10 class="text-xs-center" my-2>
-                <pagination-with-page-query
-                        :on-query-change="getArticlesFromCategory"
-                        :last-page="lastPage"
-                        v-show="!isRequestInProgress && Articles.length > 1"
-                />
+                <pagination-with-page-query :last-page="lastPage" :on-query-change="getArticlesFromCategory"/>
             </v-flex>
         </v-layout>
+
+        <!-- Errors alerts -->
+        <v-layout row wrap justify-space-around v-if="errorsExists">
+            <v-flex xs12 sm10 md8 lg6 xl4>
+                <alert-component :messages="Errors.category_name" type="error" />
+                <alert-component :messages="Errors.page" type="error" />
+            </v-flex>
+        </v-layout>
+
+        <!-- Progress circular -->
+        <progress-circular v-if="isRequestInProgress"/>
     </v-container>
 </template>
 
 <script>
+	import AlertComponent          from "../../../components/alert-component";
 	import ArticleCard             from "../../../components/article-card";
+	import ErrorCaptionList        from "../../../components/error-caption-list";
 	import PaginationWithPageQuery from "../../../components/pagination-with-page-query";
+	import ProgressCircular        from "../../../components/progress-circular";
 	import { getCategoryArticles } from "../../../dashboard/marking/categories/Categories";
 
 	export default {
 		components: {
+			AlertComponent,
+			ProgressCircular,
+			ErrorCaptionList,
 			ArticleCard,
 			PaginationWithPageQuery,
 		},
@@ -56,6 +65,7 @@
 					page         : [],
 					category_name: [],
 				} ),
+                FlashMessages: window.FlashMessages
 			};
 		},
         computed: {
@@ -64,6 +74,9 @@
 
 				// First letter in upper case
 				return CategoryName[0].toUpperCase() + CategoryName.slice(1);
+			},
+			errorsExists: function () {
+                return this.Errors.page.length || this.Errors.category_name.length;
 			}
         },
 		methods   : {
@@ -83,14 +96,12 @@
 			},
 			errorGetArticles ( error ) {
 				this.Errors.setLarevelErrors( error );
+				this.FlashMessages.setError(error.response.data.message);
 				this.isRequestInProgress = false;
-			},
-			getArticleRouteParams ( articleID ) {
-				return {
-					name  : 'articles.single',
-					params: { id: articleID },
-				};
-			},
+
+                // Go one page back
+                setTimeout(() => this.$router.go(-1), 3000);
+            },
 			getHeaderImageUrl(headerImage){
 				if(headerImage){
 					return headerImage.url || '';

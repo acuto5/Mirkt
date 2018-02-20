@@ -65,7 +65,10 @@
 					return false;
 				}
 				axios.post(this.loginURL, this.inputs)
-					.then(response => (response.data) ? window.location.reload() : false)
+					.then(response => {
+						window.FlashMessages.setSuccess('Prisijungta.');
+                        window.location.reload();
+					})
 					.catch(error => this.Errors.setLarevelErrors(error));
 			},
 			hideMe: function () {

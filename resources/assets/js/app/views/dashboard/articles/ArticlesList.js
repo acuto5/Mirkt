@@ -1,4 +1,5 @@
-import {deleteArticle} from "./views/single/SingleArticle";
+import { deleteArticle } from "../../main/articles/single/SingleArticle";
+
 
 function searchPublishedArticlesAxiosRequest(inputs) {
 	const url = window.URLS.searchInPublishedArticles;
@@ -17,9 +18,6 @@ function getAllPublishedArticlesAxiosRequest(query) {
 //--------------------------------
 // Article type
 const $_isArticlesPublished = Symbol();
-
-// Errors
-const $_FlashMessages = Symbol();
 
 // Urls
 const $_markAsDraftURL = Symbol();
@@ -54,16 +52,15 @@ const $_getSearchArticlesUrl = function () {
 //--------------------------------
 const $_setErrors = function (error) {
 	this.Errors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 
 	this.isRequestInProgress = false;
+	this.isButtonsLoadingStyle = false;
 
 	return false;
 };
 
 const $_clearErrors = function () {
 	this.Errors.clear();
-	this[$_FlashMessages].clear();
 };
 
 class ArticlesList {
@@ -77,6 +74,7 @@ class ArticlesList {
 		this.lastPage = 0;
 
 		this.isRequestInProgress = true;
+		this.isButtonsLoadingStyle = false;
 
 		// Urls
 		this[$_markAsDraftURL] = window.URLS.markArticleAsDraft;
@@ -87,7 +85,6 @@ class ArticlesList {
 		this[$_searchInPublishedArticlesURL] = window.URLS.searchInPublishedArticles;
 
 		// Errors
-		this[$_FlashMessages] = window.FlashMessages;
 		this.Errors = new window.Errors({sub_category_id: [], page: [], title: [], order_by: []})
 	}
 
@@ -133,12 +130,17 @@ class ArticlesList {
 	async markArticleAsDraft(articleID) {
 		if (this[$_isArticlesPublished]) {
 			$_clearErrors.call(this);
+			this.isButtonsLoadingStyle = true;
 
 			return await axios.patch(this[$_markAsDraftURL], {id: articleID})
-				.then(response => true)
-				.catch(error => $_setErrors.call(this, error));
+							  .then( response => {
+								  this.isButtonsLoadingStyle = false;
+
+								  return true;
+							  } )
+							  .catch( error => $_setErrors.call( this, error ) );
 		} else {
-			console.log('Article is already draft.');
+			window.FlashMessages.setWarning('Article is already draft.');
 		}
 	}
 
@@ -149,12 +151,17 @@ class ArticlesList {
 	async markArticleAsPublished(articleID) {
 		if (!this[$_isArticlesPublished]) {
 			$_clearErrors.call(this);
+			this.isButtonsLoadingStyle = true;
 
 			return await axios.patch(this[$_markAsPublishedURL], {id: articleID})
-				.then(response => true)
-				.catch(error => $_setErrors.call(this, error));
+							  .then( response => {
+								  this.isButtonsLoadingStyle = false;
+
+								  return true;
+							  } )
+							  .catch( error => $_setErrors.call( this, error ) );
 		} else {
-			console.log('Article is already published.');
+			window.FlashMessages.setWarning('Article is already published.');
 		}
 	}
 
@@ -165,12 +172,17 @@ class ArticlesList {
 	async deleteArticle(articleID) {
 		if (!this[$_isArticlesPublished]) {
 			$_clearErrors.call(this);
+			this.isButtonsLoadingStyle = true;
 
 			return await deleteArticle(articleID)
-				.then(response => true)
+				.then( response => {
+					this.isButtonsLoadingStyle = false;
+
+					return true;
+				} )
 				.catch(error => $_setErrors.call(this, error));
 		} else {
-			console.error('Article can be deleted only if article is draft.');
+			window.FlashMessages.setWarning('Article can be deleted only if article is draft.');
 		}
 	}
 }

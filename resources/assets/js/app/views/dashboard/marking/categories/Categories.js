@@ -102,7 +102,7 @@ const $_successDeleteCategory = function (id) {
 
 	this.Categories = this.Categories.filter(Category => Category.id !== id);
 
-	this[$_FlashMessages].setSuccess('Ištrinta.');
+	this[$_FlashMessages].setWarning('Ištrinta.');
 
 	return true;
 };

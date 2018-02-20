@@ -4,17 +4,21 @@
 // Urls
 const $_getHomeArticlesURL = Symbol();
 
-// Errors
-const $_FlashMessages = Symbol();
+//-------------------------------------
+// Success requests
+//-------------------------------------
+const $_successRequest = function ( response ) {
+	this.CategoriesWithSubCategoriesAndArticles = response.data;
+	this.isRequestInProgress = false;
+};
 
 //-------------------------------------
 // Errors
 //-------------------------------------
 const $_setErrors = function (error) {
-	this[$_FlashMessages].setError(error.response.data.message);
-};
-const $_clearErrors = function () {
-	this[$_FlashMessages].clear();
+	window.FlashMessages.setError(error.response.data.message);
+
+	this.isRequestInProgress = false;
 };
 
 
@@ -26,15 +30,14 @@ class Home {
 		// Urls
 		this[$_getHomeArticlesURL] = window.URLS.getCategoriesWithSubCategoriesAndArticles;
 
-		// Errors
-		this[$_FlashMessages] = window.FlashMessages;
+		this.isRequestInProgress = true;
 	}
 
 	getCategoriesWithSubCategoriesAndArticles() {
-		$_clearErrors.call(this);
+		this.isRequestInProgress = true;
 
 		axios.get(this[$_getHomeArticlesURL])
-			.then(response => this.CategoriesWithSubCategoriesAndArticles = response.data)
+			.then(response => $_successRequest.call(this, response))
 			.catch(error => $_setErrors.call(this, error));
 	}
 }

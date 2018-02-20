@@ -1,17 +1,23 @@
 <template>
-    <v-card :to="getRouteParams()">
-        <v-card-media :src="bgImageUrl" :height="height" @mouseenter="hideTitle()" @mouseleave="showTitle"/>
-        <span v-if="isTitleVisible" class="headline card-title white--text pa-1">{{ title }}</span>
-    </v-card>
+    <router-link :to="getRouteParams()" class="router-link white--text">
+        <v-card>
+            <v-card-media :src="bgImageUrl" :height="getCardImageHeight"/>
+        </v-card>
+        <!-- Title -->
+        <div class="py-1">
+            <span :class="getTitleClasses">{{ getTitle }}</span>
+        </div>
+    </router-link>
 </template>
 
 <script>
 	export default {
-		name   : "article-card",
-		props  : {
+		name    : "article-card",
+		props   : {
 			title     : {
 				type    : String,
 				required: true,
+				default : '',
 			},
 			bgImageUrl: {
 				type    : String,
@@ -21,38 +27,92 @@
 				type    : Number,
 				required: true,
 			},
-			height    : {
-				type    : String,
+			xsHeight    : {
+				type    : Number,
 				required: false,
-				default : '200px',
+				default : 200,
 			},
 		},
-		data () {
-			return {
-				isTitleVisible: true,
-			};
+		computed: {
+			getTitle () {
+				return this.title[ 0 ].toUpperCase() + this.title.slice( 1 );
+			},
+			getTitleClasses () {
+				return this.getTitleSizeClass();
+			},
+			getCardImageHeight() {
+				return this.getImageSizeByBreakPoint();
+            }
 		},
-		methods: {
+		methods : {
 			getRouteParams () {
 				return {
 					name  : 'articles.single',
 					params: { id: this.articleId },
 				};
 			},
-			showTitle () {
-				this.isTitleVisible = true;
+			getTitleSizeClass () {
+				let $sizeClass = '';
+
+				switch (this.$vuetify.breakpoint.name) {
+                    case "xl": {
+                        $sizeClass = 'title';
+                        break;
+                    }
+					case "lg": {
+						$sizeClass = 'title';
+						break;
+					}
+					case "md" : {
+                    	$sizeClass = 'subheading';
+						break;
+					}
+					case "sm" : {
+						$sizeClass = 'subheading';
+						break;
+					}
+					case "xs" : {
+						$sizeClass = 'subheading';
+						break;
+					}
+                    default: {
+                    	$sizeClass = 'title';
+                    }
+				}
+
+				return $sizeClass;
 			},
-			hideTitle () {
-				this.isTitleVisible = false;
-			},
+			getImageSizeByBreakPoint(){
+				let $size = 0;
+
+				switch (this.$vuetify.breakpoint.name) {
+					case "xl": {
+						$size = this.xsHeight + 100;
+						break;
+					}
+					case "lg": {
+						$size = this.xsHeight + 75;
+						break;
+					}
+					case "md" : {
+						$size = this.xsHeight + 75;
+						break;
+					}
+					case "sm" : {
+						$size = this.xsHeight + 25;
+						break;
+					}
+					case "xs" : {
+						$size = this.xsHeight;
+						break;
+					}
+					default: {
+						$size = this.xsHeight;
+					}
+				}
+
+				return $size + 'px';
+            }
 		},
 	};
 </script>
-<style scoped>
-    .card-title {
-        background: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-    }
-</style>
