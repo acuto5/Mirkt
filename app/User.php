@@ -26,6 +26,10 @@ class User extends Authenticatable
 		'password', 'remember_token',
 	];
 	
+	public function isBlessed(){
+		return $this->is_admin || $this->is_moderator;
+	}
+	
 	public function isAdmin(){
 		return $this->is_admin;
 	}
