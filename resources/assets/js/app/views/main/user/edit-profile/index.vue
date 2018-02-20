@@ -50,6 +50,7 @@
 		name: 'editProfile',
 		data(){
 			return {
+				User: window.USER,
 				inputs: {email: window.USER.email}, // From blade template
 				Errors: new window.Errors({
 					email: [],
@@ -60,6 +61,9 @@
 				updateUserProfileURL: window.URLS.updateUserProfile
 			}
 		},
+        mounted(){
+			this.redirectIfGuest();
+        },
 		methods: {
 			updateProfile: function () {
 				this.Errors.clear();
@@ -79,7 +83,12 @@
 
 				// Reload page(user now is logout)
 				window.location.reload();
-			}
+			},
+			redirectIfGuest(){
+				if(!this.User.id){
+					this.$router.push({name: 'home'});
+				}
+            }
 		}
 	}
 </script>  

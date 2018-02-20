@@ -6277,6 +6277,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	name: 'editProfile',
 	data: function data() {
 		return {
+			User: window.USER,
 			inputs: { email: window.USER.email }, // From blade template
 			Errors: new window.Errors({
 				email: [],
@@ -6286,6 +6287,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}),
 			updateUserProfileURL: window.URLS.updateUserProfile
 		};
+	},
+	mounted: function mounted() {
+		this.redirectIfGuest();
 	},
 
 	methods: {
@@ -6309,6 +6313,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 			// Reload page(user now is logout)
 			window.location.reload();
+		},
+		redirectIfGuest: function redirectIfGuest() {
+			if (!this.User.id) {
+				this.$router.push({ name: 'home' });
+			}
 		}
 	}
 });
