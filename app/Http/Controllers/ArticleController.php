@@ -14,14 +14,10 @@ use App\Http\Requests\Articles\SearchDraftArticlesRequest;
 use App\Http\Requests\Articles\SearchPublishedArticlesRequest;
 use App\Http\Requests\Articles\StoreArticleRequest;
 use App\Image;
-use App\SubCategory;
 use App\Tag;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
-use Mews\Purifier\Purifier;
 
 class ArticleController extends Controller
 {
@@ -34,14 +30,27 @@ class ArticleController extends Controller
 	 */
 	public function getArticle(GetArticleRequest $request)
 	{
+		$responseCode = 200;
+		$where        = [['id', $request->id]];
+		
+		// If user isn`t moderator allow search only in published articles
+		if (Auth::guest() || (Auth::check() && !$request->user()->isBlessed())) {
+			$where = array_merge($where, [['is_draft', 0]]);
+		}
+		
 		$article = Article::select(['id', 'title', 'content', 'user_id', 'is_draft', 'sub_category_id', 'created_at', 'updated_at'])
-			->where('id', $request->id)
+			->where($where)
 			->with(['author:id,name', 'headerImage', 'tags', 'images', 'subCategory' => function($query){
 				$query->select('id', 'name', 'category_id')->with('category:id,name');
 			}])
 			->first();
 		
-		return response()->json($article);
+		// If article not found
+		if ($article === null) {
+			$responseCode = 204;
+		};
+		
+		return response()->json($article, $responseCode);
 	}
 	
 	/**

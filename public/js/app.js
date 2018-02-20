@@ -2758,7 +2758,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			SingleArticleObj: new __WEBPACK_IMPORTED_MODULE_2__SingleArticle__["a" /* default */](this.$route.params.id)
 		};
 	},
-	created: function created() {
+	mounted: function mounted() {
 		this.SingleArticleObj.getArticle();
 	},
 
@@ -2774,6 +2774,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		}
 	},
 	watch: {
+		'SingleArticleObj.getArticleResponseStatus': function SingleArticleObjGetArticleResponseStatus(statusCode) {
+			if (statusCode === 204) {
+				window.FlashMessages.setError('Article not found.');
+				this.$router.push({ name: 'home' });
+			}
+		},
 		'SingleArticleObj.ArticleErrors.id': function SingleArticleObjArticleErrorsId(errorArray) {
 			var _this = this;
 
@@ -60202,6 +60208,8 @@ var $_markAsPublishedURL = Symbol();
 // Get article
 //------------------------
 var $_successGetArticle = function $_successGetArticle(response) {
+	this.getArticleResponseStatus = response.status;
+
 	this.Article = response.data;
 
 	this.isRequestInProgress = false;
@@ -60250,6 +60258,9 @@ var SingleArticle = function () {
 
 		// Is axios request is call
 		this.isRequestInProgress = true;
+
+		// get article response status
+		this.getArticleResponseStatus = true;
 
 		// Is button disabled
 		this.isMarkButtonDisabled = false;

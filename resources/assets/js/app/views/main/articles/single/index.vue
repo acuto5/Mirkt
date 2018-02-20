@@ -157,7 +157,7 @@
 				SingleArticleObj : new SingleArticle( this.$route.params.id ),
 			};
 		},
-		created () {
+		mounted () {
 			this.SingleArticleObj.getArticle();
 		},
 		computed  : {
@@ -172,6 +172,12 @@
 			},
 		},
 		watch     : {
+			'SingleArticleObj.getArticleResponseStatus'(statusCode){
+				if(statusCode === 204){
+					window.FlashMessages.setError('Article not found.');
+					this.$router.push({name: 'home'});
+                }
+            },
 			'SingleArticleObj.ArticleErrors.id' ( errorArray ) {
 				if (errorArray.length) {
 					setTimeout( () => this.$router.go( -1 ), 3000 );

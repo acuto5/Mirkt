@@ -25,6 +25,8 @@ const $_markAsPublishedURL = Symbol();
 // Get article
 //------------------------
 const $_successGetArticle = function (response) {
+	this.getArticleResponseStatus = response.status;
+
 	this.Article = response.data;
 
 	this.isRequestInProgress = false;
@@ -71,6 +73,9 @@ class SingleArticle {
 
 		// Is axios request is call
 		this.isRequestInProgress = true;
+
+		// get article response status
+		this.getArticleResponseStatus = true;
 
 		// Is button disabled
 		this.isMarkButtonDisabled = false;
