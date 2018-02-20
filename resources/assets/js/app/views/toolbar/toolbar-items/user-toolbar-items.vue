@@ -66,6 +66,8 @@
 
 				axios.post(this.logoutURL)
 					.then(response => {
+						this.FlashMessages.setSuccess('Atsijungta.');
+
 						(response.data) ? window.location.reload() : false;
 					})
 					.catch(error => {

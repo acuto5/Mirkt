@@ -20,9 +20,20 @@ function getAllRoutes()
 					$routes[$routeName] = route($routeName);
 					continue;
 				}
+			} elseif (in_array('auth', $routeMiddlewareArray)) {
+				// Auth routes
+				if (Auth::check()) {
+					$routes[ $routeName ] = route($routeName);
+					continue;
+				}
+			} elseif (in_array('guest', $routeMiddlewareArray)) {
+				// Guest routes
+				if (!Auth::check()) {
+					$routes[ $routeName ] = route($routeName);
+				}
 			} else {
 				// Save as full url
-				$routes[$routeName] = route($routeName);
+				$routes[ $routeName ] = route($routeName);
 			}
 		}
 	}

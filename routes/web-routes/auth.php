@@ -7,9 +7,9 @@
 //Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('passwordEmail');
 //Route::post('/password/reset', 'Auth\ResetPasswordController@reset')->name('passwordEmail');
 // Login
-Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::post('/login', 'Auth\LoginController@login')->name('login')->middleware('guest');
 
 // Logout
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout')->middleware('auth');
 
-Route::post('/register', 'Auth\RegisterController@register')->name('register');
+Route::post('/register', 'Auth\RegisterController@register')->name('register')->middleware('guest');

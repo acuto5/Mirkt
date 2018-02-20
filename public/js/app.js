@@ -3847,6 +3847,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			FlashMessages.clear();
 
 			axios.post(this.logoutURL).then(function (response) {
+				_this.FlashMessages.setSuccess('Atsijungta.');
+
 				response.data ? window.location.reload() : false;
 			}).catch(function (error) {
 				console.error(error);
