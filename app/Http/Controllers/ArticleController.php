@@ -45,7 +45,7 @@ class ArticleController extends Controller
 			}])
 			->first();
 		
-		// If article not found
+		// If article not found send 204 status code
 		if ($article === null) {
 			$responseCode = 204;
 		};

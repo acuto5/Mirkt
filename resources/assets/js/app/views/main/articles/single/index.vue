@@ -125,7 +125,21 @@
 
             <!-- Tags -->
             <v-flex xs12 md10 v-if="SingleArticleObj.Article.tags.length">
-                <v-chip label v-for="(tag,index) in SingleArticleObj.Article.tags" :key="index">{{tag.name}}</v-chip>
+                <v-chip
+                        label
+                        v-for="(tag,index) in SingleArticleObj.Article.tags"
+                        :key="index"
+                        outline
+                        text-color="grey lighten-3"
+                        color="grey darken-2"
+                >
+                    <v-avatar>
+                        <v-icon>label</v-icon>
+                    </v-avatar>
+                    <router-link class="router-link white--text" :to="{name: 'articles.tagArticles', params: {tagName: tag.name}}">
+                        {{ tag.name }}
+                    </router-link>
+                </v-chip>
             </v-flex>
         </v-layout>
 

@@ -16,4 +16,6 @@ Route::delete('/delete-tag', 'TagController@delete')->name('deleteTag')->middlew
 Route::get('/take-tags', 'TagController@takeTags')->name('takeTags')->middleware('auth', 'role:moderator');
 Route::get('/get-all-tags', 'TagController@getAll')->name('getAllTags')->middleware('auth', 'role:moderator');
 
+// Get articles by tag name
+Route::get('/get-articles-by-tag-name', 'TagController@getArticlesByTagName')->name('getArticlesByTagName');
     

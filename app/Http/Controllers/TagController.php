@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Tags\DeleteRequest;
 use App\Http\Requests\Tags\EditRequest;
+use App\Http\Requests\Tags\GetArticlesByTagNameRequest;
 use App\Http\Requests\tags\GetRequest;
 use App\Http\Requests\Tags\StoreRequest;
 use App\Http\Requests\Tags\TakeTagsRequest;
@@ -11,6 +12,7 @@ use App\Tag;
 
 class TagController extends Controller
 {
+	private $perPage= 10;
 	/**
 	 * @param \App\Http\Requests\tags\GetRequest $request
 	 *
@@ -18,15 +20,23 @@ class TagController extends Controller
 	 */
 	public function get(GetRequest $request)
 	{
-		$perPage = 10;
 		
 		if (isset($request->tag)) {
-			$tags = Tag::search($request->tag)->paginate($perPage);
+			$tags = Tag::search($request->tag)->paginate($this->perPage);
 		} else {
-			$tags = Tag::paginate($perPage);
+			$tags = Tag::paginate($this->perPage);
 		}
 		
 		return response()->json($tags);
+	}
+	
+	public function getArticlesByTagName(GetArticlesByTagNameRequest $request){
+		$tag = Tag::where(['name' => $request->get('tag_name')])->first();
+		
+		// Return only published articles
+		$articles = $tag->articles()->paginate($this->perPage);
+		
+		return response()->json($articles);
 	}
 	
 	public function getAll(){

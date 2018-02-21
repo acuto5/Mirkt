@@ -14,6 +14,9 @@ class Tag extends Model
 	
 	public function articles()
 	{
-		return $this->belongsToMany('App\Article', 'tag_article');
+		return $this->belongsToMany('App\Article', 'tag_article')
+			->where('is_draft', 0)
+			->with('headerImage')
+			->latest();
 	}
 }

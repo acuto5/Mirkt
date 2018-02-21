@@ -2,6 +2,7 @@ import CategoryArticles    from './category/index';
 import SearchArticles      from './search/index';
 import SingleArticle       from './single/index';
 import SubCategoryArticles from './sub-category/index';
+import TagArticles         from './tag/index';
 
 export default [
 	{
@@ -18,13 +19,24 @@ export default [
 				},
 			},
 			{
-				name: 'articles.search', path: 'search', component: SearchArticles
+				name     : 'articles.search',
+				path     : 'search',
+				component: SearchArticles,
 			},
 			{
-				name: 'articles.categoryArticles', path: ':categoryName', component: CategoryArticles
+				name     : 'articles.categoryArticles',
+				path     : ':categoryName',
+				component: CategoryArticles,
 			},
 			{
-				name: 'articles.subCategoryArticles', path: ':categoryName/:subCategoryName', component: SubCategoryArticles
+				name     : 'articles.subCategoryArticles',
+				path     : ':categoryName/:subCategoryName',
+				component: SubCategoryArticles,
+			},
+			{
+				name     : 'articles.tagArticles',
+				path     : '/tag-articles/:tagName',
+				component: TagArticles,
 			}
 		]
 	}

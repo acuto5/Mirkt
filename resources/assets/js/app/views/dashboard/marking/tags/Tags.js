@@ -3,6 +3,11 @@ function getAllTagsPromise() {
 
 	return axios.get(url);
 }
+function getArticlesByTagName ( query ) {
+	const url = window.URLS.getArticlesByTagName;
+
+	return axios.get(url, { params: query });
+}
 
 //--------------------
 // Global vars
@@ -163,5 +168,5 @@ class Tags {
 	}
 }
 
-export {getAllTagsPromise};
+export {getAllTagsPromise, getArticlesByTagName};
 export default Tags;
