@@ -8,7 +8,7 @@ class SubCategory extends Model
 {
 	protected $visible = ['id', 'category_id', 'category', 'name', 'level', 'articles', 'latestSixPublishedArticles'];
 	
-	protected $fillable = ['category_id', 'name'];
+	protected $fillable = ['category_id', 'name', 'level'];
 	
 	public function category()
 	{

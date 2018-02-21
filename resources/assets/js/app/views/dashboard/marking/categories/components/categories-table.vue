@@ -11,6 +11,20 @@
                     />
                 </v-list-tile-content>
 
+                <!-- Level up-->
+                <v-list-tile-action>
+                    <v-btn icon flat @click.native="CategoriesObj.levelUpCategory(Category.id)" v-show="index !== 0">
+                        <v-icon>keyboard_arrow_up</v-icon>
+                    </v-btn>
+                </v-list-tile-action>
+
+                <!-- Level down -->
+                <v-list-tile-action>
+                    <v-btn icon flat @click.native="CategoriesObj.levelDownCategory(Category.id)" v-show="CategoriesObj.Categories.length !== index+1">
+                        <v-icon>keyboard_arrow_down</v-icon>
+                    </v-btn>
+                </v-list-tile-action>
+
                 <!-- Edit category dialog -->
                 <v-list-tile-action>
                     <categories-list-tile-action-edit-dialog

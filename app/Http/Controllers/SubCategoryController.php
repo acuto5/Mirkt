@@ -44,7 +44,10 @@ class SubCategoryController extends Controller
 	 */
 	public function store(StoreRequest $request)
 	{
-		SubCategory::create($request->all());
+		$subCategory = SubCategory::create($request->all());
+		
+		// Level up all subCategories
+		$this->levelUpAllSubCategories($subCategory->category_id);
 		
 		return response()->json(true);
 	}
@@ -58,7 +61,16 @@ class SubCategoryController extends Controller
 	{
 		$subCategory = SubCategory::find($request->id);
 		
+		// Check if category change
+		if($subCategory->category_id !== $request->get('category_id')){
+			$this->levelDownAllSubCategories($subCategory->category_id, $subCategory->level + 1);
+			$this->levelUpAllSubCategories($request->get('category_id'));
+			$request['level'] = 1;
+		}
+		
+		// Update subCategory
 		$subCategory->update($request->all());
+		
 		
 		return response()->json(true);
 	}
@@ -82,6 +94,8 @@ class SubCategoryController extends Controller
 		// delete
 		$subCategory->delete();
 		
+		$this->levelDownAllSubCategories($subCategory->category_id, $subCategory->level);
+		
 		return response()->json(true);
 	}
 	
@@ -96,8 +110,11 @@ class SubCategoryController extends Controller
 		 * Only Admin/Moderator
 		 */
 		$subCategory = SubCategory::find($request->id);
+		$countSubCategories = SubCategory::where('category_id', $subCategory->category_id)->count();
 		
-		if ($subCategory->level < 200) {
+		if ($subCategory->level < $countSubCategories) {
+			$this->levelDownNeighbourSubCategory($subCategory->category_id, $subCategory->level + 1);
+			
 			$subCategory->level++;
 			$subCategory->save();
 			
@@ -114,12 +131,11 @@ class SubCategoryController extends Controller
 	 */
 	public function levelDown(LevelDownRequest $request)
 	{
-		/**
-		 * Only Admin/Moderator
-		 */
 		$subCategory = SubCategory::find($request->id);
 		
 		if ($subCategory->level > 0) {
+			$this->levelUpNeighbourCategory($subCategory->category_id, $subCategory->level - 1);
+			
 			$subCategory->level--;
 			$subCategory->save();
 			
@@ -127,6 +143,52 @@ class SubCategoryController extends Controller
 		}
 		
 		return response()->json(false);
+	}
+	
+	/**
+	 * @param integer $NeighbourLevel
+	 */
+	private function levelUpNeighbourCategory($category_id, $NeighbourLevel)
+	{
+		$subCategory = SubCategory::where([['level', $NeighbourLevel],['category_id', $category_id]])->first();
+		
+		if (!empty($subCategory)) {
+			$subCategory->level++;
+			$subCategory->save();
+		}
+	}
+	
+	/**
+	 * @param integer $NeighbourLevel
+	 */
+	private function levelDownNeighbourSubCategory($category_id, $NeighbourLevel)
+	{
+		$subCategory = SubCategory::where([['level', $NeighbourLevel],['category_id', $category_id]])->first();
+		
+		if (!empty($subCategory) && $subCategory->level !== 0) {
+			$subCategory->level--;
+			$subCategory->save();
+		}
+	}
+	
+	private function levelUpAllSubCategories($category_id)
+	{
+		$subCategories = SubCategory::where('category_id', $category_id)->get();
+		
+		$subCategories->map(function ($subCategory){
+			$subCategory->level++;
+			$subCategory->save();
+		});
+	}
+	
+	private function levelDownAllSubCategories($category_id, $levelDownFrom)
+	{
+		$subCategories = SubCategory::where([['level', '>', $levelDownFrom],['category_id', $category_id]])->get();
+		
+		$subCategories->map(function ($subCategory){
+			$subCategory->level--;
+			$subCategory->save();
+		});
 	}
 	
 }

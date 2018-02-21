@@ -88,6 +88,9 @@ class CategoriesController extends Controller
 	{
 		Category::create($request->all());
 		
+		// Level app all categories by 1
+		$this->levelUpAllCategories();
+		
 		return response()->json(true);
 	}
 	
@@ -120,6 +123,8 @@ class CategoriesController extends Controller
 		
 		$category->delete();
 		
+		$this->levelDownAllCategories($category->level);
+		
 		return response()->json(true);
 	}
 	
@@ -130,9 +135,13 @@ class CategoriesController extends Controller
 	 */
 	public function levelUp(LevelUpRequest $request)
 	{
-		$category = Category::find($request->id);
+		$category        = Category::find($request->id);
+		$countCategories = Category::count();
 		
-		if ($category->level < 200) {
+		if ($category->level < $countCategories) {
+			
+			$this->levelDownNeighbourCategory($category->level + 1);
+			
 			$category->level++;
 			$category->save();
 			
@@ -152,6 +161,8 @@ class CategoriesController extends Controller
 		$category = Category::find($request->id);
 		
 		if ($category->level > 0) {
+			$this->levelUpNeighbourCategory($category->level - 1);
+			
 			$category->level--;
 			$category->save();
 			
@@ -160,4 +171,47 @@ class CategoriesController extends Controller
 		
 		return response()->json(false);
 	}
+	
+	private function levelUpNeighbourCategory($level)
+	{
+		$category = Category::where('level', $level)->first();
+		
+		if (!empty($category)) {
+			$category->level++;
+			$category->save();
+		}
+	}
+	
+	private function levelDownNeighbourCategory($level)
+	{
+		$category = Category::where('level', $level)->first();
+		
+		if (!empty($category) && $category->level !== 0) {
+			$category->level--;
+			$category->save();
+		}
+	}
+	
+	private function levelUpAllCategories()
+	{
+		$categories = Category::get();
+		
+		$categories->map(function ($category){
+			$category->level++;
+			$category->save();
+			
+			return $category;
+		});
+	}
+	
+	private function levelDownAllCategories($levelDownFrom)
+	{
+		$categories = Category::where('level', '>', $levelDownFrom)->get();
+		
+		$categories->map(function ($category){
+			$category->level--;
+			$category->save();
+		});
+	}
+	
 }

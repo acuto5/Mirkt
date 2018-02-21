@@ -3,6 +3,7 @@
 namespace App\Http\Requests\SubCategories;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -25,7 +26,11 @@ class StoreRequest extends FormRequest
     {
         return [
 			'category_id' => 'required|numeric|min:0|max:200|exists:categories,id',
-			'name'        => 'required|string|min:3|max:15|unique:sub_categories,name',
+			'name'        => [
+				'required', 'string', 'min:3', 'max:15', Rule::unique('sub_categories')->where(function ($query) {
+					$query->where('category_id', $this->category_id);
+				}),
+			],
         ];
     }
 }

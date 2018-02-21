@@ -18,13 +18,12 @@
         </v-layout>
 
         <!-- Errors -->
-        <!-- Nepavykus levelinti vis dar rodyti lista error kitur kelti-->
-        <!--<v-layout wor wrap justify-space-around v-if="errorExists">-->
-            <!--<v-flex xs12 sm10 md8 lg6 xl4>-->
-                <!--<alert-component :messages="CategoriesObj.LevelUpErrors.id" type="error"/>-->
-                <!--<alert-component :messages="CategoriesObj.LevelDownErrors.id" type="error"/>-->
-            <!--</v-flex>-->
-        <!--</v-layout>-->
+        <v-layout row wrap justify-space-around v-if="errorExists">
+            <v-flex xs12 sm10 md8 lg6 xl4>
+                <alert-component :messages="CategoriesObj.LevelUpErrors.id" type="error"/>
+                <alert-component :messages="CategoriesObj.LevelDownErrors.id" type="error"/>
+            </v-flex>
+        </v-layout>
 
         <!-- Progress circular -->
         <progress-circular v-if="CategoriesObj.isRequestInProgress"/>

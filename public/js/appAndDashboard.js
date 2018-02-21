@@ -3664,6 +3664,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3928,7 +3942,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_add_category_form_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_add_category_form_dialog__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_categories_table__ = __webpack_require__("./resources/assets/js/app/views/dashboard/marking/categories/components/categories-table.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_categories_table___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_categories_table__);
-//
 //
 //
 //
@@ -4388,6 +4401,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__edit_sub_category_dialog_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__edit_sub_category_dialog_form__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__delete_sub_category_dialog_form__ = __webpack_require__("./resources/assets/js/app/views/dashboard/marking/sub-categories/components/delete-sub-category-dialog-form.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__delete_sub_category_dialog_form___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__delete_sub_category_dialog_form__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -27058,6 +27085,64 @@ var render = function() {
               _c(
                 "v-list-tile-action",
                 [
+                  _c(
+                    "v-btn",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: index !== 0,
+                          expression: "index !== 0"
+                        }
+                      ],
+                      attrs: { icon: "", flat: "" },
+                      nativeOn: {
+                        click: function($event) {
+                          _vm.CategoriesObj.levelUpCategory(Category.id)
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("keyboard_arrow_up")])],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list-tile-action",
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value:
+                            _vm.CategoriesObj.Categories.length !== index + 1,
+                          expression:
+                            "CategoriesObj.Categories.length !== index+1"
+                        }
+                      ],
+                      attrs: { icon: "", flat: "" },
+                      nativeOn: {
+                        click: function($event) {
+                          _vm.CategoriesObj.levelDownCategory(Category.id)
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("keyboard_arrow_down")])],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list-tile-action",
+                [
                   _c("categories-list-tile-action-edit-dialog", {
                     attrs: {
                       category: Category,
@@ -27674,6 +27759,69 @@ var render = function() {
                   _c("v-list-tile-title", {
                     domProps: { textContent: _vm._s(SubCategory.name) }
                   })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list-tile-action",
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: index !== 0,
+                          expression: "index !== 0"
+                        }
+                      ],
+                      attrs: { icon: "", flat: "" },
+                      nativeOn: {
+                        click: function($event) {
+                          _vm.SubCategoriesObj.levelUpSubCategory(
+                            SubCategory.id
+                          )
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("keyboard_arrow_up")])],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-list-tile-action",
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value:
+                            _vm.SubCategoriesObj.subCategories.length !==
+                            index + 1,
+                          expression:
+                            "SubCategoriesObj.subCategories.length !== index+1"
+                        }
+                      ],
+                      attrs: { icon: "", flat: "" },
+                      nativeOn: {
+                        click: function($event) {
+                          _vm.SubCategoriesObj.levelDownSubCategory(
+                            SubCategory.id
+                          )
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("keyboard_arrow_down")])],
+                    1
+                  )
                 ],
                 1
               ),
@@ -32279,6 +32427,36 @@ var render = function() {
         ],
         1
       ),
+      _vm._v(" "),
+      _vm.errorExists
+        ? _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "", "justify-space-around": "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm10: "", md8: "", lg6: "", xl4: "" } },
+                [
+                  _c("alert-component", {
+                    attrs: {
+                      messages: _vm.CategoriesObj.LevelUpErrors.id,
+                      type: "error"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("alert-component", {
+                    attrs: {
+                      messages: _vm.CategoriesObj.LevelDownErrors.id,
+                      type: "error"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e(),
       _vm._v(" "),
       _vm.CategoriesObj.isRequestInProgress ? _c("progress-circular") : _vm._e()
     ],
