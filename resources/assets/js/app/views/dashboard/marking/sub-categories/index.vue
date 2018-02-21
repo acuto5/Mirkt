@@ -12,7 +12,7 @@
             </v-flex>
 
             <!-- Sub-categories list -->
-            <v-flex xs12 sm8 offset-sm2 md6 offset-md3>
+            <v-flex xs12 sm8 offset-sm2 md6 offset-md3 v-show="SubCategoriesObj.subCategories.length">
                 <sub-categories-list :sub-categories-obj="SubCategoriesObj"/>
             </v-flex>
 
@@ -25,6 +25,8 @@
         <!-- Errors -->
         <v-layout row wrap justify-space-around v-if="errorExists()">
             <v-flex xs12 sm10 md8 lg6 xl4>
+                <alert-component :messages="SubCategoriesObj.LevelUpErrors.id" type="error"/>
+                <alert-component :messages="SubCategoriesObj.LevelDownErrors.id" type="error"/>
                 <alert-component :messages="SubCategoriesObj.UpdateSubCategoriesErrors.id" type="error"/>
             </v-flex>
         </v-layout>
@@ -57,7 +59,9 @@
 		},
 		methods   : {
 			errorExists () {
-				return !!this.SubCategoriesObj.UpdateSubCategoriesErrors.id.length;
+				return !!this.SubCategoriesObj.UpdateSubCategoriesErrors.id.length
+					|| !!this.SubCategoriesObj.LevelUpErrors.id.length
+					|| !!this.SubCategoriesObj.LevelDownErrors.id.length;
 			},
 		},
 	}

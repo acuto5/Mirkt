@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-layout row wrap v-show="!CategoriesObj.isRequestInProgress">
+        <v-layout row wrap v-show="!CategoriesObj.isRequestInProgress && !errorExists()">
             <!-- Title -->
             <v-flex xs12 mb-2 class="text-xs-center">
                 <h2 class="headline">Kategorijos</h2>
@@ -18,7 +18,7 @@
         </v-layout>
 
         <!-- Errors -->
-        <v-layout row wrap justify-space-around v-if="errorExists">
+        <v-layout row wrap justify-space-around v-if="errorExists()">
             <v-flex xs12 sm10 md8 lg6 xl4>
                 <alert-component :messages="CategoriesObj.LevelUpErrors.id" type="error"/>
                 <alert-component :messages="CategoriesObj.LevelDownErrors.id" type="error"/>
@@ -46,6 +46,11 @@
 			return {
 				CategoriesObj: new Categories()
 			}
+		},
+		methods   : {
+			errorExists () {
+				return !!this.CategoriesObj.LevelUpErrors.id.length || !!this.CategoriesObj.LevelDownErrors.id.length;
+			},
 		},
 	}
 </script>  

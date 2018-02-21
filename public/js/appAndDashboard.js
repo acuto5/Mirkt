@@ -3990,6 +3990,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return {
 			CategoriesObj: new __WEBPACK_IMPORTED_MODULE_2__Categories__["a" /* default */]()
 		};
+	},
+
+	methods: {
+		errorExists: function errorExists() {
+			return !!this.CategoriesObj.LevelUpErrors.id.length || !!this.CategoriesObj.LevelDownErrors.id.length;
+		}
 	}
 });
 
@@ -4514,6 +4520,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -4539,7 +4547,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 	methods: {
 		errorExists: function errorExists() {
-			return !!this.SubCategoriesObj.UpdateSubCategoriesErrors.id.length;
+			return !!this.SubCategoriesObj.UpdateSubCategoriesErrors.id.length || !!this.SubCategoriesObj.LevelUpErrors.id.length || !!this.SubCategoriesObj.LevelDownErrors.id.length;
 		}
 	}
 });
@@ -30740,6 +30748,14 @@ var render = function() {
           _c(
             "v-flex",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.SubCategoriesObj.subCategories.length,
+                  expression: "SubCategoriesObj.subCategories.length"
+                }
+              ],
               attrs: {
                 xs12: "",
                 sm8: "",
@@ -30792,6 +30808,20 @@ var render = function() {
                 "v-flex",
                 { attrs: { xs12: "", sm10: "", md8: "", lg6: "", xl4: "" } },
                 [
+                  _c("alert-component", {
+                    attrs: {
+                      messages: _vm.SubCategoriesObj.LevelUpErrors.id,
+                      type: "error"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("alert-component", {
+                    attrs: {
+                      messages: _vm.SubCategoriesObj.LevelDownErrors.id,
+                      type: "error"
+                    }
+                  }),
+                  _vm._v(" "),
                   _c("alert-component", {
                     attrs: {
                       messages:
@@ -32361,8 +32391,9 @@ var render = function() {
             {
               name: "show",
               rawName: "v-show",
-              value: !_vm.CategoriesObj.isRequestInProgress,
-              expression: "!CategoriesObj.isRequestInProgress"
+              value:
+                !_vm.CategoriesObj.isRequestInProgress && !_vm.errorExists(),
+              expression: "!CategoriesObj.isRequestInProgress && !errorExists()"
             }
           ],
           attrs: { row: "", wrap: "" }
@@ -32428,7 +32459,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.errorExists
+      _vm.errorExists()
         ? _c(
             "v-layout",
             { attrs: { row: "", wrap: "", "justify-space-around": "" } },
