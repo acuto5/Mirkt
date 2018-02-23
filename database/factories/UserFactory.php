@@ -23,3 +23,19 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+// Admin
+$factory->state(App\User::class, 'admin', [
+	'name' => 'Admin',
+	'email' => 'tsmulkys@gmail.com',
+	'password' => bcrypt('password'),
+	'is_admin' => 1
+]);
+
+// Moderator
+$factory->state(App\User::class, 'moderator', [
+	'name' => 'Moderator',
+	'email' => 'samsamot0@gmail.com',
+	'password' => bcrypt('password'),
+	'is_moderator' => 1
+]);
