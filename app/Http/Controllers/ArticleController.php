@@ -14,6 +14,7 @@ use App\Http\Requests\Articles\SearchDraftArticlesRequest;
 use App\Http\Requests\Articles\SearchPublishedArticlesRequest;
 use App\Http\Requests\Articles\StoreArticleRequest;
 use App\Image;
+use App\Jobs\DeleteArticle;
 use App\Tag;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -122,6 +123,9 @@ class ArticleController extends Controller
 		
 		// Store and sync images with article
 		$article->storeImages($request, 'images');
+		
+		// Create work
+		DeleteArticle::dispatch($article)->delay(now()->addMinutes(15));
 		
 		return response()->json($article->id);
 	}
