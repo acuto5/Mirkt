@@ -27,7 +27,11 @@ class User extends Authenticatable
 	];
 	
 	public function isBlessed(){
-		return $this->is_admin || $this->is_moderator;
+		return $this->isSuperAdmin() || $this->isAdmin() || $this->isModerator();
+	}
+	
+	public function isSuperAdmin(){
+		return $this->is_super_admin;
 	}
 	
 	public function isAdmin(){

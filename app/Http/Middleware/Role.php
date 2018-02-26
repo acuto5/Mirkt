@@ -17,15 +17,23 @@ class Role
 	public function handle($request, Closure $next, $role)
 	{
 		if (Auth::check()) {
-			if ($request->user()->isAdmin() && strtolower($role) === 'admin') {
+			// Pass only super admin
+			if ($request->user()->isSuperAdmin() && strtolower($role) === 'super') {
 				return $next($request);
-				
 			}
-			if (($request->user()->isModerator() || $request->user()->isAdmin()) && strtolower($role) === 'moderator') {
+			
+			// Pass only Admin and super admin
+			if (($request->user()->isAdmin() || $request->user()->isSuperAdmin()) && strtolower($role) === 'admin') {
+				return $next($request);
+			}
+			
+			// Pass moderators admins and super admins
+			if ($request->user()->isBlessed() && strtolower($role) === 'moderator') {
 				return $next($request);
 			}
 		}
 		
+		// Not passed
 		return response()->json(['message' => 'You don\'t have ' . $role . ' role.'], 500);
 	}
 }
