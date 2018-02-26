@@ -2,26 +2,26 @@
 
 namespace App\Jobs;
 
-use App\Article;
+use App\SubCategory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class DeleteArticle implements ShouldQueue
+class DeleteSubCategory implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $article;
+    protected $subCategory;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Article $article)
+    public function __construct(SubCategory $subCategory)
     {
-        $this->article = $article;
+        $this->subCategory = $subCategory;
     }
 
     /**
@@ -31,6 +31,6 @@ class DeleteArticle implements ShouldQueue
      */
     public function handle()
     {
-		$this->article->forceDelete();
+        $this->subCategory->forceDelete();
     }
 }

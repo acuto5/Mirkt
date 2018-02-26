@@ -10,6 +10,7 @@ use App\Http\Requests\SubCategories\GetRequest;
 use App\Http\Requests\SubCategories\LevelDownRequest;
 use App\Http\Requests\SubCategories\LevelUpRequest;
 use App\Http\Requests\SubCategories\StoreRequest;
+use App\Jobs\DeleteSubCategory;
 use App\SubCategory;
 
 class SubCategoryController extends Controller
@@ -48,6 +49,8 @@ class SubCategoryController extends Controller
 		
 		// Level up all subCategories
 		$this->levelUpAllSubCategories($subCategory->category_id);
+		
+		DeleteSubCategory::dispatch($subCategory)->delay(now()->addMinutes(15));
 		
 		return response()->json(true);
 	}

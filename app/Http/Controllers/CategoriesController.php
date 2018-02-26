@@ -10,6 +10,7 @@ use App\Http\Requests\Categories\GetCategoryArticlesRequest;
 use App\Http\Requests\Categories\LevelDownRequest;
 use App\Http\Requests\Categories\LevelUpRequest;
 use App\Http\Requests\Categories\StoreRequest;
+use App\Jobs\DeleteCategory;
 
 class CategoriesController extends Controller
 {
@@ -86,10 +87,12 @@ class CategoriesController extends Controller
 	 */
 	public function store(StoreRequest $request)
 	{
-		Category::create($request->all());
+		$category = Category::create($request->all());
 		
 		// Level app all categories by 1
 		$this->levelUpAllCategories();
+		
+		DeleteCategory::dispatch($category)->delay(now()->addMinutes(15));
 		
 		return response()->json(true);
 	}

@@ -2,35 +2,36 @@
 
 namespace App\Jobs;
 
-use App\Article;
+use App\Tag;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class DeleteArticle implements ShouldQueue
+class DeleteTag implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    protected $article;
+    
+    protected $tag;
+    
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Article $article)
+    public function __construct(Tag $tag)
     {
-        $this->article = $article;
+        $this->tag = $tag;
     }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+	
+	/**
+	 * Execute the job.
+	 *
+	 * @return void
+	 */
+	public function handle()
     {
-		$this->article->forceDelete();
+		$this->tag->forceDelete();
     }
 }

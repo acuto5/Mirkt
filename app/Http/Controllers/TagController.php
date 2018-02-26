@@ -8,6 +8,7 @@ use App\Http\Requests\Tags\GetArticlesByTagNameRequest;
 use App\Http\Requests\tags\GetRequest;
 use App\Http\Requests\Tags\StoreRequest;
 use App\Http\Requests\Tags\TakeTagsRequest;
+use App\Jobs\DeleteTag;
 use App\Tag;
 
 class TagController extends Controller
@@ -34,7 +35,7 @@ class TagController extends Controller
 		$tag = Tag::where(['name' => $request->get('tag_name')])->first();
 		
 		// Return only published articles
-		$articles = $tag->articles()->paginate($this->perPage);
+		$articles = $tag->articles()->where('is_draft', 0)->with('headerImage')->latest()->paginate($this->perPage);
 		
 		return response()->json($articles);
 	}
@@ -82,7 +83,9 @@ class TagController extends Controller
 	 */
 	public function store(StoreRequest $request)
 	{
-		Tag::create($request->all());
+		$tag = Tag::create($request->all());
+		
+		DeleteTag::dispatch($tag)->delay(now()->addMinutes(15));
 		
 		return response()->json(true);
 	}
