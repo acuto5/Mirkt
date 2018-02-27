@@ -39,7 +39,7 @@ class ArticleController extends Controller
 			$where = array_merge($where, [['is_draft', 0]]);
 		}
 		
-		$article = Article::select(['id', 'title', 'content', 'user_id', 'is_draft', 'sub_category_id', 'created_at', 'updated_at'])
+		$article = Article::select(['id', 'title', 'content', 'user_id', 'is_draft', 'sub_category_id', 'created_at', 'updated_at', 'deletion_at'])
 			->where($where)
 			->with(['author:id,name', 'headerImage', 'tags', 'images', 'subCategory' => function($query){
 				$query->select('id', 'name', 'category_id')->with('category:id,name');
@@ -124,8 +124,13 @@ class ArticleController extends Controller
 		// Store and sync images with article
 		$article->storeImages($request, 'images');
 		
-		// Create work
-		DeleteArticle::dispatch($article)->delay(now()->addMinutes(15));
+		// Article will be deleted at
+		$fifteenMinutes = now()->addMinutes(15);
+		$article->deletion_at = $fifteenMinutes;
+		$article->save();
+		
+		// Create job
+		DeleteArticle::dispatch($article)->delay($fifteenMinutes);
 		
 		return response()->json($article->id);
 	}

@@ -115,7 +115,7 @@
             <!-- Content -->
             <v-flex xs12 md10 my-2 >
                 <div v-html="SingleArticleObj.Article.content"></div>
-                <!--<div class="ql-editor"> {{ SingleArticleObj.Article.content }}</div>-->
+                <div v-if="SingleArticleObj.Article.deletion_at" class="mt-2 warning--text">Bus ištrinta: {{ SingleArticleObj.Article.deletion_at }}</div>
             </v-flex>
 
             <!-- Divider -->

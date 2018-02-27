@@ -24893,7 +24893,16 @@ var render = function() {
                   domProps: {
                     innerHTML: _vm._s(_vm.SingleArticleObj.Article.content)
                   }
-                })
+                }),
+                _vm._v(" "),
+                _vm.SingleArticleObj.Article.deletion_at
+                  ? _c("div", { staticClass: "mt-2 warning--text" }, [
+                      _vm._v(
+                        "Bus ištrinta: " +
+                          _vm._s(_vm.SingleArticleObj.Article.deletion_at)
+                      )
+                    ])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c(
