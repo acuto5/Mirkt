@@ -3303,16 +3303,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	name: 'editProfile',
 	data: function data() {
 		return {
 			User: window.USER,
-			inputs: { email: window.USER.email }, // From blade template
+			inputs: { // From blade template
+				email: window.USER.email,
+				is_admin: !!window.USER.is_admin,
+				is_moderator: !!window.USER.is_moderator
+			},
 			Errors: new window.Errors({
 				email: [],
 				password: [],
+				is_admin: [],
+				is_moderator: [],
 				new_password: [],
 				new_password_confirmation: []
 			}),
@@ -3332,15 +3348,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			axios.patch(this.updateUserProfileURL, this.inputs).then(function (response) {
 				return _this.successUpdateProfile();
 			}).catch(function (error) {
-				_this.FlashMessages.setError(error.response.data.message);
 				_this.Errors.setLarevelErrors(error);
 			});
 		},
 		successUpdateProfile: function successUpdateProfile() {
 			window.FlashMessages.setSuccess('Atnaujinta. Prisijunkite iš naujo.');
-
-			// Go to home page
-			this.$router.push({ name: 'home' });
 
 			// Reload page(user now is logout)
 			window.location.reload();
@@ -23302,6 +23314,34 @@ var render = function() {
                         _vm.$set(_vm.inputs, "new_password_confirmation", $$v)
                       },
                       expression: "inputs.new_password_confirmation"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-checkbox", {
+                    attrs: {
+                      label: "Adminas",
+                      "error-messages": _vm.Errors.is_admin
+                    },
+                    model: {
+                      value: _vm.inputs.is_admin,
+                      callback: function($$v) {
+                        _vm.$set(_vm.inputs, "is_admin", $$v)
+                      },
+                      expression: "inputs.is_admin"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-checkbox", {
+                    attrs: {
+                      label: "Moderatorius",
+                      "error-messages": _vm.Errors.is_moderator
+                    },
+                    model: {
+                      value: _vm.inputs.is_moderator,
+                      callback: function($$v) {
+                        _vm.$set(_vm.inputs, "is_moderator", $$v)
+                      },
+                      expression: "inputs.is_moderator"
                     }
                   }),
                   _vm._v(" "),

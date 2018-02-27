@@ -23,6 +23,10 @@ class UserController extends Controller
 			// Update email
 			$user->email = $request->email;
 			
+			// Change role
+			$user->is_admin     = $request->get('is_admin', false);
+			$user->is_moderator = $request->get('is_moderator', false);
+			
 			// Update password if new password given
 			if (isset($request->new_password)) {
 				$user->password = Hash::make($request->new_password);

@@ -33,6 +33,16 @@
                             v-model="inputs.new_password_confirmation"
                             :error-messages="Errors.new_password_confirmation"
                     />
+                    <v-checkbox
+                            label="Adminas"
+                            v-model="inputs.is_admin"
+                            :error-messages="Errors.is_admin"
+                    />
+                    <v-checkbox
+                            label="Moderatorius"
+                            v-model="inputs.is_moderator"
+                            :error-messages="Errors.is_moderator"
+                    />
                     <v-btn
                             outline
                             type="submit"
@@ -51,10 +61,16 @@
 		data(){
 			return {
 				User: window.USER,
-				inputs: {email: window.USER.email}, // From blade template
+				inputs: { // From blade template
+					email: window.USER.email,
+					is_admin: !!window.USER.is_admin,
+					is_moderator: !!window.USER.is_moderator
+                },
 				Errors: new window.Errors({
 					email: [],
 					password: [],
+					is_admin: [],
+					is_moderator: [],
 					new_password: [],
 					new_password_confirmation: [],
 				}),
@@ -71,15 +87,11 @@
 				axios.patch(this.updateUserProfileURL, this.inputs)
 					.then(response => this.successUpdateProfile())
 					.catch(error => {
-						this.FlashMessages.setError(error.response.data.message);
 						this.Errors.setLarevelErrors(error);
 					});
 			},
 			successUpdateProfile: function () {
 				window.FlashMessages.setSuccess('Atnaujinta. Prisijunkite iš naujo.');
-
-				// Go to home page
-				this.$router.push({name: 'home'});
 
 				// Reload page(user now is logout)
 				window.location.reload();
