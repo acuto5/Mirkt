@@ -12,7 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 		// Admin user
+		factory(\App\User::class)->states('superAdmin')->create();
 		factory(\App\User::class)->states('admin')->create();
+		factory(\App\User::class)->states('moderator')->create();
 	
 		// Tags
 		factory(\App\Tag::class, 50)->create();

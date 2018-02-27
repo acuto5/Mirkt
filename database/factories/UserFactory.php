@@ -24,10 +24,18 @@ $factory->define(App\User::class, function (Faker $faker) {
     ];
 });
 
+// Super admin
+$factory->state(App\User::class, 'superAdmin', [
+	'name' => 'Super',
+	'email' => 'super@mirkt.com',
+	'password' => bcrypt('password'),
+	'is_super_admin' => 1
+]);
+
 // Admin
 $factory->state(App\User::class, 'admin', [
 	'name' => 'Admin',
-	'email' => 'tsmulkys@gmail.com',
+	'email' => 'admin@mirkt.com',
 	'password' => bcrypt('password'),
 	'is_admin' => 1
 ]);
@@ -35,7 +43,7 @@ $factory->state(App\User::class, 'admin', [
 // Moderator
 $factory->state(App\User::class, 'moderator', [
 	'name' => 'Moderator',
-	'email' => 'samsamot0@gmail.com',
+	'email' => 'moderator@mirkt.com',
 	'password' => bcrypt('password'),
 	'is_moderator' => 1
 ]);
