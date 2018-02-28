@@ -5,77 +5,104 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Http\Requests\Articles\DeleteRequest;
 use App\Http\Requests\Articles\EditArticleRequest;
-use App\Http\Requests\Articles\GetAllArticlesRequest;
 use App\Http\Requests\Articles\GetAllDraftArticlesRequest;
+use App\Http\Requests\Articles\GetAllPublishedArticlesRequest;
 use App\Http\Requests\Articles\GetArticleRequest;
 use App\Http\Requests\Articles\MarkArticleAsDraftRequest;
 use App\Http\Requests\Articles\MarkArticleAsPublishedRequest;
 use App\Http\Requests\Articles\SearchDraftArticlesRequest;
 use App\Http\Requests\Articles\SearchPublishedArticlesRequest;
 use App\Http\Requests\Articles\StoreArticleRequest;
-use App\Image;
 use App\Jobs\DeleteArticle;
-use App\Tag;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-	const ARTICLES_PER_PAGE = 12;
+	const ARTICLES_PER_PAGE    = 12;
+	const DELETE_AFTER_MINUTES = 15;
+	
+	private $request;
+	
+	private $additionalRequestData;
+	
+	private $article;
+	
+	private $articlesCollection;
 	
 	/**
-	 * @param GetArticleRequest $request
+	 * @param \App\Http\Requests\Articles\GetArticleRequest $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function getArticle(GetArticleRequest $request)
 	{
-		$responseCode = 200;
-		$where        = [['id', $request->id]];
+		$where = [
+			['id', $request->id],
+		];
+		
+		$select = [
+			'id',
+			'title',
+			'content',
+			'user_id',
+			'is_draft',
+			'sub_category_id',
+			'created_at',
+			'updated_at',
+			'deletion_at',
+		];
+		
+		$with = [
+			'author:id,name',
+			'headerImage',
+			'tags',
+			'images',
+			'subCategory' => function ($query) {
+				$query->select('id', 'name', 'category_id')->with('category:id,name');
+			},
+		];
 		
 		// If user isn`t moderator allow search only in published articles
 		if (Auth::guest() || (Auth::check() && !$request->user()->isBlessed())) {
-			$where = array_merge($where, [['is_draft', 0]]);
+			$where[] = ['is_draft', 0];
 		}
 		
-		$article = Article::select(['id', 'title', 'content', 'user_id', 'is_draft', 'sub_category_id', 'created_at', 'updated_at', 'deletion_at'])
-			->where($where)
-			->with(['author:id,name', 'headerImage', 'tags', 'images', 'subCategory' => function($query){
-				$query->select('id', 'name', 'category_id')->with('category:id,name');
-			}])
-			->first();
+		// Get article
+		$this->article = Article::select($select)->where($where)->with($with)->first();
 		
 		// If article not found send 204 status code
-		if ($article === null) {
-			$responseCode = 204;
-		};
+		$responseCode = ($this->article === null) ? 204 : 200;
 		
-		return response()->json($article, $responseCode);
+		return response()->json($this->article, $responseCode);
 	}
 	
 	/**
+	 * @param \App\Http\Requests\Articles\GetAllArticlesRequest $request
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function getAll(GetAllArticlesRequest $request)
+	public function getAllPublishedArticles(GetAllPublishedArticlesRequest $request)
 	{
-		$orderBy = 'created_at';
-		$where   = [['is_draft', false]];
-		$select  = ['id', 'title', 'sub_category_id', 'created_at'];
-		$isDesc  = (isset($request->order_by) && $request->order_by === 'oldest') ? 'asc' : 'desc';
+		$this->request = $request;
+		$orderBy       = 'created_at';
+		$with          = 'headerImage';
+		$where         = [['is_draft', false]];
+		$select        = ['id', 'title', 'sub_category_id', 'created_at'];
+		$isDesc        = (isset($this->request->order_by) && $this->request->order_by === 'oldest') ? 'asc' : 'desc';
 		
 		// if sub_category_id selected
-		if (isset($request->sub_category_id)) {
-			$where[] = ['sub_category_id', $request->sub_category_id];
+		if (isset($this->request->sub_category_id)) {
+			$where[] = ['sub_category_id', $this->request->sub_category_id];
 		}
 		
-		$articles = Article::select($select)
+		// Get article
+		$this->articlesCollection = Article::select($select)
 			->where($where)
-			->with('headerImage')
+			->with($with)
 			->orderBy($orderBy, $isDesc)
 			->paginate(self::ARTICLES_PER_PAGE);
 		
-		return response()->json($articles);
+		return response()->json($this->articlesCollection);
 	}
 	
 	/**
@@ -86,17 +113,18 @@ class ArticleController extends Controller
 	public function getAllDraftArticles(GetAllDraftArticlesRequest $request)
 	{
 		$orderBy = 'created_at';
-		$where   = ['is_draft', true];
+		$with    = 'headerImage';
+		$where   = [['is_draft', true]];
 		$select  = ['id', 'title', 'sub_category_id', 'created_at'];
 		$isDesc  = (isset($request->order_by) && $request->order_by === 'oldest') ? 'asc' : 'desc';
 		
-		$articles = Article::select($select)
-			->where([$where])
-			->with('headerImage')
+		$this->articlesCollection = Article::select($select)
+			->where($where)
+			->with($with)
 			->orderBy($orderBy, $isDesc)
 			->paginate(self::ARTICLES_PER_PAGE);
 		
-		return response()->json($articles);
+		return response()->json($this->articlesCollection);
 	}
 	
 	/**
@@ -106,33 +134,34 @@ class ArticleController extends Controller
 	 */
 	public function store(StoreArticleRequest $request)
 	{
-		// Article will be associated with user
-		$request->merge(['user_id' => Auth::id(), 'content' => clean($request->get('content'))]);
+		$this->request               = $request;
+		$this->article               = new Article();
+		$this->additionalRequestData = [
+			'user_id'     => Auth::id(),
+			'deletion_at' => now()->addMinutes(self::DELETE_AFTER_MINUTES),
+			'content'     => $this->request->get('content'),
+		];
+		
+		// Marge additional data with request
+		$this->request->merge($this->additionalRequestData);
 		
 		// Create new Article
-		$article = new Article($request->all());
-		
-		// Save article there to get article id
-		$article->save();
-		
-		// Make this article searchable with sub_category_id (Laravel scout bugs...)
-		Auth::user()->articles()->searchable();
+		$this->article->fill($this->request->all())->save();
 		
 		// Store and sync tags with article
-		$this->syncTags($article, $request);
+		$this->article->syncTags($this->request->tags_ids);
 		
 		// Store and sync images with article
-		$article->storeImages($request, 'images');
-		
-		// Article will be deleted at
-		$fifteenMinutes = now()->addMinutes(15);
-		$article->deletion_at = $fifteenMinutes;
-		$article->save();
+		$this->article->storeImages(
+			$this->request->file('images'),
+			$this->request->get('is_default_img_old'),
+			$this->request->get('default_img_id')
+		);
 		
 		// Create job
-		DeleteArticle::dispatch($article)->delay($fifteenMinutes);
+		DeleteArticle::dispatch($this->article)->delay($this->request->get('deletion_at'));
 		
-		return response()->json($article->id);
+		return response()->json($this->article->id);
 	}
 	
 	/**
@@ -142,24 +171,30 @@ class ArticleController extends Controller
 	 */
 	public function edit(EditArticleRequest $request)
 	{
-		// Find article
-		$article = Article::find($request->id);
-		
-		$request->merge(['content' => clean($request->get('content'))]);
+		$this->request = $request;
+		$this->article = Article::find($this->request->id);
 		
 		// update fillable fields
-		$article->update($request->all());
+		$this->article->update($this->request->all());
 		
 		// Edit article tags
-		$this->syncTags($article, $request);
+		$this->article->syncTags($this->request->tags_ids);
 		
 		// Sync old article images
-		$this->syncOldImages($article, $request);
+		$this->article->syncOldImages(
+			$this->request->get('old_images_ids'),
+			$this->request->get('is_default_img_old'),
+			$this->request->get('default_image_id')
+		);
 		
 		// Store and sync new images with article
-		$article->storeImages($request, 'images');
+		$this->article->storeImages(
+			$this->request->file('images'),
+			$this->request->get('is_default_img_old'),
+			$this->request->get('default_image_id')
+		);
 		
-		return response()->json($article->id);
+		return response()->json($this->article->id);
 	}
 	
 	/**
@@ -169,10 +204,10 @@ class ArticleController extends Controller
 	 */
 	public function markArticleAsDraft(MarkArticleAsDraftRequest $request)
 	{
-		$article = Article::find($request->id);
+		$this->article = Article::find($request->id);
 		
-		$article->is_draft = true;
-		$article->save();
+		$this->article->is_draft = true;
+		$this->article->save();
 		
 		return response()->json(true);
 	}
@@ -184,10 +219,10 @@ class ArticleController extends Controller
 	 */
 	public function markArticleAsPublished(MarkArticleAsPublishedRequest $request)
 	{
-		$article = Article::find($request->id);
+		$this->article = Article::find($request->id);
 		
-		$article->is_draft = false;
-		$article->save();
+		$this->article->is_draft = false;
+		$this->article->save();
 		
 		return response()->json(true);
 	}
@@ -199,11 +234,9 @@ class ArticleController extends Controller
 	 */
 	public function delete(DeleteRequest $request)
 	{
-		$article = Article::find($request->id);
+		$this->article = Article::find($request->id);
 		
-		$article->tags()->detach();
-		$article->detachImages();
-		$article->delete();
+		$this->article->forceDelete();
 		
 		return response()->json(true);
 	}
@@ -215,16 +248,19 @@ class ArticleController extends Controller
 	 */
 	public function searchInPublishedArticles(SearchPublishedArticlesRequest $request)
 	{
+		$this->request = $request;
+		
 		// Find articles
-		$articles = $this->searchArticles($request, false);
-		$articles->load('headerImage');
+		$this->articlesCollection = $this->searchArticles(false);
+		$this->articlesCollection->load('headerImage');
 		
 		// If user choose orderBy, by oldest articles
-		$this->sortByArticlesDates($articles, 'created_at', $request->order_by);
-		// Filter, witch columns will be visible
-		$this->hideColumns($articles, ['content', 'sub_category_id', 'is_draft']);
+		$this->sortByArticlesDates('created_at', $this->request->get('order_by'));
 		
-		return response()->json($articles->toArray());
+		// Remove columns
+		$this->hideColumns(['content', 'sub_category_id', 'is_draft']);
+		
+		return response()->json($this->articlesCollection->toArray());
 	}
 	
 	/**
@@ -234,154 +270,83 @@ class ArticleController extends Controller
 	 */
 	public function searchInDraftArticles(SearchDraftArticlesRequest $request)
 	{
+		$this->request = $request;
+		
 		// Find articles
-		$articles = $this->searchArticles($request, true);
-		$articles->load('headerImage');
+		$this->articlesCollection = $this->searchArticles(true);
+		$this->articlesCollection->load('headerImage');
 		
 		// If user choose orderBy, by oldest articles
-		$this->sortByArticlesDates($articles, 'created_at', $request->order_by);
+		$this->sortByArticlesDates('created_at', $this->request->get('order_by'));
 		
-		// Filter, witch columns will be visible
-		$this->hideColumns($articles, ['content', 'sub_category_id', 'is_draft']);
+		// Remove columns
+		$this->hideColumns(['content', 'sub_category_id', 'is_draft']);
 		
-		return response()->json($articles);
+		return response()->json($this->articlesCollection->toArray());
 	}
 	
 	/**
-	 * @param \App\Article             $article
-	 * @param \Illuminate\Http\Request $request
-	 */
-	private function syncOldImages(Article $article, Request $request)
-	{
-		if (isset($request->old_images_ids)) {
-			$this->dissociateAllImages($article->images);
-			
-			$this->associateImagesWithArticle($article, $request->old_images_ids);
-			
-			// Make old img as default
-			if ($request->is_default_img_old) {
-				$this->makeImageDefault($request->default_image_id);
-			}
-		} else {
-			$this->dissociateAllImages($article->images);
-		}
-	}
-	
-	/**
-	 * @param integer $imageID
-	 */
-	private function makeImageDefault($imageID)
-	{
-		$image = Image::find($imageID);
-		
-		$image->update(['is_default' => true]);
-	}
-	
-	/**
-	 * @param \App\Article $article
-	 * @param              $idsArray
-	 */
-	private function associateImagesWithArticle(Article $article, $idsArray)
-	{
-		$images = Image::find($idsArray);
-		
-		$article->images()->saveMany($images);
-	}
-	
-	/**
-	 * @param \Illuminate\Database\Eloquent\Collection $images
-	 */
-	private function dissociateAllImages(Collection $images)
-	{
-		foreach ($images as $image) {
-			$image->is_default = false; // make all images not default
-			$image->article()->dissociate();
-			$image->save();
-		}
-	}
-	
-	/**
-	 * @param \App\Article             $article
-	 * @param \Illuminate\Http\Request $request
-	 */
-	private function syncTags(Article $article, Request $request)
-	{
-		if (isset($request->tags_ids)) {
-			$tags = Tag::find($request->tags_ids);
-			
-			$article->tags()->sync($tags);
-		} else {
-			$article->tags()->detach();
-		}
-	}
-	
-	/**
-	 * @param \Illuminate\Http\Request $request
-	 * @param                          $searchInDraft
+	 * @param boolean $searchInDraft
 	 *
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	private function searchArticles(Request $request, $searchInDraft)
+	private function searchArticles($searchInDraft)
 	{
-		if (!isset($request->sub_category_id)) {
-			return $this->searchArticlesWithoutSubCategory($request, $searchInDraft);
+		if ($this->request->get('sub_category_id', false)) {
+			return $this->searchArticlesWithSubCategory($searchInDraft);
 		}
 		
-		return $this->searchArticlesWithSubCategory($request, $searchInDraft);
+		return $this->searchArticlesWithoutSubCategory($searchInDraft);
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
-	 * @param                          $searchInDraft
+	 * @param boolean $searchInDraft
 	 *
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	private function searchArticlesWithoutSubCategory(Request $request, $searchInDraft)
+	private function searchArticlesWithoutSubCategory($searchInDraft)
 	{
-		return Article::search($request->title)
+		return Article::search($this->request->get('title'))
 			->where('is_draft', (int)$searchInDraft)
 			->paginate(self::ARTICLES_PER_PAGE);
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
-	 * @param                          $searchInDraft
+	 * @param boolean $searchInDraft
 	 *
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	private function searchArticlesWithSubCategory(Request $request, $searchInDraft)
+	private function searchArticlesWithSubCategory($searchInDraft)
 	{
-		return Article::search($request->title)
+		return Article::search($this->request->get('title'))
 			->where('is_draft', (int)$searchInDraft)
-			->where('sub_category_id', $request->sub_category_id)
+			->where('sub_category_id', $this->request->get('sub_category_id'))
 			->paginate(self::ARTICLES_PER_PAGE);
 		
 	}
 	
 	/**
-	 * @param        $articles
-	 * @param        $columnName
+	 * @param string $columnName
 	 * @param string $sortBy
 	 */
-	private function sortByArticlesDates($articles, $columnName, $sortBy = 'newest')
+	private function sortByArticlesDates($columnName, $sortBy = 'newest')
 	{
 		if ($sortBy === 'oldest') {
-			$sortedCollection = $articles->sortBy($columnName)->values();
+			$sortedCollection = $this->articlesCollection->sortBy($columnName)->values();
 		} else {
 			// newest
-			$sortedCollection = $articles->sortByDesc($columnName)->values();
+			$sortedCollection = $this->articlesCollection->sortByDesc($columnName)->values();
 		}
 		
-		$articles->setCollection($sortedCollection);
+		$this->articlesCollection->setCollection($sortedCollection);
 	}
 	
 	/**
-	 * @param $articles
-	 * @param $columns
+	 * @param array $columns
 	 */
-	private function hideColumns($articles, $columns)
+	private function hideColumns($columns)
 	{
-		$articles->transform(function($article) use($columns){
+		$this->articlesCollection->transform(function ($article) use ($columns) {
 			return $article->makeHidden($columns)->toArray();
 		});
 	}

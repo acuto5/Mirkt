@@ -4,7 +4,7 @@ namespace App\Http\Requests\Articles;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetAllArticlesRequest extends FormRequest
+class GetAllPublishedArticlesRequest extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class GetAllArticlesRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'order_by' => 'nullable|string|min:6|max:6',
+			'order_by'        => 'nullable|string|min:6|max:6',
 			'sub_category_id' => 'nullable|numeric|exists:sub_categories,id',
-			'page' => 'nullable|numeric'
+			'page'            => 'nullable|numeric',
 		];
 	}
 }

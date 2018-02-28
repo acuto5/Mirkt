@@ -13,7 +13,8 @@ use App\Tag;
 
 class TagController extends Controller
 {
-	private $perPage= 10;
+	const PER_PAGE = 10;
+	
 	/**
 	 * @param \App\Http\Requests\tags\GetRequest $request
 	 *
@@ -23,57 +24,35 @@ class TagController extends Controller
 	{
 		
 		if (isset($request->tag)) {
-			$tags = Tag::search($request->tag)->paginate($this->perPage);
+			$tags = Tag::search($request->tag)->paginate(self::PER_PAGE);
 		} else {
-			$tags = Tag::paginate($this->perPage);
+			$tags = Tag::paginate(self::PER_PAGE);
 		}
 		
 		return response()->json($tags);
 	}
 	
+	/**
+	 * @param \App\Http\Requests\Tags\GetArticlesByTagNameRequest $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function getArticlesByTagName(GetArticlesByTagNameRequest $request){
 		$tag = Tag::where(['name' => $request->get('tag_name')])->first();
 		
 		// Return only published articles
-		$articles = $tag->articles()->where('is_draft', 0)->with('headerImage')->latest()->paginate($this->perPage);
+		$articles = $tag->articles()->where('is_draft', 0)->with('headerImage')->latest()->paginate(self::PER_PAGE);
 		
 		return response()->json($articles);
 	}
 	
+	/**
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function getAll(){
 		$allTags = Tag::select('id', 'name')->get();
 		
 		return response()->json($allTags);
-	}
-	
-	/**
-	 * @param \App\Http\Requests\Tags\TakeTagsRequest $request
-	 *
-	 * @return \Illuminate\Http\JsonResponse
-	 */
-	public function takeTags(TakeTagsRequest $request)
-	{
-		if (isset($request->searchTagInput)) {
-			// Get all tags
-			$tags = Tag::search($request->searchTagInput)->get();
-			
-			// Remove already selected tags
-			if(isset($request->tags_ids)){
-				$tags->transform(function ($tag) use($request){
-					return $tag->whereNotIn('id', $request->tags_ids);
-				});
-			}
-			
-			// Limit how mach tags will be returned
-			$tags->take($request->take);
-		} elseif(isset($request->tags_ids)){
-			$tags = Tag::whereNotIn('id', $request->tags_ids)->take($request->take)->get();
-		} else {
-			// Take only how mach user requested
-			$tags = Tag::take($request->take)->get();
-		}
-		
-		return response()->json($tags->all());
 	}
 	
 	/**

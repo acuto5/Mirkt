@@ -12,9 +12,7 @@ class Category extends Model
 	
 	public function subCategories()
 	{
-		return $this->hasMany('App\SubCategory', 'category_id')
-			->select('id', 'name', 'level', 'category_id')
-			->orderBy('level', 'desc');
+		return $this->hasMany('App\SubCategory', 'category_id');
 	}
 	
 	public function forceDelete()

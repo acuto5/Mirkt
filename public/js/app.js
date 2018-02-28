@@ -24446,7 +24446,7 @@ var render = function() {
               "v-flex",
               { key: subIndex, attrs: { xs12: "" } },
               [
-                subCategory.latest_six_published_articles.length
+                subCategory.latest_eight_published_articles.length
                   ? _c(
                       "div",
                       { staticClass: "ma-2" },
@@ -24502,7 +24502,7 @@ var render = function() {
                 _c(
                   "v-layout",
                   { attrs: { row: "", wrap: "" } },
-                  _vm._l(subCategory.latest_six_published_articles, function(
+                  _vm._l(subCategory.latest_eight_published_articles, function(
                     article,
                     artIndex
                   ) {
@@ -57483,7 +57483,7 @@ function searchPublishedArticlesAxiosRequest(inputs) {
 }
 
 function getAllPublishedArticlesAxiosRequest(query) {
-	var url = window.URLS.getAllArticles;
+	var url = window.URLS.getAllPublishedArticles;
 
 	return axios.get(url, { params: query });
 }
@@ -57558,7 +57558,7 @@ var ArticlesList = function () {
 		// Urls
 		this[$_markAsDraftURL] = window.URLS.markArticleAsDraft;
 		this[$_markAsPublishedURL] = window.URLS.markArticleAsPublished;
-		this[$_getAllPublishedArticlesURL] = window.URLS.getAllArticles;
+		this[$_getAllPublishedArticlesURL] = window.URLS.getAllPublishedArticles;
 		this[$_getAllDraftArticlesURL] = window.URLS.getAllDraftArticles;
 		this[$_searchArticlesInDraftURL] = window.URLS.searchInDraftArticles;
 		this[$_searchInPublishedArticlesURL] = window.URLS.searchInPublishedArticles;

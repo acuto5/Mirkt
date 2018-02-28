@@ -26,10 +26,11 @@ $factory->define(App\User::class, function (Faker $faker) {
 
 // Super admin
 $factory->state(App\User::class, 'superAdmin', [
-	'name' => 'Super',
-	'email' => 'super@mirkt.lt',
-	'password' => bcrypt('password'),
-	'is_super_admin' => 1
+	'name'           => 'Super',
+	'email'          => 'super@mirkt.lt',
+	'password'       => bcrypt('password'),
+	'is_super_admin' => 1,
+	'is_admin'       => 1,
 ]);
 
 // Admin

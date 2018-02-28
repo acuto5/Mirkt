@@ -16,6 +16,13 @@ use App\SubCategory;
 class SubCategoryController extends Controller
 {
 	const ARTICLES_PER_PAGE = 12;
+	const DELETE_AFTER_MINUTES = 15;
+	
+	private $request;
+	
+	private $subCategory;
+	
+	private $subCategoriesCollection;
 	
 	/**
 	 * @param \App\Http\Requests\SubCategories\GetRequest $request
@@ -24,55 +31,67 @@ class SubCategoryController extends Controller
 	 */
 	public function getSubCategories(GetRequest $request)
 	{
-		$subCategories = Category::find($request->id)->subCategories;
+		$this->subCategoriesCollection = Category::find($request->id)->subCategories()->orderBy('level', 'desc')->get();
 		
-		return response()->json($subCategories);
+		return response()->json($this->subCategoriesCollection);
 	}
 	
+	/**
+	 * @param \App\Http\Requests\SubCategories\GetArticlesBySubCategoryNameRequest $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function getArticlesBySubCategoryName(GetArticlesBySubCategoryNameRequest $request)
 	{
-		$sub_category = SubCategory::where('name', $request->sub_category_name)->first();
+		$this->subCategory = SubCategory::where('name', $request->sub_category_name)->first();
 		
-		$articles = $sub_category->articles()->where('is_draft', 0)->with('headerImage')->orderBy('created_at', 'desc')->paginate(self::ARTICLES_PER_PAGE);
+		$articles = $this->subCategory->articles()
+			->where('is_draft', 0)
+			->with('headerImage')
+			->latest()
+			->paginate(self::ARTICLES_PER_PAGE);
 		
 		return response()->json($articles);
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\SubCategories\StoreRequest $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function store(StoreRequest $request)
 	{
-		$subCategory = SubCategory::create($request->all());
+		$this->request = $request;
+		$this->subCategory = new SubCategory();
+		$this->subCategory->fill($this->request->all())->save();
 		
 		// Level up all subCategories
-		$this->levelUpAllSubCategories($subCategory->category_id);
+		$this->levelUpAllSubCategories($this->subCategory->category_id);
 		
-		DeleteSubCategory::dispatch($subCategory)->delay(now()->addMinutes(15));
+		DeleteSubCategory::dispatch($this->subCategory)->delay(now()->addMinutes(self::DELETE_AFTER_MINUTES));
 		
 		return response()->json(true);
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\SubCategories\EditRequest $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function edit(EditRequest $request)
 	{
-		$subCategory = SubCategory::find($request->id);
+		$this->request = $request;
+		$this->subCategory = SubCategory::find($request->id);
 		
 		// Check if category change
-		if($subCategory->category_id !== $request->get('category_id')){
-			$this->levelDownAllSubCategories($subCategory->category_id, $subCategory->level + 1);
-			$this->levelUpAllSubCategories($request->get('category_id'));
-			$request['level'] = 1;
+		if($this->subCategory->category_id !== $this->request->get('category_id')){
+			$this->levelDownAllSubCategories($this->subCategory->category_id, $this->subCategory->level + 1);
+			$this->levelUpAllSubCategories($this->request->get('category_id'));
+			$this->request['level'] = 1;
 		}
 		
 		// Update subCategory
-		$subCategory->update($request->all());
+		$this->subCategory->update($this->request->all());
 		
 		
 		return response()->json(true);
@@ -85,19 +104,16 @@ class SubCategoryController extends Controller
 	 */
 	public function delete(DeleteRequest $request)
 	{
-		/**
-		 * Only Admin/Moderator
-		 */
-		$subCategory = SubCategory::where('id', $request->id)->withCount('articles')->first();
+		$this->subCategory = SubCategory::where('id', $request->id)->withCount('articles')->first();
 		
-		if ($subCategory->articles_count > 0) {
+		if ($this->subCategory->articles_count > 0) {
 			return response()->json(['message' => 'This sub-category has relationships with articles.'], 500);
 		}
 		
 		// delete
-		$subCategory->delete();
+		$this->subCategory->delete();
 		
-		$this->levelDownAllSubCategories($subCategory->category_id, $subCategory->level);
+		$this->levelDownAllSubCategories($this->subCategory->category_id, $this->subCategory->level);
 		
 		return response()->json(true);
 	}
@@ -109,22 +125,19 @@ class SubCategoryController extends Controller
 	 */
 	public function levelUp(LevelUpRequest $request)
 	{
-		/**
-		 * Only Admin/Moderator
-		 */
-		$subCategory = SubCategory::find($request->id);
-		$countSubCategories = SubCategory::where('category_id', $subCategory->category_id)->count();
+		$this->subCategory = SubCategory::find($request->id);
+		$countSubCategories = SubCategory::where('category_id', $this->subCategory->category_id)->count();
 		
-		if ($subCategory->level < $countSubCategories) {
-			$this->levelDownNeighbourSubCategory($subCategory->category_id, $subCategory->level + 1);
+		if ($this->subCategory->level < $countSubCategories) {
+			$this->levelDownNeighbourSubCategory($this->subCategory->category_id, $this->subCategory->level + 1);
 			
-			$subCategory->level++;
-			$subCategory->save();
+			$this->subCategory->level++;
+			$this->subCategory->save();
 			
 			return response()->json(true);
 		}
 		
-		return response()->json(false);
+		return response()->json(false, 500);
 	}
 	
 	/**
@@ -134,21 +147,22 @@ class SubCategoryController extends Controller
 	 */
 	public function levelDown(LevelDownRequest $request)
 	{
-		$subCategory = SubCategory::find($request->id);
+		$this->subCategory = SubCategory::find($request->id);
 		
-		if ($subCategory->level > 0) {
-			$this->levelUpNeighbourCategory($subCategory->category_id, $subCategory->level - 1);
+		if ($this->subCategory->level > 0) {
+			$this->levelUpNeighbourCategory($this->subCategory->category_id, $this->subCategory->level - 1);
 			
-			$subCategory->level--;
-			$subCategory->save();
+			$this->subCategory->level--;
+			$this->subCategory->save();
 			
 			return response()->json(true);
 		}
 		
-		return response()->json(false);
+		return response()->json(false, 500);
 	}
 	
 	/**
+	 * @param integer $category_id
 	 * @param integer $NeighbourLevel
 	 */
 	private function levelUpNeighbourCategory($category_id, $NeighbourLevel)
@@ -162,6 +176,7 @@ class SubCategoryController extends Controller
 	}
 	
 	/**
+	 * @param integer $category_id
 	 * @param integer $NeighbourLevel
 	 */
 	private function levelDownNeighbourSubCategory($category_id, $NeighbourLevel)
@@ -174,6 +189,9 @@ class SubCategoryController extends Controller
 		}
 	}
 	
+	/**
+	 * @param integer $category_id
+	 */
 	private function levelUpAllSubCategories($category_id)
 	{
 		$subCategories = SubCategory::where('category_id', $category_id)->get();
@@ -184,6 +202,10 @@ class SubCategoryController extends Controller
 		});
 	}
 	
+	/**
+	 * @param integer $category_id
+	 * @param integer $levelDownFrom
+	 */
 	private function levelDownAllSubCategories($category_id, $levelDownFrom)
 	{
 		$subCategories = SubCategory::where([['level', '>', $levelDownFrom],['category_id', $category_id]])->get();

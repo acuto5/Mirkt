@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-	protected $fillable = ['url', 'is_default'];
+	protected $fillable = ['url', 'is_default', 'article_id'];
 	protected $visible  = ['id', 'url', 'is_default'];
 	
 	public function user()
@@ -17,5 +17,12 @@ class Image extends Model
 	public function article()
 	{
 		return $this->belongsTo(Article::class, 'article_id');
+	}
+	
+	static public function makeImageDefault($imageID)
+	{
+		$image = self::find($imageID);
+		
+		$image->update(['is_default' => true]);
 	}
 }

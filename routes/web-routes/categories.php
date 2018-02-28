@@ -1,6 +1,6 @@
 <?php
 // Get categories
-Route::get('/get-categories', 'CategoriesController@get')->name('getCategories');
+Route::get('/get-categories', 'CategoriesController@getAllCategories')->name('getCategories');
 
 // Get Categories with sub-categories and articles
 Route::get('/get-categories-with-sub-categories-and-articles', 'CategoriesController@getCategoriesWithSubCategoriesAndArticles')->name('getCategoriesWithSubCategoriesAndArticles');
@@ -25,4 +25,4 @@ Route::get('/get-categories-and-sub-categories', 'CategoriesController@getCatego
 	->name('getCategoriesAndSubCategories');
 
 // Get category articles
-Route::get('/get-category-articles', 'CategoriesController@getCategoryArticles')->name('getCategoryArticles');
+Route::get('/get-category-articles', 'CategoriesController@getCategoryArticlesByName')->name('getCategoryArticles');

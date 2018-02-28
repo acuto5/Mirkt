@@ -1,6 +1,6 @@
 <?php
-// Get all articles
-Route::get('/get-all-articles', 'ArticleController@getAll')->name('getAllArticles');
+// Get all published articles
+Route::get('/get-all-published-articles', 'ArticleController@getAllPublishedArticles')->name('getAllPublishedArticles');
 
 // Get single article
 Route::get('/get-article', 'ArticleController@getArticle')->name('getArticle');

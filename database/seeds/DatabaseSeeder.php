@@ -19,15 +19,20 @@ class DatabaseSeeder extends Seeder
 		// Tags
 		factory(\App\Tag::class, 50)->create();
 	
-		// Categories with sub- categories
+		// Categories with sub-categories
 		factory(\App\Category::class, 5)->create()->each(function ($category) {
-			$category->subCategories()
-				->saveMany(factory(\App\SubCategory::class, 3)
-							   ->create(['category_id' => $category->id]));
+			// Create 3 subCategories
+			// Use foreach to override level
+			for($i=0; $i<3; $i++) {
+				$category->subCategories()
+					->save(
+						factory(\App\SubCategory::class)->create(['category_id' => $category->id, 'level' => $i])
+					);
+			}
 		});
 	
 		//Published articles with images
-		factory(\App\Article::class, 50)
+		factory(\App\Article::class, 150)
 			->create(
 				[
 					'user_id' => \App\User::first()->id,

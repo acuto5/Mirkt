@@ -13,7 +13,6 @@ Route::patch('/edit-tag', 'TagController@edit')->name('editTag')->middleware('au
 Route::delete('/delete-tag', 'TagController@delete')->name('deleteTag')->middleware('auth', 'role:moderator');
 
 // Take tags
-Route::get('/take-tags', 'TagController@takeTags')->name('takeTags')->middleware('auth', 'role:moderator');
 Route::get('/get-all-tags', 'TagController@getAll')->name('getAllTags')->middleware('auth', 'role:moderator');
 
 // Get articles by tag name

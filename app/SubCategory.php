@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubCategory extends Model
 {
-	protected $visible = ['id', 'category_id', 'category', 'name', 'level', 'articles', 'latestSixPublishedArticles'];
+	protected $visible = ['id', 'category_id', 'category', 'name', 'level', 'articles', 'latestEightPublishedArticles'];
 	
 	protected $fillable = ['category_id', 'name', 'level'];
 	
@@ -17,16 +17,16 @@ class SubCategory extends Model
 	
 	public function articles()
 	{
-		return $this->hasMany('App\Article', 'sub_category_id')->with('headerImage')->latest();
+		return $this->hasMany('App\Article', 'sub_category_id');
 	}
 	
-	public function latestSixPublishedArticles()
+	public function latestEightPublishedArticles()
 	{
 		return $this->hasMany('App\Article', 'sub_category_id')
 			->where('is_draft', 0)
 			->with('headerImage')
 			->latest()
-			->take(6);
+			->take(8);
 	}
 	
 	public function forceDelete()

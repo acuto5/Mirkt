@@ -41,11 +41,6 @@ class User extends Authenticatable
 		return $this->is_moderator;
 	}
 	
-	public function avatar()
-	{
-		return $this->hasOne('App\Image', 'user_id');
-	}
-	
 	public function articles()
 	{
 		return $this->hasMany('App\Article', 'user_id');

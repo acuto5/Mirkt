@@ -14,16 +14,23 @@ use App\Jobs\DeleteCategory;
 
 class CategoriesController extends Controller
 {
-	const ARTICLES_PER_PAGE = 12;
+	const ARTICLES_PER_PAGE    = 12;
+	const DELETE_AFTER_MINUTES = 15;
+	
+	private $request;
+	
+	private $category;
+	
+	private $categoriesCollection;
 	
 	/**
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function get()
+	public function getAllCategories()
 	{
-		$categories = Category::select('id', 'name', 'level')->orderBy('level', 'desc')->get();
+		$this->categoriesCollection = Category::select('id', 'name', 'level')->orderBy('level', 'desc')->get();
 		
-		return response()->json($categories);
+		return response()->json($this->categoriesCollection);
 	}
 	
 	/**
@@ -31,12 +38,12 @@ class CategoriesController extends Controller
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function getCategoryArticles(GetCategoryArticlesRequest $request)
+	public function getCategoryArticlesByName(GetCategoryArticlesRequest $request)
 	{
-		$category = Category::where(['name' => $request->category_name])->first();
+		$this->category = Category::where(['name' => $request->category_name])->first();
 		
 		// Find all sub-categories ids
-		$subCategoriesIds = $category->subCategories()->select('id')->get();
+		$subCategoriesIds = $this->category->subCategories()->select('id')->get();
 		
 		// Find articles
 		$articles = Article::where('is_draft', 0)
@@ -53,12 +60,15 @@ class CategoriesController extends Controller
 	 */
 	public function getCategoriesAndSubCategories()
 	{
-		$categories = Category::select('id', 'name')
-			->with('subCategories:id,name,category_id')
-			->orderBy('level', 'desc')
-			->get();
+		$with = [
+			'subCategories' => function ($query) {
+				$query->select('id', 'name', 'level', 'category_id')->orderBy('level', 'desc');
+			},
+		];
 		
-		return response()->json($categories);
+		$this->categoriesCollection = Category::select('id', 'name')->with($with)->orderBy('level', 'desc')->get();
+		
+		return response()->json($this->categoriesCollection);
 	}
 	
 	/**
@@ -69,15 +79,15 @@ class CategoriesController extends Controller
 		/**
 		 * ** Query not effective! **
 		 */
-		$data = Category::with('subCategories')->get();
+		$this->category = Category::with('subCategories')->get();
 		
-		foreach ($data as $category){
+		foreach ($this->category as $category) {
 			foreach ($category->subCategories as $subCategory){
-				$subCategory->latestSixPublishedArticles;
+				$subCategory->latestEightPublishedArticles;
 			}
 		}
 		
-		return response()->json($data);
+		return response()->json($this->category);
 	}
 	
 	/**
@@ -87,66 +97,70 @@ class CategoriesController extends Controller
 	 */
 	public function store(StoreRequest $request)
 	{
-		$category = Category::create($request->all());
+		$this->request  = $request;
+		$this->category = new Category();
+		$this->category->fill($this->request->all())->save();
 		
 		// Level app all categories by 1
 		$this->levelUpAllCategories();
 		
-		DeleteCategory::dispatch($category)->delay(now()->addMinutes(15));
+		DeleteCategory::dispatch($this->category)->delay(now()->addMinutes(self::DELETE_AFTER_MINUTES));
 		
 		return response()->json(true);
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Categories\EditRequest $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function edit(EditRequest $request)
 	{
-		$category = Category::find($request->id);
+		$this->request  = $request;
+		$this->category = Category::find($request->id);
 		
-		$category->update($request->all());
+		$this->category->update($this->request->all());
 		
 		return response()->json(true);
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Categories\DestroyRequest $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function destroy(DestroyRequest $request)
 	{
-		$category = Category::where('id', $request->id)->withCount('subCategories')->first();
+		$this->category = Category::where('id', $request->id)->withCount('subCategories')->first();
 		
-		if ($category->sub_categories_count > 0) {
+		if ($this->category->sub_categories_count > 0) {
 			return response()->json(['message' => 'Cant delete category. This category has sub-categories.'], 500);
 		}
 		
-		$category->delete();
+		$this->category->delete();
 		
-		$this->levelDownAllCategories($category->level);
+		$this->levelDownAllCategories($this->category->level);
 		
 		return response()->json(true);
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Categories\LevelUpRequest $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function levelUp(LevelUpRequest $request)
 	{
-		$category        = Category::find($request->id);
+		$this->request   = $request;
+		$this->category  = Category::find($request->id);
 		$countCategories = Category::count();
 		
-		if ($category->level < $countCategories) {
+		if ($this->category->level < $countCategories) {
 			
-			$this->levelDownNeighbourCategory($category->level + 1);
+			$this->levelDownNeighbourCategory($this->category->level + 1);
 			
-			$category->level++;
-			$category->save();
+			$this->category->level++;
+			$this->category->save();
 			
 			return response()->json(true);
 		}
@@ -155,19 +169,19 @@ class CategoriesController extends Controller
 	}
 	
 	/**
-	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Categories\LevelDownRequest $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function levelDown(LevelDownRequest $request)
 	{
-		$category = Category::find($request->id);
+		$this->category = Category::find($request->id);
 		
-		if ($category->level > 0) {
-			$this->levelUpNeighbourCategory($category->level - 1);
+		if ($this->category->level > 0) {
+			$this->levelUpNeighbourCategory($this->category->level - 1);
 			
-			$category->level--;
-			$category->save();
+			$this->category->level--;
+			$this->category->save();
 			
 			return response()->json(true);
 		}
@@ -175,6 +189,9 @@ class CategoriesController extends Controller
 		return response()->json(false);
 	}
 	
+	/**
+	 * @param integer $level
+	 */
 	private function levelUpNeighbourCategory($level)
 	{
 		$category = Category::where('level', $level)->first();
@@ -185,6 +202,9 @@ class CategoriesController extends Controller
 		}
 	}
 	
+	/**
+	 * @param integer $level
+	 */
 	private function levelDownNeighbourCategory($level)
 	{
 		$category = Category::where('level', $level)->first();
@@ -197,9 +217,9 @@ class CategoriesController extends Controller
 	
 	private function levelUpAllCategories()
 	{
-		$categories = Category::get();
+		$categories = Category::all();
 		
-		$categories->map(function ($category){
+		$categories->map(function ($category) {
 			$category->level++;
 			$category->save();
 			
@@ -207,11 +227,14 @@ class CategoriesController extends Controller
 		});
 	}
 	
+	/**
+	 * @param integer $levelDownFrom
+	 */
 	private function levelDownAllCategories($levelDownFrom)
 	{
 		$categories = Category::where('level', '>', $levelDownFrom)->get();
 		
-		$categories->map(function ($category){
+		$categories->map(function ($category) {
 			$category->level--;
 			$category->save();
 		});
