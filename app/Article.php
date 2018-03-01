@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
 
@@ -19,6 +18,11 @@ class Article extends Model
 	];
 	
 	protected $fillable = ['title', 'content', 'sub_category_id', 'user_id'];
+	
+	public function setTitleAttribute($title)
+	{
+		$this->attributes['title'] = clean($title);
+	}
 	
 	public function setContentAttribute($content){
 		$this->attributes['content'] = clean($content);

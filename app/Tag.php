@@ -17,6 +17,11 @@ class Tag extends Model
 		return $this->belongsToMany('App\Article', 'tag_article');
 	}
 	
+	public function setNameAttribute($name)
+	{
+		$this->attributes['name'] = clean($name);
+	}
+	
 	public function forceDelete()
 	{
 		$this->tag->articles()->detach();

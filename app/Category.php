@@ -15,6 +15,11 @@ class Category extends Model
 		return $this->hasMany('App\SubCategory', 'category_id');
 	}
 	
+	public function setNameAtrribute($name)
+	{
+		$this->attributes['name'] = clean($name);
+	}
+	
 	public function forceDelete()
 	{
 		$articles = $this->subCategories()->get();

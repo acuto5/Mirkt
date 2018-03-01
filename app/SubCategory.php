@@ -20,6 +20,11 @@ class SubCategory extends Model
 		return $this->hasMany('App\Article', 'sub_category_id');
 	}
 	
+	public function setNameAttribute($name)
+	{
+		$this->attributes['name'] = clean($name);
+	}
+	
 	public function latestEightPublishedArticles()
 	{
 		return $this->hasMany('App\Article', 'sub_category_id')
