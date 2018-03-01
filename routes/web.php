@@ -9,6 +9,8 @@ require_once 'web-routes/categories.php';        	// Categories
 require_once 'web-routes/sub-categories.php';    	// Sub categories
 require_once 'web-routes/articles.php';        		// Articles
 require_once 'web-routes/users.php';                // User
+require_once 'web-routes/contacts.php';             // Contacts
+require_once 'web-routes/website-info.php';         // Website info
 
 
 // Allow access files from storage

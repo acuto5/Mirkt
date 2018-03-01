@@ -4,6 +4,9 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Image::class, function (Faker $faker) {
 	$diskName = 'article-images';
+	static $countImages = 1;
+	
+	echo "Create " . $countImages++ . " App\Image \n";
 	
 	return [
 		'url'        => \Illuminate\Support\Facades\Storage::disk($diskName)

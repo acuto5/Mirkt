@@ -1,7 +1,7 @@
 <template>
     <v-snackbar bottom color="warning" :timeout="6000" v-model="showMessage">
         {{ message }}
-        <v-btn flat icon small @click.native="removeWarning()">
+        <v-btn flat @click.native="removeWarning()">
             <v-icon class="title">close</v-icon>
         </v-btn>
     </v-snackbar>

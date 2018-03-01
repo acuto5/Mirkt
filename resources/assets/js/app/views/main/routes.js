@@ -1,12 +1,12 @@
 import Home from './home/routes';
-import AboutMe from './about-me/routes';
+import Info from './info/routes';
 import Articles from './articles/routes';
 import UserRoutes from './user/routes';
 
 let childs = [];
 
 childs = childs.concat(Home);
-childs = childs.concat(AboutMe);
+childs = childs.concat(Info);
 childs = childs.concat(Articles);
 childs = childs.concat(UserRoutes);
 

@@ -1,6 +1,6 @@
 <template>
     <v-toolbar-items class="ml-3" v-if="$vuetify.breakpoint.smAndUp">
-         <!--Articles menu -->
+        <!--Articles menu -->
         <v-menu offset-y v-model="isMenuVisible">
             <v-btn flat slot="activator">Straipsniai</v-btn>
             <v-list>
@@ -39,17 +39,17 @@
             </v-list>
         </v-menu>
 
-        <!-- About me -->
+        <!-- About -->
         <v-menu offset-y >
-            <v-btn flat slot="activator">Apie mane</v-btn>
+            <v-btn flat slot="activator">Info</v-btn>
             <v-list>
-                <!-- Link to GitHub-->
-                <v-list-tile :href="linkToMyGitHub">
-                    <v-list-tile-title>GitHub</v-list-tile-title>
-                </v-list-tile>
                 <!-- Contacts -->
                 <v-list-tile :to="routerLinkToContactsPage">
                     <v-list-tile-title>Kontaktai</v-list-tile-title>
+                </v-list-tile>
+                <!-- Contacts -->
+                <v-list-tile :to="routerLinkToWebsiteInfoPage">
+                    <v-list-tile-title>Puslapio informacija</v-list-tile-title>
                 </v-list-tile>
             </v-list>
         </v-menu>
@@ -71,8 +71,8 @@
 				isToolbarSideIconVisible   : false,
 				isMenuVisible              : false,
 				categoriesWithSubCategories: window.CategoriesWithSubCategories,
-				linkToMyGitHub             : 'https://github.com/TSmulkys',
 				routerLinkToContactsPage   : { name: 'contacts' },
+				routerLinkToWebsiteInfoPage: { name: 'website-info' },
 			}
 		},
 		methods   : {

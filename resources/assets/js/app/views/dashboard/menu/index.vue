@@ -1,20 +1,32 @@
 <template>
     <v-navigation-drawer fixed temporary clipped app width="250" dark v-model="tempValue">
         <v-list subheader>
+            <!-- Groups tiles -->
             <v-list-group v-for="(group, index) in groups" :value="isGroupActive(index)" :key="group.title">
-                <v-list-tile slot="activator">
+                <v-list-tile slot="activator" :disabled="!isUserHasRole(group.role)">
+                    <!-- Icon -->
                     <v-list-tile-action>
                         <v-icon v-text="group.icon"/>
                     </v-list-tile-action>
+
+                    <!-- Group title and link-->
                     <v-list-tile-content>
                         <v-list-tile-title v-text="group.title"/>
                     </v-list-tile-content>
                 </v-list-tile>
+
+                <!-- Sub-group tile-->
                 <v-list-tile v-for="subGroup in group.subGroups" :to="subGroup.to"
-                             :active-class="activeSubGroupClass" :key="subGroup.title" ripple>
-                    <v-list-tile-action>
-                        <!--<v-icon v-text="subGroup.icon"/>-->
-                    </v-list-tile-action>
+                             :active-class="activeSubGroupClass"
+                             :key="subGroup.title"
+                             ripple
+                             :disabled="!isUserHasRole(subGroup.role)"
+                >
+
+                    <!-- Space -->
+                    <v-list-tile-action/>
+
+                    <!-- Sub-group title and link -->
                     <v-list-tile-content>
                         <v-list-tile-title v-text="subGroup.title"/>
                     </v-list-tile-content>
@@ -31,19 +43,20 @@
 		},
 		data() {
 			return {
-				tempValue: false,
+				User               : window.USER,
+				tempValue          : false,
 				activeSubGroupClass: 'grey darken-2 teal--text text--accent-2',
-				groups: [
+				groups             : [
 					{
-						title: 'Straipsniai',
-						icon: 'library_books',
+						title    : 'Straipsniai',
+						icon     : 'library_books',
 						routeName: 'dashboard.articles',
+						role     : 'moderator',
 						subGroups: [
 							{
 								title: 'Visi',
-								icon: 'assignment_turned_in',
-								active: true,
-								to: {
+								role : 'moderator',
+								to   : {
 									name: 'dashboard.articles.all',
 									query: {
 										page: 1
@@ -52,14 +65,14 @@
 							},
 							{
 								title: 'Pridėti',
-								icon: 'note_add',
+								role : 'moderator',
 								to: {
 									name: 'dashboard.articles.add'
 								}
 							},
 							{
 								title: 'Juodraščiai',
-								icon: 'assignment',
+								role : 'moderator',
 								to: {
 									name: 'dashboard.articles.draft',
 									query: {
@@ -70,32 +83,51 @@
 						]
 					},
 					{
-						title: 'Žymėjimas',
-						icon: 'collections_bookmark',
+						title    : 'Žymėjimas',
+						icon     : 'collections_bookmark',
 						routeName: 'dashboard.marking',
+						role     : 'moderator',
 						subGroups: [
 							{
 								title: 'Kategorijos',
-								icon: 'bookmark_border',
-								to: {name: 'categories'}
+								to   : { name: 'categories' },
+								role : 'admin',
 							},
 							{
 								title: 'Sub-kategorijos',
-								icon: 'bookmark',
-								to: {name: 'sub-categories'}
+								to   : { name: 'sub-categories' },
+								role : 'moderator',
 							},
 							{
 								title: 'Žymės',
-								icon: 'label',
 								to: {
 									name: 'tags',
 									query: {
 										page: 1
 									}
-								}
+								},
+								role : 'moderator',
 							}
 						]
-					}
+					},
+					{
+						title    : 'Info',
+						icon     : 'info',
+						routeName: 'dashboard.info',
+						role     : 'super',
+						subGroups: [
+							{
+								title: 'Kontaktai',
+								to   : { name: 'dashboard.info.contacts' },
+								role : 'super',
+							},
+							{
+								title: 'Puslapio info',
+								to   : { name: 'dashboard.info.website-info' },
+								role : 'super',
+							},
+						],
+					},
 				]
 			}
 		},
@@ -110,7 +142,19 @@
 		methods: {
 			isGroupActive(index) {
 				return this.groups[index].routeName === this.$route.meta.parentName;
-			}
+			},
+			isUserHasRole ( $role ) {
+				switch ($role) {
+					case 'moderator':
+						return !!this.User.is_moderator || !!this.User.is_admin || !!this.User.is_super_admin;
+					case 'admin':
+						return !!this.User.is_admin || !!this.User.is_super_admin;
+					case 'super':
+						return !!this.User.is_super_admin;
+					default:
+						return false;
+				}
+			},
 		}
 	}
 </script>  

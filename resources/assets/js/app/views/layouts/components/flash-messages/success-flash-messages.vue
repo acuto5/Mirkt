@@ -1,7 +1,7 @@
 <template>
     <v-snackbar bottom color="success" :timeout="6000" v-model="showMessage">
         {{ message }}
-        <v-btn flat icon small @click.native="removeSuccess()">
+        <v-btn flat @click.native="removeSuccess()">
             <v-icon class="title">close</v-icon>
         </v-btn>
     </v-snackbar>

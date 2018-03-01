@@ -19,9 +19,9 @@
         "vue": "^2.5.13",
         "vue-router": "^3.0.1",
         "vue-template-compiler": "^2.5.13",
-        "vuetify": "^1.0.2"
+        "vuetify": "^1.0.4"
     },
     "dependencies": {
-        "vue2-medium-editor": "^1.1.2"
+        "vue2-medium-editor": "^1.1.3"
     }
 }
