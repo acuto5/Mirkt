@@ -1,7 +1,10 @@
 <template>
-    <v-footer class="pa-1">
+    <v-footer>
         <v-spacer/>
-        <p class="body-1" v-text="'\u00A9' + thisYear + ' ' + author"></p>
+        <span class="body-1">
+            {{ '\u00A9' + thisYear }}
+            <router-link :to="{name: 'contacts'}" class="router-link white--text">{{ author }}</router-link>
+        </span>
         <v-spacer/>
     </v-footer>
 </template>
@@ -11,7 +14,7 @@
 		name: "main-footer",
 		data() {
 			return {
-				author: 'Tomas Smulkys',
+				author: ' Tomas Smulkys',
 				thisYear: new Date().getFullYear()
 			}
 		}

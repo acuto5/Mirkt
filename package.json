@@ -11,17 +11,17 @@
     },
     "devDependencies": {
         "axios": "^0.16.2",
-        "cross-env": "^5.1.3",
+        "cross-env": "^5.1.4",
         "laravel-mix": "^1.7.2",
         "lodash": "^4.17.5",
-        "quill": "^1.3.5",
+        "quill": "^1.3.6",
         "quill-delta": "^3.6.2",
-        "vue": "^2.5.13",
+        "vue": "^2.5.16",
         "vue-router": "^3.0.1",
-        "vue-template-compiler": "^2.5.13",
-        "vuetify": "^1.0.4"
+        "vue-template-compiler": "^2.5.16",
+        "vuetify": "^1.0.10"
     },
     "dependencies": {
-        "vue2-medium-editor": "^1.1.3"
+        "vue2-medium-editor": "^1.1.4"
     }
 }

@@ -68,6 +68,7 @@ class SubCategoryController extends Controller
 		// Level up all subCategories
 		$this->levelUpAllSubCategories($this->subCategory->category_id);
 		
+		// queue work
 		DeleteSubCategory::dispatch($this->subCategory)->delay(now()->addMinutes(self::DELETE_AFTER_MINUTES));
 		
 		return response()->json(true);
