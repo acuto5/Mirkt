@@ -3243,6 +3243,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_progress_circular__ = __webpack_require__("./resources/assets/js/app/views/components/progress-circular.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_progress_circular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_progress_circular__);
+//
 //
 //
 //
@@ -3254,7 +3257,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+	components: { ProgressCircular: __WEBPACK_IMPORTED_MODULE_0__components_progress_circular___default.a },
 	data: function data() {
 		return {
 			contacts: { content: '' },
@@ -3290,6 +3296,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_progress_circular__ = __webpack_require__("./resources/assets/js/app/views/components/progress-circular.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_progress_circular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_progress_circular__);
+//
 //
 //
 //
@@ -3301,7 +3310,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+	components: { ProgressCircular: __WEBPACK_IMPORTED_MODULE_0__components_progress_circular___default.a },
 	data: function data() {
 		return {
 			isRequestInProgress: false,
@@ -23006,6 +23018,16 @@ var render = function() {
     [
       _c(
         "v-layout",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.isRequestInProgress,
+              expression: "!isRequestInProgress"
+            }
+          ]
+        },
         [
           _c("v-flex", { attrs: { xs12: "", sm10: "" } }, [
             _c("div", {
@@ -23014,7 +23036,9 @@ var render = function() {
           ])
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _vm.isRequestInProgress ? _c("progress-circular") : _vm._e()
     ],
     1
   )
@@ -24586,14 +24610,26 @@ var render = function() {
     [
       _c(
         "v-layout",
-        { attrs: { row: "", wrap: "" } },
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.isRequestInProgress,
+              expression: "!isRequestInProgress"
+            }
+          ],
+          attrs: { row: "", wrap: "" }
+        },
         [
           _c("v-flex", { attrs: { xs12: "", sm10: "" } }, [
             _c("div", { domProps: { innerHTML: _vm._s(_vm.contacts.content) } })
           ])
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _vm.isRequestInProgress ? _c("progress-circular") : _vm._e()
     ],
     1
   )

@@ -1,15 +1,19 @@
 <template>
     <v-container>
-        <v-layout row wrap>
+        <v-layout row wrap v-show="!isRequestInProgress">
             <v-flex xs12 sm10>
                 <div v-html="contacts.content"></div>
             </v-flex>
         </v-layout>
+        <progress-circular v-if="isRequestInProgress"/>
     </v-container>
 </template>
 
 <script>
+	import ProgressCircular from "../../../components/progress-circular";
+
 	export default {
+		components: { ProgressCircular },
 		data () {
 			return {
 				contacts           : { content: '' },
