@@ -175,7 +175,7 @@ class ArticleController extends Controller
 		$this->article = Article::find($this->request->id);
 		
 		// update fillable fields
-		$this->article->update($this->request->all());
+		$this->article->update($this->request->except('deletion_at'));
 		
 		// Edit article tags
 		$this->article->syncTags($this->request->tags_ids);
