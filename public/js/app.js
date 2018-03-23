@@ -3504,7 +3504,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -22929,14 +22928,24 @@ var render = function() {
                 [
                   _c(
                     "v-list-tile",
-                    { attrs: { to: _vm.routerLinkToContactsPage } },
+                    {
+                      attrs: {
+                        to: _vm.routerLinkToContactsPage,
+                        "active-class": "teal--text text--accent-2"
+                      }
+                    },
                     [_c("v-list-tile-title", [_vm._v("Kontaktai")])],
                     1
                   ),
                   _vm._v(" "),
                   _c(
                     "v-list-tile",
-                    { attrs: { to: _vm.routerLinkToWebsiteInfoPage } },
+                    {
+                      attrs: {
+                        to: _vm.routerLinkToWebsiteInfoPage,
+                        "active-class": "teal--text text--accent-2"
+                      }
+                    },
                     [_c("v-list-tile-title", [_vm._v("Puslapio informacija")])],
                     1
                   )

@@ -58,11 +58,11 @@
             <v-btn flat slot="activator">Info</v-btn>
             <v-list>
                 <!-- Contacts -->
-                <v-list-tile :to="routerLinkToContactsPage">
+                <v-list-tile :to="routerLinkToContactsPage" active-class="teal--text text--accent-2">
                     <v-list-tile-title>Kontaktai</v-list-tile-title>
                 </v-list-tile>
                 <!-- Contacts -->
-                <v-list-tile :to="routerLinkToWebsiteInfoPage">
+                <v-list-tile :to="routerLinkToWebsiteInfoPage" active-class="teal--text text--accent-2">
                     <v-list-tile-title>Puslapio informacija</v-list-tile-title>
                 </v-list-tile>
             </v-list>

@@ -25,7 +25,6 @@
         <!-- If user is logged in -->
         <user-toolbar-items v-if="User.id"/>
 
-
         <!-- If user not logged in -->
         <guest-toolbar-items v-else/>
     </v-toolbar>
