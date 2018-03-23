@@ -3593,6 +3593,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			axios.patch(this.updateContactsURL, { content: this.contacts.content }).then(function (response) {
 				_this2.isButtonLoading = false;
 				window.FlashMessages.setSuccess('Atnaujinta.');
+				_this2.previewContacts();
 			}).catch(function (error) {
 				_this2.isButtonLoading = false;
 
@@ -3601,8 +3602,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		checkIsUserSuperAdmin: function checkIsUserSuperAdmin() {
 			if (!window.USER.is_super_admin) {
-				this.$router.push({ name: 'home' });
+				this.$router.replace({ name: 'home' });
 			}
+		},
+		previewContacts: function previewContacts() {
+			this.$router.push({ name: 'contacts' });
 		}
 	}
 });
@@ -3712,6 +3716,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			axios.patch(this.updateWebsiteInfoURL, { content: this.WebsiteInfo.content }).then(function (response) {
 				_this2.isButtonLoading = false;
 				window.FlashMessages.setSuccess('Atnaujinta.');
+				_this2.previewWebsiteInfo();
 			}).catch(function (error) {
 				_this2.isButtonLoading = false;
 
@@ -3720,8 +3725,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		checkIsUserSuperAdmin: function checkIsUserSuperAdmin() {
 			if (!window.USER.is_super_admin) {
-				this.$router.push({ name: 'home' });
+				this.$router.replace({ name: 'home' });
 			}
+		},
+		previewWebsiteInfo: function previewWebsiteInfo() {
+			this.$router.push({ name: 'website-info' });
 		}
 	}
 });

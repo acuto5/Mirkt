@@ -109,6 +109,7 @@
 					 .then( response => {
 						 this.isButtonLoading = false;
 						 window.FlashMessages.setSuccess( 'Atnaujinta.' );
+						 this.previewContacts();
 					 } )
 					 .catch( error => {
 						 this.isButtonLoading = false;
@@ -118,8 +119,11 @@
 			},
 			checkIsUserSuperAdmin () {
 				if (!window.USER.is_super_admin) {
-					this.$router.push( { name: 'home' } );
+					this.$router.replace( { name: 'home' } );
 				}
+			},
+			previewContacts () {
+            	this.$router.push({name: 'contacts'});
 			},
 		},
 	};
