@@ -6697,6 +6697,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6704,9 +6714,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	components: { ProgressCircular: __WEBPACK_IMPORTED_MODULE_0__components_progress_circular___default.a },
 	data: function data() {
 		return {
-			contacts: { content: '' },
 			isRequestInProgress: true,
-			getContactsURL: window.URLS.getContacts
+			User: window.USER,
+			contacts: { content: '' },
+			getContactsURL: window.URLS.getContacts,
+			linkToEditContacts: { name: 'dashboard.info.contacts' }
 		};
 	},
 	mounted: function mounted() {
@@ -6726,6 +6738,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				window.FlashMessages.setError(error.response.data.message);
 				_this.isRequestInProgress = false;
 			});
+		},
+		isSuperAdmin: function isSuperAdmin() {
+			return !!this.User.is_super_admin;
 		}
 	}
 });
@@ -6750,6 +6765,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6758,8 +6783,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			isRequestInProgress: false,
+			User: window.USER,
 			websiteInfo: { content: '' },
-			getWebsiteInfoURL: window.URLS.getWebsiteInfo
+			getWebsiteInfoURL: window.URLS.getWebsiteInfo,
+			linkToEditWebsiteInfo: { name: 'dashboard.info.website-info' }
 		};
 	},
 	mounted: function mounted() {
@@ -6779,6 +6806,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				window.FlashMessages.setError(error.response.data.message);
 				_this.isRequestInProgress = false;
 			});
+		},
+		isSuperAdmin: function isSuperAdmin() {
+			return !!this.User.is_super_admin;
 		}
 	}
 });
@@ -26641,14 +26671,38 @@ var render = function() {
               value: !_vm.isRequestInProgress,
               expression: "!isRequestInProgress"
             }
-          ]
+          ],
+          attrs: { wrap: "", row: "" }
         },
         [
           _c("v-flex", { attrs: { xs12: "", sm10: "" } }, [
             _c("div", {
               domProps: { innerHTML: _vm._s(_vm.websiteInfo.content) }
             })
-          ])
+          ]),
+          _vm._v(" "),
+          _vm.isSuperAdmin()
+            ? _c(
+                "v-flex",
+                { attrs: { xs12: "" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        flat: "",
+                        icon: "",
+                        color: "warning",
+                        to: _vm.linkToEditWebsiteInfo
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("edit")])],
+                    1
+                  )
+                ],
+                1
+              )
+            : _vm._e()
         ],
         1
       ),
@@ -30226,7 +30280,30 @@ var render = function() {
         [
           _c("v-flex", { attrs: { xs12: "", sm10: "" } }, [
             _c("div", { domProps: { innerHTML: _vm._s(_vm.contacts.content) } })
-          ])
+          ]),
+          _vm._v(" "),
+          _vm.isSuperAdmin()
+            ? _c(
+                "v-flex",
+                { attrs: { xs12: "" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        flat: "",
+                        icon: "",
+                        color: "warning",
+                        to: _vm.linkToEditContacts
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("edit")])],
+                    1
+                  )
+                ],
+                1
+              )
+            : _vm._e()
         ],
         1
       ),

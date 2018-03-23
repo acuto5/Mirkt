@@ -1,10 +1,20 @@
 <template>
     <v-container>
-        <v-layout v-show="!isRequestInProgress">
+        <v-layout wrap row v-show="!isRequestInProgress">
+            <!-- Content-->
             <v-flex xs12 sm10>
                 <div v-html="websiteInfo.content"></div>
             </v-flex>
+
+            <!-- Edit button link -->
+            <v-flex xs12 v-if="isSuperAdmin()">
+                <v-btn flat icon color="warning" :to="linkToEditWebsiteInfo">
+                    <v-icon>edit</v-icon>
+                </v-btn>
+            </v-flex>
         </v-layout>
+
+        <!-- Progress circular -->
         <progress-circular v-if="isRequestInProgress"/>
     </v-container>
 </template>
@@ -16,9 +26,11 @@
 		components: { ProgressCircular },
 		data () {
 			return {
-				isRequestInProgress: false,
-				websiteInfo        : { content: '' },
-				getWebsiteInfoURL  : window.URLS.getWebsiteInfo,
+				isRequestInProgress  : false,
+				User                 : window.USER,
+				websiteInfo          : { content: '' },
+				getWebsiteInfoURL    : window.URLS.getWebsiteInfo,
+				linkToEditWebsiteInfo: { name: 'dashboard.info.website-info' },
 			};
 		},
 		mounted () {
@@ -37,6 +49,9 @@
 					 	window.FlashMessages.setError(error.response.data.message);
 					 	this.isRequestInProgress = false;
                      });
+			},
+			isSuperAdmin () {
+				return !!this.User.is_super_admin;
 			},
 		},
 	};
