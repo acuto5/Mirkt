@@ -3942,6 +3942,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -22759,7 +22763,6 @@ var render = function() {
                 [
                   _c(
                     "v-flex",
-                    { attrs: { xs8: "" } },
                     [
                       _c(
                         "v-list",
@@ -22773,7 +22776,7 @@ var render = function() {
                               key: index,
                               attrs: {
                                 to: _vm.getCategoryRouteParams(category),
-                                exact: ""
+                                "active-class": "teal--text text--accent-2"
                               }
                             },
                             [
@@ -22797,7 +22800,6 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "v-flex",
-                    { attrs: { xs4: "" } },
                     [
                       _c(
                         "v-list",
@@ -22807,10 +22809,11 @@ var render = function() {
                         ) {
                           return _c(
                             "v-list-tile",
-                            { key: index },
+                            { key: index, staticClass: "remove-left-padding" },
                             [
                               _c(
                                 "v-list-tile-action",
+                                { staticStyle: { "min-width": "0" } },
                                 [
                                   _c(
                                     "v-menu",
@@ -22849,7 +22852,8 @@ var render = function() {
                                                     category,
                                                     sub_category
                                                   ),
-                                                  exact: ""
+                                                  "active-class":
+                                                    "teal--text text--accent-2"
                                                 },
                                                 nativeOn: {
                                                   click: function($event) {

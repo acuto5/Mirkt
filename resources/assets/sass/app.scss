@@ -2,7 +2,9 @@
 @import "~medium-editor/dist/css/medium-editor.min.css";
 @import "~medium-editor/dist/css/themes/Beagle.min.css";
 
-// Vue router
+/**
+  Vue-router
+ */
 .router-link {
   text-decoration: none;
 }
@@ -12,12 +14,27 @@
   opacity: 0.9;
 }
 
-// Vue
+/**
+  Vue
+ */
 [v-cloak] {
   display: none;
 }
 
-// Vue2-medium-editor
+/**
+  Vuetify
+ */
+
+// Toolbar articles drop down
+.remove-left-padding {
+  div.list__tile {
+    padding-left: 0;
+  }
+}
+
+/**
+  Vue2-medium-editor
+ */
 .medium-editor-button-active, .medium-editor-toolbar li button:hover{
   color: #64FFDA !important;
 }
