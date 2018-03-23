@@ -7373,6 +7373,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -26351,100 +26361,144 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-list",
-                _vm._l(_vm.categoriesWithSubCategories, function(
-                  category,
-                  index
-                ) {
-                  return _c(
-                    "v-list-tile",
-                    {
-                      key: index,
-                      attrs: {
-                        to: _vm.getCategoryRouteParams(category),
-                        exact: ""
-                      }
-                    },
+                "v-layout",
+                [
+                  _c(
+                    "v-flex",
+                    { attrs: { xs8: "" } },
                     [
                       _c(
-                        "v-list-tile-content",
-                        [
-                          _c("v-list-tile-title", [
-                            _vm._v(_vm._s(category.name))
-                          ])
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-list-tile-action",
-                        [
-                          _c(
-                            "v-menu",
-                            { attrs: { "offset-x": "", "open-on-hover": "" } },
+                        "v-list",
+                        _vm._l(_vm.categoriesWithSubCategories, function(
+                          category,
+                          index
+                        ) {
+                          return _c(
+                            "v-list-tile",
+                            {
+                              key: index,
+                              attrs: {
+                                to: _vm.getCategoryRouteParams(category),
+                                exact: ""
+                              }
+                            },
                             [
                               _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    slot: "activator",
-                                    icon: "",
-                                    color: "white--text"
-                                  },
-                                  slot: "activator"
-                                },
-                                [_c("v-icon", [_vm._v("play_arrow")])],
+                                "v-list-tile-content",
+                                [
+                                  _c("v-list-tile-title", [
+                                    _vm._v(_vm._s(category.name))
+                                  ])
+                                ],
                                 1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-list",
-                                _vm._l(category.sub_categories, function(
-                                  sub_category,
-                                  index
-                                ) {
-                                  return _c(
-                                    "v-list-tile",
-                                    {
-                                      key: index,
-                                      attrs: {
-                                        to: _vm.getSubCategoryRouteParams(
-                                          category,
-                                          sub_category
-                                        ),
-                                        exact: ""
-                                      },
-                                      nativeOn: {
-                                        click: function($event) {
-                                          _vm.isMenuVisible = false
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "v-list-tile-content",
-                                        [
-                                          _c("v-list-tile-title", [
-                                            _vm._v(_vm._s(sub_category.name))
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                })
                               )
                             ],
                             1
                           )
-                        ],
-                        1
+                        })
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs4: "" } },
+                    [
+                      _c(
+                        "v-list",
+                        _vm._l(_vm.categoriesWithSubCategories, function(
+                          category,
+                          index
+                        ) {
+                          return _c(
+                            "v-list-tile",
+                            { key: index },
+                            [
+                              _c(
+                                "v-list-tile-action",
+                                [
+                                  _c(
+                                    "v-menu",
+                                    {
+                                      attrs: {
+                                        "offset-x": "",
+                                        "open-on-hover": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: {
+                                            slot: "activator",
+                                            icon: "",
+                                            color: "white--text"
+                                          },
+                                          slot: "activator"
+                                        },
+                                        [_c("v-icon", [_vm._v("play_arrow")])],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-list",
+                                        _vm._l(
+                                          category.sub_categories,
+                                          function(sub_category, index) {
+                                            return _c(
+                                              "v-list-tile",
+                                              {
+                                                key: index,
+                                                attrs: {
+                                                  to: _vm.getSubCategoryRouteParams(
+                                                    category,
+                                                    sub_category
+                                                  ),
+                                                  exact: ""
+                                                },
+                                                nativeOn: {
+                                                  click: function($event) {
+                                                    _vm.isMenuVisible = false
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "v-list-tile-content",
+                                                  [
+                                                    _c("v-list-tile-title", [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          sub_category.name
+                                                        )
+                                                      )
+                                                    ])
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          }
+                                        )
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        })
                       )
                     ],
                     1
                   )
-                })
+                ],
+                1
               )
             ],
             1

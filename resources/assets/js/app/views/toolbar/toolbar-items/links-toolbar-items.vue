@@ -3,40 +3,50 @@
         <!--Articles menu -->
         <v-menu offset-y v-model="isMenuVisible">
             <v-btn flat slot="activator">Straipsniai</v-btn>
-            <v-list>
-                <!-- Categories -->
-                <v-list-tile
-                        v-for="(category,index) in categoriesWithSubCategories"
-                        :key="index"
-                        :to="getCategoryRouteParams(category)"
-                        exact
-                >
-                    <v-list-tile-content>
-                        <v-list-tile-title>{{ category.name }}</v-list-tile-title>
-                    </v-list-tile-content>
-                    <v-list-tile-action>
-                        <v-menu offset-x open-on-hover>
-                            <v-btn icon color="white--text" slot="activator">
-                                <v-icon>play_arrow</v-icon>
-                            </v-btn>
-                            <v-list>
-                                <!-- Sub categories -->
-                                <v-list-tile
-                                        v-for="(sub_category,index) in category.sub_categories"
-                                        :key="index"
-                                        :to="getSubCategoryRouteParams(category, sub_category)"
-                                        exact
-                                        @click.native="isMenuVisible = false"
-                                >
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>{{ sub_category.name }}</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </v-list-tile-action>
-                </v-list-tile>
-            </v-list>
+            <v-layout>
+                <v-flex xs8>
+                    <v-list>
+                        <!-- Categories -->
+                        <v-list-tile
+                                v-for="(category,index) in categoriesWithSubCategories"
+                                :key="index"
+                                :to="getCategoryRouteParams(category)"
+                                exact
+                        >
+                            <v-list-tile-content>
+                                <v-list-tile-title>{{ category.name }}</v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-flex>
+                <v-flex xs4>
+                    <v-list>
+                        <v-list-tile v-for="(category,index) in categoriesWithSubCategories" :key="index">
+                            <v-list-tile-action>
+                            <v-menu offset-x open-on-hover>
+                                <v-btn icon color="white--text" slot="activator">
+                                    <v-icon>play_arrow</v-icon>
+                                </v-btn>
+                                <v-list>
+                                    <!-- Sub categories -->
+                                    <v-list-tile
+                                            v-for="(sub_category,index) in category.sub_categories"
+                                            :key="index"
+                                            :to="getSubCategoryRouteParams(category, sub_category)"
+                                            exact
+                                            @click.native="isMenuVisible = false"
+                                    >
+                                        <v-list-tile-content>
+                                            <v-list-tile-title>{{ sub_category.name }}</v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list>
+                            </v-menu>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                    </v-list>
+                </v-flex>
+            </v-layout>
         </v-menu>
 
         <!-- About -->
