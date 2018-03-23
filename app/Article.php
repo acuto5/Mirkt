@@ -17,7 +17,7 @@ class Article extends Model
 		'tags', 'images', 'deletion_at'
 	];
 	
-	protected $fillable = ['title', 'content', 'sub_category_id', 'user_id'];
+	protected $fillable = ['title', 'content', 'sub_category_id', 'user_id', 'deletion_at'];
 	
 	public function setTitleAttribute($title)
 	{
