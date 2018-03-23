@@ -155,7 +155,7 @@ class ArticleController extends Controller
 		$this->article->storeImages(
 			$this->request->file('images'),
 			$this->request->get('is_default_img_old'),
-			$this->request->get('default_img_id')
+			$this->request->get('default_image_id')
 		);
 		
 		// Create job

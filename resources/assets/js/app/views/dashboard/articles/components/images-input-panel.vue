@@ -13,9 +13,13 @@
                 </v-card-media>
                 <v-card-actions>
                     <v-spacer/>
-                    <label :for="'old-image-' + parseInt(index)">Pagrindinė </label>
-                    <input :id="'old-image-' + parseInt(index)" type="radio" v-model="oldImageAsDefault"
-                           :value="image.id"/>
+                    <radio-input
+                            label="Pagrindinė"
+                            :disabled="!!image.is_removed"
+                            color="teal accent-1"
+                            v-model="oldImageAsDefault"
+                            :pass-value-on-check="image.id"
+                    />
                     <v-spacer/>
                 </v-card-actions>
             </v-card>
@@ -32,9 +36,12 @@
 
                 <v-card-actions>
                     <v-spacer/>
-                    <label :for="'new-image' + parseInt(index)">Pagrindinė </label>
-                    <input :id="'new-image' + parseInt(index)" type="radio" v-model="newImageAsDefault"
-                           :value="parseInt(index)"/>
+                    <radio-input
+                            label="Pagrindinė"
+                            color="teal accent-1"
+                            v-model="newImageAsDefault"
+                            :pass-value-on-check="image.id"
+                    />
                     <v-spacer/>
                 </v-card-actions>
             </v-card>
@@ -57,12 +64,16 @@
     </v-layout>
 </template>
 <script>
+	import RadioInput from "../../../components/radio-input";
 	import SelectFile from "./sub-components/select-file";
 
 	export default {
-		components: {SelectFile},
-		name: 'images-input-panel',
-		props: {
+		components: {
+			RadioInput,
+			SelectFile,
+		},
+		name      : 'images-input-panel',
+		props     : {
 			newFilesArray: { // sync
 				type: Array,
 				required: false
@@ -89,7 +100,7 @@
                 required: false
             }
 		},
-		watch: {
+		watch     : {
 			oldImagesArray: function () {
 				if (this.oldImagesArray.length
 					&& !this.old_images.length
@@ -116,7 +127,12 @@
 					this.$emit('update:isDefaultImgOld', 0); // false
 					this.$emit('update:defaultImageId', newValue);
 				}
-			}
+			},
+			imagesIndexForPreview(array){
+				if (array.length > 0) {
+					this.addImagesInPreview();
+				}
+            }
 		},
 		data() {
 			return {
@@ -124,10 +140,11 @@
 				images: [],
 				prevImages: [],
 				oldImageAsDefault: null,
-				newImageAsDefault: null
+				newImageAsDefault: null,
+				imagesIndexForPreview: [],
 			}
 		},
-		methods: {
+		methods   : {
 			updateOldImagesArray() {
 				let notRemovedOldImagesArray = [];
 
@@ -152,6 +169,7 @@
 			restoreOldImage(index) {
 				this.old_images[index].is_removed = 0;
 				this.updateOldImagesArray();
+				this.checkDefaultImageSelection();
 			},
 			removeOldImage(index) {
 				this.old_images[index].is_removed = 1;
@@ -162,6 +180,7 @@
 					this.$emit('update:defaultImageId', null);
 				}
 
+				this.checkDefaultImageSelection();
 				this.updateOldImagesArray();
 			},
 			imagesSelected: _.debounce(function (e) { // Wait 500ms
@@ -169,8 +188,8 @@
 
 					// add images in images array
 					for (let index = 0; index < e.target.files.length; index++) {
-						this.images.push(e.target.files.item(index));
-						this.addImagesInPreview([e.target.files.item(index)]);
+                        this.images.push( e.target.files.item( index ) );
+                        this.imagesIndexForPreview.push(this.images.length - 1);
 					}
 
 					// push images
@@ -185,23 +204,41 @@
 				// push images
 				this.$emit('update:newFilesArray', this.images);
 			},
-			addImagesInPreview(images) {
+			addImagesInPreview () {
+                let reader = new FileReader();
 
-				images.forEach(image => {
-					let reader = new FileReader();
+                reader.onload = (event) => {
+                    this.prevImages.push( { src: event.target.result, id: this.imagesIndexForPreview.shift() } );
+					this.checkDefaultImageSelection();
+				};
 
-					reader.onload = (event) => {
-						this.prevImages.push({src: event.target.result});
-					};
+                reader.readAsDataURL( this.images[this.imagesIndexForPreview[0]] );
 
-					reader.readAsDataURL(image);
-				});
+			},
+			checkDefaultImageSelection () {
+				if (this.oldImageAsDefault === null && this.newImageAsDefault === null) {
+					if (this.old_images.length) {
+						for (let image of this.old_images) {
+							if (!image.is_removed) {
+								// set image as default
+								this.oldImageAsDefault = image.id;
+
+								break;
+							}
+						}
+					} else if (this.images.length) {
+						// set first image as default
+						this.newImageAsDefault = this.images.findIndex( ( image ) => {
+							return true;
+						} );
+					}
+				}
 			}
 		}
 	}
 </script>
 <style>
     .custom-img {
-        opacity: 0.2
+        opacity: 0.2;
     }
 </style>

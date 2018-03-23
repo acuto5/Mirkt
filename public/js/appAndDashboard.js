@@ -1935,6 +1935,93 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "radio-input",
+  props: {
+    color: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: [Number, String, Boolean]
+    },
+    passValueOnCheck: {
+      type: Number,
+      required: true
+    },
+    label: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    size: {
+      type: [Number, String],
+      required: false,
+      default: '21px'
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  data: function data() {
+    return {
+      isChecked: false
+    };
+  },
+
+  filters: {
+    addSpaceToEnd: function addSpaceToEnd(text) {
+      return text + ' ';
+    }
+  },
+  watch: {
+    isChecked: function isChecked(_isChecked) {
+      if (_isChecked) {
+        this.$emit('input', this.passValueOnCheck);
+      }
+    },
+    value: function value(newValue) {
+      this.isChecked = newValue === this.passValueOnCheck;
+    }
+  },
+  computed: {
+    icon: function icon() {
+      return this.isChecked ? 'radio_button_checked' : 'radio_button_unchecked';
+    }
+  },
+  methods: {
+    check: function check() {
+      if (!this.disabled) {
+        this.isChecked = !this.isChecked;
+      }
+    }
+  },
+  mounted: function mounted() {
+    if (this.value === this.passValueOnCheck) {
+      this.isChecked = true;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/app/views/components/simple-search-form.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2100,8 +2187,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sub_components_select_file__ = __webpack_require__("./resources/assets/js/app/views/dashboard/articles/components/sub-components/select-file.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sub_components_select_file___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__sub_components_select_file__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_radio_input__ = __webpack_require__("./resources/assets/js/app/views/components/radio-input.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_radio_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_radio_input__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sub_components_select_file__ = __webpack_require__("./resources/assets/js/app/views/dashboard/articles/components/sub-components/select-file.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sub_components_select_file___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__sub_components_select_file__);
 //
 //
 //
@@ -2160,11 +2249,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	components: { SelectFile: __WEBPACK_IMPORTED_MODULE_0__sub_components_select_file___default.a },
+	components: {
+		RadioInput: __WEBPACK_IMPORTED_MODULE_0__components_radio_input___default.a,
+		SelectFile: __WEBPACK_IMPORTED_MODULE_1__sub_components_select_file___default.a
+	},
 	name: 'images-input-panel',
 	props: {
 		newFilesArray: { // sync
@@ -2221,6 +2321,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				this.$emit('update:isDefaultImgOld', 0); // false
 				this.$emit('update:defaultImageId', newValue);
 			}
+		},
+		imagesIndexForPreview: function imagesIndexForPreview(array) {
+			if (array.length > 0) {
+				this.addImagesInPreview();
+			}
 		}
 	},
 	data: function data() {
@@ -2229,7 +2334,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			images: [],
 			prevImages: [],
 			oldImageAsDefault: null,
-			newImageAsDefault: null
+			newImageAsDefault: null,
+			imagesIndexForPreview: []
 		};
 	},
 
@@ -2260,6 +2366,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		restoreOldImage: function restoreOldImage(index) {
 			this.old_images[index].is_removed = 0;
 			this.updateOldImagesArray();
+			this.checkDefaultImageSelection();
 		},
 		removeOldImage: function removeOldImage(index) {
 			this.old_images[index].is_removed = 1;
@@ -2270,6 +2377,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				this.$emit('update:defaultImageId', null);
 			}
 
+			this.checkDefaultImageSelection();
 			this.updateOldImagesArray();
 		},
 
@@ -2280,7 +2388,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				// add images in images array
 				for (var index = 0; index < e.target.files.length; index++) {
 					this.images.push(e.target.files.item(index));
-					this.addImagesInPreview([e.target.files.item(index)]);
+					this.imagesIndexForPreview.push(this.images.length - 1);
 				}
 
 				// push images
@@ -2299,18 +2407,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			// push images
 			this.$emit('update:newFilesArray', this.images);
 		},
-		addImagesInPreview: function addImagesInPreview(images) {
+		addImagesInPreview: function addImagesInPreview() {
 			var _this3 = this;
 
-			images.forEach(function (image) {
-				var reader = new FileReader();
+			var reader = new FileReader();
 
-				reader.onload = function (event) {
-					_this3.prevImages.push({ src: event.target.result });
-				};
+			reader.onload = function (event) {
+				_this3.prevImages.push({ src: event.target.result, id: _this3.imagesIndexForPreview.shift() });
+				_this3.checkDefaultImageSelection();
+			};
 
-				reader.readAsDataURL(image);
-			});
+			reader.readAsDataURL(this.images[this.imagesIndexForPreview[0]]);
+		},
+		checkDefaultImageSelection: function checkDefaultImageSelection() {
+			if (this.oldImageAsDefault === null && this.newImageAsDefault === null) {
+				if (this.old_images.length) {
+					var _iteratorNormalCompletion = true;
+					var _didIteratorError = false;
+					var _iteratorError = undefined;
+
+					try {
+						for (var _iterator = this.old_images[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+							var image = _step.value;
+
+							if (!image.is_removed) {
+								// set image as default
+								this.oldImageAsDefault = image.id;
+
+								break;
+							}
+						}
+					} catch (err) {
+						_didIteratorError = true;
+						_iteratorError = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion && _iterator.return) {
+								_iterator.return();
+							}
+						} finally {
+							if (_didIteratorError) {
+								throw _iteratorError;
+							}
+						}
+					}
+				} else if (this.images.length) {
+					// set first image as default
+					this.newImageAsDefault = this.images.findIndex(function (image) {
+						return true;
+					});
+				}
+			}
 		}
 	}
 });
@@ -7624,6 +7771,21 @@ module.exports = __webpack_require__("./node_modules/regenerator-runtime/runtime
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0672f1ba\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.radio-input-disabled{\n    opacity: 0.3\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-11d628b8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/dashboard/articles/components/sub-components/tile-action-mark-article-as-published-button-link.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7782,7 +7944,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.custom-img {\n    opacity: 0.2\n}\n", ""]);
+exports.push([module.i, "\n.custom-img {\n    opacity: 0.2;\n}\n", ""]);
 
 // exports
 
@@ -26620,6 +26782,69 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0672f1ba\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "label",
+        {
+          class: { "radio-input-disabled": _vm.disabled },
+          style: { "cursor: pointer": _vm.disabled },
+          on: {
+            click: function($event) {
+              _vm.check()
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.label))]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          attrs: {
+            icon: "",
+            depressed: "",
+            flat: "",
+            color: _vm.color,
+            disabled: _vm.disabled
+          },
+          nativeOn: {
+            click: function($event) {
+              _vm.check()
+            }
+          }
+        },
+        [
+          _c("v-icon", { attrs: { size: _vm.size } }, [
+            _vm._v(_vm._s(_vm.icon))
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0672f1ba", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-06fcf10e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/components/alert-component.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32339,33 +32564,19 @@ var render = function() {
                   [
                     _c("v-spacer"),
                     _vm._v(" "),
-                    _c(
-                      "label",
-                      { attrs: { for: "old-image-" + parseInt(index) } },
-                      [_vm._v("Pagrindinė ")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.oldImageAsDefault,
-                          expression: "oldImageAsDefault"
-                        }
-                      ],
+                    _c("radio-input", {
                       attrs: {
-                        id: "old-image-" + parseInt(index),
-                        type: "radio"
+                        label: "Pagrindinė",
+                        disabled: !!image.is_removed,
+                        color: "teal accent-1",
+                        "pass-value-on-check": image.id
                       },
-                      domProps: {
-                        value: image.id,
-                        checked: _vm._q(_vm.oldImageAsDefault, image.id)
-                      },
-                      on: {
-                        change: function($event) {
-                          _vm.oldImageAsDefault = image.id
-                        }
+                      model: {
+                        value: _vm.oldImageAsDefault,
+                        callback: function($$v) {
+                          _vm.oldImageAsDefault = $$v
+                        },
+                        expression: "oldImageAsDefault"
                       }
                     }),
                     _vm._v(" "),
@@ -32418,33 +32629,18 @@ var render = function() {
                   [
                     _c("v-spacer"),
                     _vm._v(" "),
-                    _c(
-                      "label",
-                      { attrs: { for: "new-image" + parseInt(index) } },
-                      [_vm._v("Pagrindinė ")]
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.newImageAsDefault,
-                          expression: "newImageAsDefault"
-                        }
-                      ],
+                    _c("radio-input", {
                       attrs: {
-                        id: "new-image" + parseInt(index),
-                        type: "radio"
+                        label: "Pagrindinė",
+                        color: "teal accent-1",
+                        "pass-value-on-check": image.id
                       },
-                      domProps: {
-                        value: parseInt(index),
-                        checked: _vm._q(_vm.newImageAsDefault, parseInt(index))
-                      },
-                      on: {
-                        change: function($event) {
-                          _vm.newImageAsDefault = parseInt(index)
-                        }
+                      model: {
+                        value: _vm.newImageAsDefault,
+                        callback: function($$v) {
+                          _vm.newImageAsDefault = $$v
+                        },
+                        expression: "newImageAsDefault"
                       }
                     }),
                     _vm._v(" "),
@@ -36158,6 +36354,33 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["a"] = (VueRouter);
 
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0672f1ba\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0672f1ba\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("8889c682", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0672f1ba\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./radio-input.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0672f1ba\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./radio-input.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ }),
 
@@ -74165,6 +74388,59 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-f4ea3cfe", Component.options)
   } else {
     hotAPI.reload("data-v-f4ea3cfe", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/app/views/components/radio-input.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0672f1ba\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0672f1ba\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/app/views/components/radio-input.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\app\\views\\components\\radio-input.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0672f1ba", Component.options)
+  } else {
+    hotAPI.reload("data-v-0672f1ba", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
