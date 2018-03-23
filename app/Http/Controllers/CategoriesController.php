@@ -79,7 +79,8 @@ class CategoriesController extends Controller
 		/**
 		 * ** Query not effective! **
 		 */
-		$this->category = Category::with(['subCategories'=> function($query){
+        $this->category = Category::with([
+            'subCategories' => function ($query) {
 		    $query->orderBy('level', 'desc');
         }])->orderBy('level', 'desc')->get();
 		

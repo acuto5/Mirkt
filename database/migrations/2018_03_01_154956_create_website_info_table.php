@@ -15,7 +15,7 @@ class CreateWebsiteInfoTable extends Migration
     {
         Schema::create('website_info', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('content')->nullable();
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }
