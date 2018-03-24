@@ -39,7 +39,7 @@
 
         @if(Auth::check())
             @if(Auth::user()->isAdmin() || Auth::user()->isModerator())
-                <script src="{{mix('js/appAndDashboard.js')}}"></script> {{-- Admin or Moderator --}}
+                <script src="{{mix('js/appWithDashboard.js')}}"></script> {{-- Admin or Moderator --}}
             @else
                 <script src="{{ mix('js/app.js') }}"></script> {{-- Auth --}}
             @endif

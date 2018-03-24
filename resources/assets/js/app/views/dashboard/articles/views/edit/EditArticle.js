@@ -1,5 +1,4 @@
-
-import { getArticle }                         from "../../../../main/articles/single/SingleArticle";
+import { getArticle }                         from "../../../../articles/single/SingleArticle";
 import {getSubCategoriesWithCategoryAsHeader} from "../../../marking/categories/Categories";
 import {getAllTagsPromise}                    from "../../../marking/tags/Tags";
 

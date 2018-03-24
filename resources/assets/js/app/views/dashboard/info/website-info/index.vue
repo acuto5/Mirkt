@@ -30,8 +30,8 @@
 
 <script>
 	import vue2MediumEditor from 'vue2-medium-editor';
-	import ErrorCaptionList from "../../../components/error-caption-list";
-	import ProgressCircular from "../../../components/progress-circular";
+	import ErrorCaptionList from "../../../../components/errors/error-caption-list";
+	import ProgressCircular from "../../../../components/progress-circular";
 
 	export default {
 		components: {

@@ -1,6 +1,6 @@
-import router from "./app/routes/app-routes";
+import router from "./routes/app-routes";
 
-const app = new Vue({
+new Vue( {
     el:'#app',
 	router: router,
 });

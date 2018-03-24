@@ -64,7 +64,7 @@
     </v-layout>
 </template>
 <script>
-	import RadioInput from "../../../components/radio-input";
+	import RadioInput from "../../../../components/radio-input";
 	import SelectFile from "./sub-components/select-file";
 
 	export default {
@@ -237,8 +237,3 @@
 		}
 	}
 </script>
-<style>
-    .custom-img {
-        opacity: 0.2;
-    }
-</style>

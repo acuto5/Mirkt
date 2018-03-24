@@ -12,20 +12,16 @@
                 <!-- Content -->
                 <v-card-text>
                     <!-- Category -->
-                    <!--<v-list>-->
-                        <!--<v-list-tile>-->
-                            <v-select
-                                    single-line
-                                    item-value="id"
-                                    item-text="name"
-                                    label="Kategorija"
-                                    color="teal accent-2"
-                                    :items="SubCategoriesObj.categories"
-                                    v-model="tempSubCategory.category_id"
-                                    :error-messages="SubCategoriesObj.EditSubCategoryErrors.category_id"
-                            />
-                        <!--</v-list-tile>-->
-                    <!--</v-list>-->
+                    <v-select
+                            single-line
+                            item-value="id"
+                            item-text="name"
+                            label="Kategorija"
+                            color="teal accent-2"
+                            :items="SubCategoriesObj.categories"
+                            v-model="tempSubCategory.category_id"
+                            :error-messages="SubCategoriesObj.EditSubCategoryErrors.category_id"
+                    />
 
                     <!-- Name -->
                     <v-text-field
@@ -48,7 +44,7 @@
 </template>
 
 <script>
-	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import ErrorCaptionList from "../../../../../components/errors/error-caption-list";
 
 	export default {
 		components: {ErrorCaptionList},

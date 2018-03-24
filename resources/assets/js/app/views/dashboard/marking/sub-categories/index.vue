@@ -36,9 +36,8 @@
     </v-container>
 </template>
 <script>
-	import AlertComponent           from "../../../components/alert-component";
-	import ErrorCaptionList         from "../../../components/error-caption-list";
-	import ProgressCircular         from "../../../components/progress-circular";
+	import AlertComponent           from "../../../../components/alert-component";
+	import ProgressCircular         from "../../../../components/progress-circular";
 	import AddSubCategoryDialogForm from "./components/add-sub-category-dialog-form";
 	import SelectCategory           from "./components/select-category";
 	import SubCategoriesList        from "./components/sub-categories-list";
@@ -48,7 +47,6 @@
 		components: {
 			AlertComponent,
 			ProgressCircular,
-			ErrorCaptionList,
 			AddSubCategoryDialogForm,
 			SubCategoriesList,
 			SelectCategory},

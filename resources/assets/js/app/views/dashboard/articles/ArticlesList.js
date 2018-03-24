@@ -1,4 +1,4 @@
-import { deleteArticle } from "../../main/articles/single/SingleArticle";
+import { deleteArticle } from "../../articles/single/SingleArticle";
 
 
 function searchPublishedArticlesAxiosRequest(inputs) {

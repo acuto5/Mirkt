@@ -32,7 +32,7 @@
 </template>
 
 <script>
-	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import ErrorCaptionList from "../../../../../components/errors/error-caption-list";
 
 	export default {
 		components: {ErrorCaptionList},

@@ -23,7 +23,6 @@
     </v-list>
 </template>
 <script>
-
 	import EditTagDialogForm from "./edit-tag-dialog-form";
 	import DeleteTagDialogForm from "./delete-tag-dialog-form";
 
@@ -39,5 +38,4 @@
 			}
 		}
 	}
-
 </script>  

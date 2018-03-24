@@ -47,9 +47,9 @@
     </v-container>
 </template>
 <script>
-	import AlertComponent          from "../../../../components/alert-component";
-	import PaginationWithPageQuery from "../../../../components/pagination-with-page-query";
-	import ProgressCircular        from "../../../../components/progress-circular";
+	import AlertComponent          from "../../../../../components/alert-component";
+	import PaginationWithPageQuery from "../../../../../components/pagination-with-page-query";
+	import ProgressCircular        from "../../../../../components/progress-circular";
 	import ArticlesListClass       from '../../ArticlesList';
 	import DraftArticlesTable      from "../../components/draft-articles-table";
 	import OrderBy                 from '../../components/order-by.vue';

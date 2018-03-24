@@ -44,11 +44,10 @@
     </v-container>
 </template>
 <script>
-	import AlertComponent          from "../../../components/alert-component";
-	import ErrorCaptionList        from "../../../components/error-caption-list";
-	import PaginationWithPageQuery from "../../../components/pagination-with-page-query";
-	import ProgressCircular        from "../../../components/progress-circular";
-	import SimpleSearchForm        from "../../../components/simple-search-form";
+	import AlertComponent          from "../../../../components/alert-component";
+	import PaginationWithPageQuery from "../../../../components/pagination-with-page-query";
+	import ProgressCircular        from "../../../../components/progress-circular";
+	import SimpleSearchForm        from "../../../../components/simple-search-form";
 	import AddTagDialogForm        from "./components/add-tag-dialog-form";
 	import TagsTable               from "./components/tags-table";
 	import Tags                    from './Tags';
@@ -56,7 +55,6 @@
 	export default {
 		components: {
 			ProgressCircular,
-			ErrorCaptionList,
 			AlertComponent,
 			SimpleSearchForm,
 			PaginationWithPageQuery,

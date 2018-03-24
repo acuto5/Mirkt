@@ -30,8 +30,8 @@
     </v-container>
 </template>
 <script>
-	import AlertComponent        from "../../../components/alert-component";
-	import ProgressCircular      from "../../../components/progress-circular";
+	import AlertComponent        from "../../../../components/alert-component";
+	import ProgressCircular      from "../../../../components/progress-circular";
 	import Categories            from './Categories';
 	import AddCategoryFormDialog from "./components/add-category-form-dialog";
 	import CategoriesTable       from "./components/categories-table";

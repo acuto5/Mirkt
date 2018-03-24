@@ -24,7 +24,6 @@
 /**
   Vuetify
  */
-
 // Toolbar articles drop down
 .remove-left-padding {
   div.list__tile {
@@ -54,4 +53,14 @@
 .medium-editor-placeholder{
   font-size: 15px;
   color: hsla(0,0%,100%,.7);
+}
+
+// radio-input component
+.radio-input-disabled {
+  opacity: 0.3
+}
+
+// images-input-panel
+.custom-img {
+  opacity: 0.2;
 }
