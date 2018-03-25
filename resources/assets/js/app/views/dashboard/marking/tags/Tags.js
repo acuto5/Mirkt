@@ -107,10 +107,10 @@ class Tags {
 		this.isRequestInProgress = true;
 
 		// Urls
-		this[$_addTagURL] = window.URLS.addTag;
-		this[$_editTagURL] = window.URLS.editTag;
+		this[$_addTagURL] = window.URLS.storeTag;
+		this[$_editTagURL] = window.URLS.updateTag;
 		this[$_getTagsURL] = window.URLS.getTags;
-		this[$_deleteTagURL] = window.URLS.deleteTag;
+		this[$_deleteTagURL] = window.URLS.destroyTag;
 
 		// Errors
 		this.AddTagErrors = new window.Errors({name: []});

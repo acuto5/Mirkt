@@ -14,6 +14,7 @@ class DeleteArticle implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $article;
+    
     /**
      * Create a new job instance.
      *

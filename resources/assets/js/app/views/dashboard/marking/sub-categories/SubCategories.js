@@ -180,7 +180,7 @@ class SubCategories {
 	levelUpSubCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelUpURL], {'id': id})
+		axios.patch(this[$_levelUpURL], {'id': id})
 			.then(response => this.updateSubCategoriesList())
 			.catch(error => $_errorLevelUp.call(this, error));
 	}
@@ -192,7 +192,7 @@ class SubCategories {
 	levelDownSubCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelDownURL], {'id': id})
+		axios.patch(this[$_levelDownURL], {'id': id})
 			.then(response => this.updateSubCategoriesList())
 			.catch(error => $_errorLevelDown.call(this, error));
 	}

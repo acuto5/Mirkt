@@ -46,6 +46,16 @@ class Article extends Model
 			}
 		}
 	}
+    
+    public function scopePublished($query)
+    {
+        return $query->where('is_draft', 0);
+    }
+    
+    public function scopeDraft($query)
+    {
+        return $query->where('is_draft', 0);
+    }
 	
 	// Relationships
 	public function author()
@@ -138,5 +148,4 @@ class Article extends Model
 			$image->save();
 		}
 	}
-	
 }

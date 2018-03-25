@@ -75,7 +75,7 @@
 			return {
 				isRequestInProgress                   : true,
 				CategoriesWithSubCategoriesAndArticles: [],
-				getHomeArticlesURL                    : window.URLS.getCategoriesWithSubCategoriesAndArticles,
+				getHomeArticlesURL                    : window.URLS.getHomeArticles,
 			}
 		},
 		created() {

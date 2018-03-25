@@ -1,13 +1,16 @@
+import Axios         from 'axios';
+import Lodash        from 'lodash';
+import Vue           from 'vue';
 import VueRouter     from 'vue-router';
 import Vuetify       from 'vuetify';
 import Errors        from './app/components/errors/errors';
-import FlashMessages from './app/components/flash-messages/flash-messages';
+import FlashMessages from './app/components/flash-messages/flash-messages.js';
 
 // Lodash
-window._ = require('lodash');
+window._ = Lodash;
 
 // Axios
-window.axios = require('axios');
+window.axios = Axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Token
@@ -20,12 +23,8 @@ if (token) {
 }
 
 // Vue
-window.Vue = require('vue');
-
-// Vue-router
+window.Vue = Vue;
 Vue.use(VueRouter);
-
-// Vuetify
 Vue.use(Vuetify);
 
 // Other staff

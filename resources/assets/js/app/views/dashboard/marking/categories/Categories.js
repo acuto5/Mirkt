@@ -234,7 +234,7 @@ class Categories {
 	levelUpCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelUpURL], {'id': id})
+		axios.patch(this[$_levelUpURL], {'id': id})
 			.then(response => $_successLevelUpCategory.call(this))
 			.catch(error => $_errorLevelUpCategory.call(this, error));
 	}
@@ -245,7 +245,7 @@ class Categories {
 	levelDownCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelDownURL], {'id': id})
+		axios.patch(this[$_levelDownURL], {'id': id})
 			.then(response => $_successLevelDownCategory.call(this))
 			.catch(error => $_errorLevelDownCategory.call(this, error));
 	}

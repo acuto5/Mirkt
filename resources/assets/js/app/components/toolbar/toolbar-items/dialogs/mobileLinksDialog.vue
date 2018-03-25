@@ -6,8 +6,8 @@
                 <router-link
                         slot="header"
                         :to="{name: 'home'}"
-                        class="teal--text text--accent-2"
                         style="text-decoration: none;"
+                        class="teal--text text--accent-2"
                         @click.native="isVisible = false"
                 >Mirkt
                 </router-link>
@@ -16,17 +16,17 @@
             <v-expansion-panel-content class="grey darken-4">
                 <div slot="header">Straipsniai</div>
                 <v-expansion-panel popout>
-                        <v-expansion-panel-content  class="grey darken-2"
-                                                    v-for="(category,index) in categoriesWithSubCategories"
-                                :key="index"
+                    <v-expansion-panel-content
+                            :key="index"
+                            class="grey darken-2"
+                            v-for="(category,index) in categoriesWithSubCategories"
                         >
                             <div slot="header">
                                 <router-link
                                         class="white--text"
-                                        :to="getCategoryRouteParams(category)"
                                         style="text-decoration: none;"
                                         @click.native="isVisible = false"
-
+                                        :to="getCategoryRouteParams(category)"
                                 >
                                     {{category.name}}
                                 </router-link>
@@ -34,11 +34,11 @@
                             <v-list class="grey darken-1">
                                 <!-- Sub categories -->
                                 <v-list-tile
-                                        v-for="(sub_category,index) in category.sub_categories"
-                                        :key="index"
-                                        :to="getSubCategoryRouteParams(category, sub_category)"
                                         exact
+                                        :key="index"
                                         @click.native="isVisible = false"
+                                        :to="getSubCategoryRouteParams(category, sub_category)"
+                                        v-for="(sub_category,index) in category.sub_categories"
                                 >
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{ sub_category.name }}</v-list-tile-title>
@@ -49,25 +49,24 @@
         </v-expansion-panel>
             </v-expansion-panel-content>
 
-            <!-- About me-->
+            <!-- Info -->
             <v-expansion-panel-content class="grey darken-4">
-                <div slot="header">Apie mane</div>
+                <div slot="header">Info</div>
                 <v-list class="grey darken-3">
 
-                    <!-- Link to GitHub-->
-                    <v-list-tile :href="linkToMyGitHub">
+                    <!-- ontacts -->
+                    <v-list-tile :to="{name: 'contacts'}" @click.native="isVisible = false">
                         <v-list-tile-content>
-                        <v-list-tile-title>GitHub</v-list-tile-title>
+                            <v-list-tile-title>Kontaktai</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
 
-                    <!-- Contacts -->
-                    <v-list-tile :to="routerLinkToContactsPage" @click.native="isVisible = false">
+                    <!-- Website-info -->
+                    <v-list-tile :to="{ name: 'website-info' }" @click.native="isVisible = false">
                         <v-list-tile-content>
-                            <v-list-tile-title class="white--text">Kontaktai</v-list-tile-title>
+                            <v-list-tile-title>Papildoma informacija</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-
                 </v-list>
             </v-expansion-panel-content>
         </v-expansion-panel>
@@ -86,8 +85,6 @@
 		data () {
 			return {
 				isVisible: false,
-				linkToMyGitHub             : 'https://github.com/TSmulkys',
-				routerLinkToContactsPage   : { name: 'contacts' },
 			};
 		},
 		methods: {
@@ -109,7 +106,3 @@
 		},
 	};
 </script>
-
-<style scoped>
-
-</style>

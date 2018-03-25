@@ -14,6 +14,7 @@ class DeleteSubCategory implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $subCategory;
+    
     /**
      * Create a new job instance.
      *

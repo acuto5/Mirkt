@@ -3,11 +3,11 @@ function getAllRoutes()
 {
 	$routes = [];
 	
-	foreach (\Route::getRoutes()->getIterator() as $route) {
+	foreach (Illuminate\Support\Facades\Route::getRoutes()->getRoutes() as $route) {
 		$routeName            = $route->getName();
 		$routeMiddlewareArray = $route->middleware();
-		
-		if (isset($routeName)) { // Send routes only with route name
+        
+        if (isset($routeName)) { // Send routes only with route name
 			if (in_array('role:admin', $routeMiddlewareArray)) { // If Admin
 				if (Auth::check() && Auth::user()->isAdmin()) {
 					// Save as full url
