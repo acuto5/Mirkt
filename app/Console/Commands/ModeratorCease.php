@@ -38,16 +38,16 @@ class ModeratorCease extends Command
      */
     public function handle()
     {
-		if($this->option('id')){
+        if($this->option('id')){
 			$id = $this->option('id');
 			$user = User::findOrFail($id);
-			$user->is_moderator = true;
+			$user->is_moderator = false;
 			$user->save();
 		
 			$this->info($user->name . ' moderator role removed!');
 		} elseif ($this->option('name')){
 			$user = User::where('name', $this->option('name'))->firstOrFail();
-			$user->is_moderator = true;
+			$user->is_moderator = false;
 			$user->save();
 		
 			$this->info($user->name . ' moderator role removed!');

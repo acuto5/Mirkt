@@ -3,35 +3,66 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
 	use Searchable;
-	
+    
+    /** @var string disk name where will be saved article images */
 	private $diskName = 'article-images';
-	
+    
+    /**
+     * The attributes that should be visible in arrays.
+     * @var array
+     */
 	protected $visible = [
 		'id', 'title', 'content', 'is_draft', 'headerImage', 'sub_category_id', 'subCategory', 'author', 'created_at',
 		'tags', 'images', 'deletion_at'
 	];
-	
+    
+    /**
+     * Field in database table will be available for mass assignment
+     * @var array
+     */
 	protected $fillable = ['title', 'content', 'sub_category_id', 'user_id', 'deletion_at'];
-	
-	public function setTitleAttribute($title)
-	{
-		$this->attributes['title'] = clean($title);
-	}
-	
-	public function setContentAttribute($content){
-		$this->attributes['content'] = clean($content);
-	}
-	
-	public function storeImages($images, $isDefaultImgOld, $defaultImgID)
-	{
-		if (count($images) > 0) {
-			foreach ($images as $key => $image) {
+    
+    /**
+     * Clean article title from html
+     *
+     * @param string $title
+     */
+    public function setTitleAttribute(string $title): void
+    {
+        $this->attributes['title'] = clean($title);
+    }
+    
+    /**
+     * Clean article title from html
+     *
+     * @param string $content
+     */
+    public function setContentAttribute(string $content): void
+    {
+        $this->attributes['content'] = clean($content);
+    }
+    
+    /**
+     * Store article images
+     *
+     * @param array|null $images
+     * @param bool|int       $isDefaultImgOld
+     * @param int|string $defaultImgID
+     */
+    public function storeImages(?array $images, bool $isDefaultImgOld, int $defaultImgID): void
+    {
+        if (!empty($images)) {
+            foreach ($images as $key => $image) {
 				// Store image
 				$path = $image->store('', $this->diskName);
 				
@@ -39,80 +70,103 @@ class Article extends Model
 				$url = Storage::disk($this->diskName)->url($path);
 				
 				// check if new image is default
-				$isDefault = (!$isDefaultImgOld && (int)$defaultImgID === $key) ? true : false;
-				
-				// Make relationship with article
+                $isDefault = (!$isDefaultImgOld && $defaultImgID === $key);
+                
+                // Make relationship with article
 				$this->images()->create(['url' => $url, 'is_default' => $isDefault]);
 			}
 		}
 	}
     
-    public function scopePublished($query)
+    /**
+     * Relationship with article author
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author(): BelongsTo
     {
-        return $query->where('is_draft', 0);
+        return $this->belongsTo('App\User', 'user_id');
     }
     
-    public function scopeDraft($query)
+    /**
+     * Relationship with article sub-category
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function subCategory(): BelongsTo
     {
-        return $query->where('is_draft', 0);
+        return $this->belongsTo('App\SubCategory', 'sub_category_id');
     }
-	
-	// Relationships
-	public function author()
-	{
-		return $this->belongsTo('App\User', 'user_id');
-	}
-	
-	public function subCategory()
-	{
-		return $this->belongsTo('App\SubCategory', 'sub_category_id');
-	}
-	
-	public function tags()
-	{
-		return $this->belongsToMany('App\Tag', 'tag_article');
-	}
-	
-	public function detachTags()
-	{
-		$this->tags()->detach();
-	}
-	
-	public function headerImage()
-	{
-		return $this->hasOne('App\Image', 'article_id')->where('is_default', true);
-	}
-	
-	public function images()
-	{
-		return $this->hasMany('App\Image', 'article_id');
-	}
-	
-	public function detachImages()
-	{
-		$images = $this->images()->get();
-		
-		if ($images->count() > 0) {
+    
+    /**
+     * Relationships with article tags
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Tag', 'tag_article');
+    }
+    
+    /**
+     * Remove relationship with tags
+     */
+    public function detachTags(): void
+    {
+        $this->tags()->detach();
+    }
+    
+    /**
+     * Relationship with article default image
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function headerImage(): HasOne
+    {
+        return $this->hasOne('App\Image', 'article_id')->where('is_default', true);
+    }
+    
+    /**
+     * Relationship with all article images
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany('App\Image', 'article_id');
+    }
+    
+    /**
+     * Remove relationships with images
+     */
+    public function detachImages(): void
+    {
+        $images = $this->images()->get();
+        
+        if ($images->count() > 0) {
 			foreach ($images as $image) {
 				$image->article_id = null;
 				$image->save();
 			}
 		}
 	}
-	
-	public function forceDelete()
-	{
-		$this->detachTags();
-		$this->detachImages();
-		
-		return parent::forceDelete(); // TODO: Change the autogenerated stub
-	}
-	
-	public function syncTags($tags_ids)
-	{
-		if (isset($tags_ids)) {
-			// Associate tags with article
-			$tags = Tag::find($tags_ids);
+    
+    /**
+     * Remove all relationships and delete article
+     */
+    public function forceDelete(): ?bool
+    {
+        $this->detachTags();
+        $this->detachImages();
+        
+        return parent::forceDelete(); // TODO: Change the autogenerated stub
+    }
+    
+    /**
+     * Make relationships with tags
+     *
+     * @param array|null $tags_ids
+     */
+    public function syncTags(?array $tags_ids): void
+    {
+        if (isset($tags_ids)) {
+            // Associate tags with article
+            $tags = Tag::find($tags_ids);
 			
 			$this->tags()->sync($tags);
 		} else {
@@ -120,30 +174,68 @@ class Article extends Model
 			$this->tags()->detach();
 		}
 	}
-	
-	public function syncOldImages($oldImgIDS, $isDefaultImgOld, $defaultImageID)
-	{
-		$this->dissociateAllOldImages();
-		
-		if (isset($oldImgIDS) && count($oldImgIDS) > 0) {
-			$oldImages = Image::find($oldImgIDS);
-			
-			// Associate what user left
-			$this->images()->saveMany($oldImages);
+    
+    /**
+     * Synchronize images relationships with gives images ids
+     *
+     * @param array|null $oldImgIDS
+     * @param bool       $isDefaultImgOld
+     * @param int        $defaultImageID
+     */
+    public function syncOldImages(?array $oldImgIDS, bool $isDefaultImgOld, int $defaultImageID): void
+    {
+        $this->dissociateAllOldImages();
+        
+        if (!empty($oldImgIDS)) {
+            $oldImages = Image::find($oldImgIDS);
+            
+            // Associate what user left
+            $this->images()->saveMany($oldImages);
 			
 			// Make old img as default
-			if ($isDefaultImgOld && in_array($defaultImageID, $oldImgIDS)) {
-				Image::makeImageDefault($defaultImageID);
-			}
-		}
-	}
-	
-	private function dissociateAllOldImages()
-	{
-		$images = $this->images()->get();
-		
-		foreach ($images as $image) {
-			$image->is_default = false;
+            if ($isDefaultImgOld && \in_array($defaultImageID, $oldImgIDS, false)) {
+                Image::makeImageDefault($defaultImageID);
+            }
+        }
+    }
+    
+    //-----------------------------------
+    // Query scopes
+    //-----------------------------------
+    
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_draft', 0);
+    }
+    
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeDraft($query)
+    {
+        return $query->where('is_draft', 1);
+    }
+    
+    //-----------------------------------
+    // Private methods
+    //-----------------------------------
+    
+    /**
+     * Remove relationships with all images
+     */
+    private function dissociateAllOldImages(): void
+    {
+        $images = $this->images()->get();
+        
+        foreach ($images as $image) {
+            $image->is_default = false;
 			$image->article()->dissociate();
 			$image->save();
 		}

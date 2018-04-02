@@ -3,26 +3,49 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Searchable;
 
 class Tag extends Model
 {
 	use Searchable;
-	
-	protected $visible   = ['id', 'name'];
-	protected $fillable = ['name'];
-	
-	public function articles()
+    
+    /**
+     * The attributes that should be visible in arrays.
+     * @var array
+     */
+    protected $visible = ['id', 'name'];
+    
+    /**
+     * Field in database will be available for mass assignment.
+     * @var array
+     */
+    protected $fillable = ['name'];
+    
+    /**
+     * Relationship with articles
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function articles(): BelongsToMany
 	{
 		return $this->belongsToMany('App\Article', 'tag_article');
 	}
-	
-	public function setNameAttribute($name)
+    
+    /**
+     * Clean name from html tags
+     *
+     * @param string $name
+     */
+    public function setNameAttribute(string $name): void
 	{
 		$this->attributes['name'] = clean($name);
 	}
-	
-	public function forceDelete()
+    
+    /**
+     * Remove relationships and delete tag
+     * @return bool|null
+     */
+    public function forceDelete(): ?bool
 	{
 		$this->articles()->detach();
 		

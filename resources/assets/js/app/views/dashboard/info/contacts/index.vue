@@ -1,12 +1,13 @@
 <template>
     <v-container>
         <v-layout row wrap v-show="!isRequestInProgress">
+            <!-- Title -->
             <v-flex xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3 xl4 offset-sl4 class="text-xs-center">
-                <!-- Title -->
                 <p class="headline">Kontaktai</p>
             </v-flex>
+
+            <!-- Content editor -->
             <v-flex xs12 sm10 offset-sm1>
-                <!-- Content editor -->
                 <vue2-medium-editor
                         :class="isContentHasErrors"
                         class="text-editor pa-2"

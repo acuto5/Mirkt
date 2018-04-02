@@ -1,6 +1,7 @@
 <?php
 
-function getAllCategoriesWithSubCategories(){
+function getAllCategoriesWithSubCategories(): ?string
+{
     $with = [
         'subCategories' => function($query){
             $query->select('id', 'name', 'category_id')->orderBy('level', 'desc');

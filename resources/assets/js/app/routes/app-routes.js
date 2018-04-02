@@ -1,5 +1,5 @@
 import VueRouter  from 'vue-router';
-import MainRoutes from '../app/views/routes';
+import MainRoutes from '../views/routes';
 
 let routes = [];
 

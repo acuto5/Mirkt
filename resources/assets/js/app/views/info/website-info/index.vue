@@ -1,13 +1,18 @@
 <template>
     <v-container>
         <v-layout wrap row v-show="!isRequestInProgress">
+            <!-- Title -->
+            <v-flex xs12 class="text-xs-center">
+                <p class="headline">Tinklapio informacija</p>
+            </v-flex>
+
             <!-- Content-->
-            <v-flex xs12 sm10>
+            <v-flex xs12>
                 <div v-html="websiteInfo.content"></div>
             </v-flex>
 
             <!-- Edit button link -->
-            <v-flex xs12 v-if="isSuperAdmin()">
+            <v-flex xs12 v-if="isSuperAdmin()" class="text-xs-center">
                 <v-btn flat icon color="warning" :to="linkToEditWebsiteInfo">
                     <v-icon>edit</v-icon>
                 </v-btn>

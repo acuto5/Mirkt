@@ -22,6 +22,6 @@
         "vue-router": "^3.0.1",
         "vue-template-compiler": "^2.5.16",
         "vue2-medium-editor": "^1.1.4",
-        "vuetify": "^1.0.10"
+        "vuetify": "^1.0.11"
     }
 }

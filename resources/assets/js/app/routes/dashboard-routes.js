@@ -1,6 +1,6 @@
 import VueRouter       from "vue-router";
-import DashboardRoutes from '../app/views/dashboard/routes';
-import MainRoutes      from '../app/views/routes';
+import DashboardRoutes from '../views/dashboard/routes';
+import MainRoutes      from '../views/routes';
 
 let routes = [];
 

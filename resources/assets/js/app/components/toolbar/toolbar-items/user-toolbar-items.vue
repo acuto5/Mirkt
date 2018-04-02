@@ -1,6 +1,6 @@
 <template>
     <v-toolbar-items>
-        <v-menu offset-y class="ml-2">
+        <v-menu offset-y left class="ml-2">
             <!-- Icon and user nickname -->
             <v-btn icon v-if="$vuetify.breakpoint.mdAndDown" slot="activator">
                 <v-icon>menu</v-icon>

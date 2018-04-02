@@ -9,6 +9,7 @@ use App\Http\Requests\Articles\ArticleShowRequest;
 use App\Http\Requests\Articles\ArticleStoreRequest;
 use App\Http\Requests\Articles\ArticleUpdateRequest;
 use App\Jobs\DeleteArticle;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -22,7 +23,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(ArticleShowRequest $request)
+    public function show(ArticleShowRequest $request): JsonResponse
     {
         $where = [
             ['id', $request->id],
@@ -71,7 +72,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(ArticleStoreRequest $request)
+    public function store(ArticleStoreRequest $request): JsonResponse
     {
         $article               = new Article();
         $additionalRequestData = [
@@ -92,8 +93,8 @@ class ArticleController extends Controller
         // Store and sync images with article
         $article->storeImages(
             $request->file('images'),
-            $request->get('is_default_img_old'),
-            $request->get('default_image_id')
+            (bool)$request->get('is_default_img_old'),
+            (int)$request->get('default_image_id')
         );
     
         // Create job
@@ -109,7 +110,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(ArticleUpdateRequest $request)
+    public function update(ArticleUpdateRequest $request): JsonResponse
     {
         $article = Article::find($request->id);
     
@@ -122,15 +123,15 @@ class ArticleController extends Controller
         // Sync old article images
         $article->syncOldImages(
             $request->get('old_images_ids'),
-            $request->get('is_default_img_old'),
-            $request->get('default_image_id')
+            (bool)$request->get('is_default_img_old'),
+            (int)$request->get('default_image_id')
         );
     
         // Store and sync new images with article
         $article->storeImages(
             $request->file('images'),
-            $request->get('is_default_img_old'),
-            $request->get('default_image_id')
+            (bool)$request->get('is_default_img_old'),
+            (int)$request->get('default_image_id')
         );
     
         return response()->json($article->id);
@@ -143,7 +144,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(ArticleDeleteRequest $request)
+    public function delete(ArticleDeleteRequest $request): JsonResponse
     {
         Article::find($request->id)->forceDelete();
     

@@ -63,7 +63,7 @@
                 </v-list-tile>
                 <!-- Contacts -->
                 <v-list-tile :to="routerLinkToWebsiteInfoPage" active-class="teal--text text--accent-2">
-                    <v-list-tile-title>Puslapio informacija</v-list-tile-title>
+                    <v-list-tile-title>Tinklapio informacija</v-list-tile-title>
                 </v-list-tile>
             </v-list>
         </v-menu>

@@ -17,11 +17,3 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
 	$this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
-
-// Make admin
-Artisan::command('make:Admin {id}', function ($id) {
-	$user = User::findOrFail($id);
-	$user->is_admin = true;
-	$user->save();
-	
-})->describe('Promote user to admin.');
