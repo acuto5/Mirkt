@@ -36,7 +36,7 @@ const $_successGetArticle = function (response) {
 // Mark publish/draft article
 //------------------------
 const $_successMarkRequest = function () {
-	this.getArticle();
+	this.Article.is_draft = !this.Article.is_draft;
 	$_enableMarkButtons.call(this);
 };
 

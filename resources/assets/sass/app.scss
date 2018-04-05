@@ -55,6 +55,13 @@
   color: hsla(0,0%,100%,.7);
 }
 
+.none_list-style-type{
+  list-style-type: none;
+}
+.list_inline li{
+  display: inline;
+}
+
 // radio-input component
 .radio-input-disabled {
   opacity: 0.3

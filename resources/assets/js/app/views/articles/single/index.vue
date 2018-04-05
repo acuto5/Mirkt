@@ -66,6 +66,7 @@
 
                     <!-- Buttons -->
                     <div style="display: inline-flex;" v-if="IAmGod">
+                        <!-- Edit -->
                         <v-btn
                                 style="float: right"
                                 icon
@@ -78,30 +79,31 @@
                         >
                             <v-icon>edit</v-icon>
                         </v-btn>
+                        <!-- Mark as published-->
                         <v-btn
                                 icon
                                 flat
-                                style="float: right"
-
-                                color="error"
-                                title="Perkelti į juodraštį"
-                                v-if="!SingleArticleObj.Article.is_draft"
-                                @click="SingleArticleObj.markArticleAsDraft()"
-                                :loading="SingleArticleObj.isMarkButtonDisabled"
-                        >
-                            <v-icon>directions</v-icon>
-                        </v-btn>
-                        <v-btn
-                                icon
-                                flat
+                                title="Paskelbti"
                                 style="float: right"
                                 color="teal accent-2"
-                                title="Paskelbti"
-                                v-if="SingleArticleObj.Article.is_draft"
+                                v-show="SingleArticleObj.Article.is_draft"
                                 @click="SingleArticleObj.markArticleAsPublished()"
                                 :loading="SingleArticleObj.isMarkButtonDisabled"
                         >
                             <v-icon>check</v-icon>
+                        </v-btn>
+                        <!-- Mark as draft -->
+                        <v-btn
+                                icon
+                                flat
+                                color="error"
+                                style="float: right"
+                                title="Perkelti į juodraštį"
+                                v-show="!SingleArticleObj.Article.is_draft"
+                                @click="SingleArticleObj.markArticleAsDraft()"
+                                :loading="SingleArticleObj.isMarkButtonDisabled"
+                        >
+                            <v-icon>directions</v-icon>
                         </v-btn>
                     </div>
                 </div>
