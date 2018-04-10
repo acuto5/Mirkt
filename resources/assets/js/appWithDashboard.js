@@ -4,7 +4,8 @@ import VueAnalytics from 'vue-analytics';
 
 Vue.use(VueAnalytics, {
 	id: 'UA-117103989-1',
-	router: router
+	router: router,
+	checkDuplicatedScript: true
 });
 const app = new Vue({
 	el: '#app',
