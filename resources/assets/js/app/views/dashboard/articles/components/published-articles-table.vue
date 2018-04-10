@@ -1,5 +1,5 @@
 <template>
-    <v-list dark class="brown darken-3" v-if="PublishedArticlesObj.Articles.length">
+    <v-list dark>
         <template v-for="(article, index) in PublishedArticlesObj.Articles">
             <v-divider v-if="index >= 1"/>
             <v-list-tile avatar @click="" :key="article.id">
@@ -16,9 +16,7 @@
                 />
 
                 <!-- Edit article -->
-                <tile-action-edit-article-link-button
-                        :id="article.id"
-                />
+                <tile-action-edit-article-link-button :id="article.id" :articles-obj="PublishedArticlesObj" />
 
                 <!-- Mark article as draft -->
                 <tile-action-mark-article-as-draft-button
@@ -28,14 +26,13 @@
             </v-list-tile>
         </template>
     </v-list>
-    <v-progress-circular fill indeterminate color="brown darken-3" :width="4" :size="50"  v-else/>
 </template>
 <script>
 
-	import TileActionEditArticleLinkButton from "./sub-components/tile-action-edit-article-link-button";
+	import TileActionEditArticleLinkButton    from "./sub-components/tile-action-edit-article-link-button";
 	import TileActionMarkArticleAsDraftButton from "./sub-components/tile-action-mark-article-as-draft-button";
-	import TileContentTitleAndCreationDate from "./sub-components/tile-content-title-and-creatiion-date";
-	import TileAvatarDefaultArticleImage from "./sub-components/tile-avatar-default-article-image";
+	import TileAvatarDefaultArticleImage      from "./sub-components/tile-avatar-default-article-image";
+	import TileContentTitleAndCreationDate    from "./sub-components/tile-content-title-and-creatiion-date";
 
 	export default {
 		components: {
@@ -50,7 +47,6 @@
 				type: Object,
 				required: true
 			}
-		},
-		methods: {}
+		}
 	}
 </script>

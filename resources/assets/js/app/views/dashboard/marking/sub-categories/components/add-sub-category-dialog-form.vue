@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="isDialogVisible" max-width="400px">
         <!-- Activator -->
-        <v-btn color="success" block slot="activator">
+        <v-btn outline color="success" block slot="activator">
             <v-icon class="subheading">add</v-icon>
             Pridėti
         </v-btn>
@@ -15,6 +15,7 @@
                     <v-text-field
                             label="Pavadinimas"
                             v-model="input"
+                            color="teal accent-2"
                             :error-messages="SubCategoriesObj.AddSubCategoryErrors.name"
                     />
 
@@ -22,9 +23,7 @@
                     <error-caption-list :error-messages="SubCategoriesObj.AddSubCategoryErrors.category_id"/>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn flat color="success" type="submit" :loading="isLoading">
-                        Pridėti
-                    </v-btn>
+                    <v-btn flat color="success" type="submit" :loading="isLoading">Pridėti</v-btn>
                     <v-btn flat @click="isDialogVisible = false" :loading="isLoading">Atgal</v-btn>
                 </v-card-actions>
             </v-form>
@@ -33,7 +32,7 @@
 </template>
 
 <script>
-	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import ErrorCaptionList from "../../../../../components/errors/error-caption-list";
 
 	export default {
 		components: {ErrorCaptionList},

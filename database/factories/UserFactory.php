@@ -15,7 +15,9 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
     static $password;
-
+	
+	echo "Create App\User \n";
+	
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -23,3 +25,28 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+// Super admin
+$factory->state(App\User::class, 'superAdmin', [
+	'name'           => 'Super',
+	'email'          => 'super@mirkt.lt',
+	'password'       => bcrypt('password'),
+	'is_super_admin' => 1,
+	'is_admin'       => 1,
+]);
+
+// Admin
+$factory->state(App\User::class, 'admin', [
+	'name' => 'Admin',
+	'email' => 'admin@mirkt.lt',
+	'password' => bcrypt('password'),
+	'is_admin' => 1
+]);
+
+// Moderator
+$factory->state(App\User::class, 'moderator', [
+	'name' => 'Moderator',
+	'email' => 'moderator@mirkt.lt',
+	'password' => bcrypt('password'),
+	'is_moderator' => 1
+]);

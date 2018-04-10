@@ -1,5 +1,5 @@
 <template>
-    <v-list dark class="brown darken-3" v-if="DraftArticlesObj.Articles.length">
+    <v-list dark>
         <template v-for="(article, index) in DraftArticlesObj.Articles">
             <v-divider v-if="index > 0"/>
             <v-list-tile avatar @click="" :key="article.id">
@@ -16,7 +16,7 @@
                 />
 
                 <!-- Edit article -->
-                <tile-action-edit-article-link-button
+                <tile-action-edit-article-link-button :articles-obj="DraftArticlesObj"
                         :id="article.id"
                 />
 
@@ -36,7 +36,6 @@
             </v-list-tile>
         </template>
     </v-list>
-    <v-progress-circular fill indeterminate color="brown darken-3" :width="4" :size="50"  v-else/>
 </template>
 <script>
 	import TileAvatarDefaultArticleImage from "./sub-components/tile-avatar-default-article-image";

@@ -1,10 +1,12 @@
 import router from "./app/routes/app-routes";
-import Messages from "./app/flash-messages";
+import VueAnalytics from 'vue-analytics';
 
-const app = new Vue({
+Vue.use( VueAnalytics, {
+	id    : 'UA-117103989-1',
+	router: router,
+	checkDuplicatedScript: true
+} );
+new Vue( {
     el:'#app',
 	router: router,
-	data: {
-		messages: new Messages()
-	}
 });

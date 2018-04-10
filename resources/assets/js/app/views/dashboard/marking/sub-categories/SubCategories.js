@@ -1,11 +1,14 @@
-import {getCategories} from '../categories/Categories';
+import { getCategories } from '../categories/Categories';
+
+function getArticlesBySubCategoryName ( query ) {
+	const url = window.URLS.getArticlesBySubCategoryName;
+
+	return axios.get( url, { params: query } );
+}
 
 //--------------------------
 // Global vars
 //--------------------------
-// FlashMessages
-const $_FlashMessages = Symbol();
-
 // Urls
 const $_levelUpURL = Symbol();
 const $_levelDownURL = Symbol();
@@ -20,10 +23,12 @@ const $_deleteSubCategoryURL = Symbol();
 //--------------------
 const $_successGetCategories = function (response) {
 	this.categories = response.data;
+
+	this.isRequestInProgress = false;
 };
 
 const $_errorGetCategories = function (error) {
-	this[$_FlashMessages].setError(error.response.data.message);
+	window.FlashMessages.setError(error.response.data.message);
 };
 
 //--------------------
@@ -31,11 +36,14 @@ const $_errorGetCategories = function (error) {
 //--------------------
 const $_successUpdateSubCategories = function (response) {
 	this.subCategories = response.data;
+
+	this.isRequestInProgress = false;
 };
 
 const $_errorUpdateSubCategories = function (error) {
 	this.UpdateSubCategoriesErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
+
+	this.isRequestInProgress = false;
 };
 
 //--------------------
@@ -43,14 +51,13 @@ const $_errorUpdateSubCategories = function (error) {
 //--------------------
 const $_successAddSubCategory = function () {
 	this.updateSubCategoriesList();
-	this[$_FlashMessages].setSuccess('Pridėta.');
+	window.FlashMessages.setSuccess('Pridėta.');
 
 	return true;
 };
 
 const $_errorAddSubCategory = function (error) {
 	this.AddSubCategoryErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 
 	return false;
 };
@@ -60,7 +67,7 @@ const $_errorAddSubCategory = function (error) {
 //--------------------
 const $_successEditSubCategory = function () {
 	this.updateSubCategoriesList();
-	this[$_FlashMessages].setSuccess('Atnaujinta.');
+	window.FlashMessages.setSuccess('Atnaujinta.');
 
 	return true;
 };
@@ -76,7 +83,7 @@ const $_errorEditSubCategory = function (error) {
 //--------------------------
 const $_successDeleteSubCategory = function () {
 	this.updateSubCategoriesList();
-	this[$_FlashMessages].setSuccess('Ištrinta.');
+	window.FlashMessages.setWarning('Ištrinta.');
 
 	return true;
 };
@@ -92,7 +99,7 @@ const $_errorDeleteSubCategory = function (error) {
 //--------------------
 const $_errorLevelDown = function (error) {
 	this.LevelDownErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
+	window.FlashMessages.setError(error.response.data.message);
 };
 
 //--------------------
@@ -100,14 +107,13 @@ const $_errorLevelDown = function (error) {
 //--------------------
 const $_errorLevelUp = function (error) {
 	this.LevelUpErrors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
 };
 
 //--------------------
 // Errors
 //--------------------
 const $_clearErrors = function () {
-	this[$_FlashMessages].clear();
+	window.FlashMessages.clear();
 	this.UpdateSubCategoriesErrors.clear();
 };
 
@@ -115,10 +121,13 @@ class SubCategories {
 	constructor() {
 		// Categories
 		this.categories = [];
-		this.selectedCategoryID = -1;
+		this.selectedCategoryID = 0;
 
 		// Sub-categories
 		this.subCategories = [];
+
+		// Show progress circle
+		this.isRequestInProgress = true;
 
 		// Urls
 		this[$_levelUpURL] = window.URLS.levelUpSubCategory;
@@ -128,9 +137,6 @@ class SubCategories {
 		this[$_editSubCategoryURL] = window.URLS.editSubCategory;
 		this[$_getSubCategoriesURL] = window.URLS.getSubCategories;
 		this[$_deleteSubCategoryURL] = window.URLS.deleteSubCategory;
-
-		// FlashMessages
-		this[$_FlashMessages] = window.FlashMessages;
 
 		// Errors
 		this.LevelUpErrors = new window.Errors({id: []});
@@ -145,6 +151,7 @@ class SubCategories {
 	// Categories
 	//--------------------
 	getCategories() {
+
 		$_clearErrors.call(this);
 
 		getCategories()
@@ -157,6 +164,8 @@ class SubCategories {
 	// Sub-categories list
 	//--------------------
 	updateSubCategoriesList() {
+		this.isRequestInProgress = true;
+
 		$_clearErrors.call(this);
 
 		axios.get(this[$_getSubCategoriesURL], {params: {'id': this.selectedCategoryID}})
@@ -171,7 +180,7 @@ class SubCategories {
 	levelUpSubCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelUpURL], {'id': id})
+		axios.patch(this[$_levelUpURL], {'id': id})
 			.then(response => this.updateSubCategoriesList())
 			.catch(error => $_errorLevelUp.call(this, error));
 	}
@@ -183,7 +192,7 @@ class SubCategories {
 	levelDownSubCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelDownURL], {'id': id})
+		axios.patch(this[$_levelDownURL], {'id': id})
 			.then(response => this.updateSubCategoriesList())
 			.catch(error => $_errorLevelDown.call(this, error));
 	}
@@ -229,4 +238,5 @@ class SubCategories {
 	}
 }
 
+export { getArticlesBySubCategoryName };
 export default SubCategories;

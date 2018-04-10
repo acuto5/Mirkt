@@ -8,6 +8,7 @@
                     slot="activator"
                     color="grey lighten-1"
                     title="Ištrinti galutinai"
+                    :loading="DraftArticlesObj.isButtonsLoadingStyle"
             >
                 <v-icon color="error">delete_forever</v-icon>
             </v-btn>
@@ -58,12 +59,15 @@
 
 				this.isDialogVisible = !await this.DraftArticlesObj.deleteArticle(this.id);
 
+				if(!this.isDialogVisible){
+					let $_query = Object.assign({}, this.$route.query);
+
+					window.FlashMessages.setWarning('Straipsnis ištrintas.');
+					this.DraftArticlesObj.searchArticles($_query);
+                }
+
 				this.isLoading = false;
 			}
         }
 	}
 </script>
-
-<style scoped>
-
-</style>

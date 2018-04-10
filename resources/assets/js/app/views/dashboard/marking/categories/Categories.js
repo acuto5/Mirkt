@@ -2,15 +2,21 @@
  * Functions for export
  */
 function getCategories() {
-	let url = window.URLS.getCategories;
+	const url = window.URLS.getCategories;
 
 	return axios.get(url);
 }
 
 function getCategoriesWithSubCategoriesPromise() {
-	let url = window.URLS.getCategoriesAndSubCategories;
+	const url = window.URLS.getCategoriesAndSubCategories;
 
 	return axios.get(url);
+}
+
+function getCategoryArticles ( query ) {
+	const url = window.URLS.getCategoryArticles;
+
+	return axios.get(url, {params: query});
 }
 
 async function getSubCategoriesWithCategoryAsHeader() {
@@ -96,7 +102,7 @@ const $_successDeleteCategory = function (id) {
 
 	this.Categories = this.Categories.filter(Category => Category.id !== id);
 
-	this[$_FlashMessages].setSuccess('Ištrinta.');
+	this[$_FlashMessages].setWarning('Ištrinta.');
 
 	return true;
 };
@@ -147,11 +153,11 @@ class Categories {
 	constructor() {
 		this.Categories = [];
 
-		// Add category
-		this.newCategoryName = '';
-
 		// FlashMessages
 		this[$_FlashMessages] = window.FlashMessages;
+
+		// Show progress circle
+		this.isRequestInProgress = true;
 
 		// Urls
 		this[$_addCategoryURL] = window.URLS.addCategory;
@@ -173,11 +179,19 @@ class Categories {
 	// Categories list
 	//-------------------------
 	updateCategoriesList() {
+		this.isRequestInProgress = true;
+
 		$_clearErrors.call(this);
 
 		getCategories()
-			.then(response => this.Categories = response.data)
-			.catch(error => this[$_FlashMessages].setError(error.response.data.message));
+			.then(response => {
+				this.Categories = response.data;
+				this.isRequestInProgress = false;
+			})
+			.catch(error => {
+				this[$_FlashMessages].setError(error.response.data.message);
+				this.isRequestInProgress = false;
+			});
 	}
 
 	//-------------------------
@@ -220,7 +234,7 @@ class Categories {
 	levelUpCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelUpURL], {'id': id})
+		axios.patch(this[$_levelUpURL], {'id': id})
 			.then(response => $_successLevelUpCategory.call(this))
 			.catch(error => $_errorLevelUpCategory.call(this, error));
 	}
@@ -231,11 +245,11 @@ class Categories {
 	levelDownCategory(id) {
 		$_clearErrors.call(this);
 
-		axios.post(this[$_levelDownURL], {'id': id})
+		axios.patch(this[$_levelDownURL], {'id': id})
 			.then(response => $_successLevelDownCategory.call(this))
 			.catch(error => $_errorLevelDownCategory.call(this, error));
 	}
 }
 
-export {getCategories, getCategoriesWithSubCategoriesPromise, getSubCategoriesWithCategoryAsHeader}
+export {getCategories, getCategoriesWithSubCategoriesPromise, getSubCategoriesWithCategoryAsHeader, getCategoryArticles}
 export default Categories;

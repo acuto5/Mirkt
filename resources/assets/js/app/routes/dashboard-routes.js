@@ -1,9 +1,8 @@
-import VueRouter from "vue-router";
+import VueRouter       from "vue-router";
+import DashboardRoutes from '../views/dashboard/routes';
+import MainRoutes      from '../views/routes';
 
 let routes = [];
-
-import MainRoutes from '../views/main/routes';
-import DashboardRoutes from '../views/dashboard/routes'
 
 routes = routes.concat(MainRoutes);
 routes = routes.concat(DashboardRoutes);

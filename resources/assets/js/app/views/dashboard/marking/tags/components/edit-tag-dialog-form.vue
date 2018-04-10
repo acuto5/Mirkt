@@ -8,13 +8,14 @@
             <v-form  @submit.prevent="editTag()">
 
                 <!-- Title -->
-                <v-card-title class="warning" v-text="'Redaguoti: ' + tag.name"/>
+                <v-card-title class="title warning" v-text="'Redaguoti: ' + tag.name"/>
 
                 <!-- Content -->
                 <v-card-text>
                     <v-text-field
                             label="Pavadinimas"
                             v-model="tempTag.name"
+                            color="teal accent-2"
                             :error-messages="TagsObj.EditErrors.name"
                     />
                     <error-caption-list :error-messages="TagsObj.EditErrors.id"/>
@@ -30,7 +31,7 @@
     </v-dialog>
 </template>
 <script>
-	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import ErrorCaptionList from "../../../../../components/errors/error-caption-list";
 
 	export default {
 		components: {ErrorCaptionList},

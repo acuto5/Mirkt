@@ -1,61 +1,78 @@
 <template>
-    <v-container fluid>
-        <v-layout row wrap justify-space-around>
+    <v-container>
+        <v-layout row wrap >
+            <!-- Title -->
+            <v-flex xs12 mb-2 class="text-xs-center">
+                <h3 class="headline">Žymės</h3>
+            </v-flex>
+
             <!-- Search bar -->
-            <v-flex d-flex xs10 class="text-xs-center">
-                <search-tags-form :tags-obj="TagsObj"/>
+            <v-flex xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3 mb-2>
+                <simple-search-form input-name="tag" :error-messages="TagsObj.UpdateListErrors.tag"/>
             </v-flex>
 
             <!-- Tags table -->
-            <v-flex d-flex xs10 class="text-xs-center my-2">
+            <v-flex  xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3 mb-1 v-show="!TagsObj.isRequestInProgress && !errorExists()">
                 <tags-table :tags-obj="TagsObj"/>
             </v-flex>
 
             <!-- Add new tag -->
-            <v-flex d-flex xs10 sm8 md6 lg4 >
+            <v-flex d-flex xs12 sm10 offset-sm1 md6 offset-md3 lg4 offset-lg4 v-if="!TagsObj.isRequestInProgress">
                 <add-tag-dialog-form :tags-obj="TagsObj"/>
             </v-flex>
+        </v-layout>
 
-            <!-- Pagination -->
-            <v-flex xs12 lg10 my-2 class="text-xs-center">
-                <v-pagination
-                        v-model="TagsObj.currentPage"
-                        :length="TagsObj.lastPage"/>
+        <!-- Pagination -->
+        <v-layout row wrap justify-center>
+            <v-flex xs12 md10 my-2>
+                <pagination-with-page-query
+                        :on-query-change="getTags"
+                        :last-page="TagsObj.lastPage"
+                />
             </v-flex>
         </v-layout>
+
+        <!-- Errors -->
+        <v-layout row wrap justify-space-around v-if="errorExists()">
+            <v-flex xs12 sm10 md8 lg6 xl4>
+                <alert-component :messages="TagsObj.UpdateListErrors.page" type="error"/>
+            </v-flex>
+        </v-layout>
+
+        <!-- Progress circular -->
+        <progress-circular v-if="TagsObj.isRequestInProgress"/>
     </v-container>
 </template>
 <script>
-	import Tags from './Tags';
-	import TagsTable from "./components/tags-table";
-	import SearchTagsForm from "./components/search-tags-form";
-	import AddTagDialogForm from "./components/add-tag-dialog-form";
+	import AlertComponent          from "../../../../components/alert-component";
+	import PaginationWithPageQuery from "../../../../components/pagination-with-page-query";
+	import ProgressCircular        from "../../../../components/progress-circular";
+	import SimpleSearchForm        from "../../../../components/simple-search-form";
+	import AddTagDialogForm        from "./components/add-tag-dialog-form";
+	import TagsTable               from "./components/tags-table";
+	import Tags                    from './Tags';
 
-	export default{
-		components: { AddTagDialogForm, TagsTable, SearchTagsForm},
-		data(){
+	export default {
+		components: {
+			ProgressCircular,
+			AlertComponent,
+			SimpleSearchForm,
+			PaginationWithPageQuery,
+			AddTagDialogForm,
+			TagsTable
+		},
+		data() {
 			return {
-				TagsObj: new Tags(this.$router)
+				TagsObj: new Tags(this.$router, this.$route)
 			}
 		},
-		mounted(){
-			let page = (this.$route.query.page) ? this.$route.query.page : undefined;
-			let searchKey =  (this.$route.query.searchKey) ? this.$route.query.searchKey : undefined;
-
-			// Add "page" query value if not set
-			if(page){
-				this.TagsObj.goToPage(page, searchKey);
-			} else {
-				this.$router.replace({name: 'tags', query: {page: 1}}); // Bug, cant replace/push two query params...
-			}
-		},
-		watch: {
-			'$route': function ($route) {
-				this.TagsObj.goToPage($route.query.page, $route.query.searchKey);
+		methods   : {
+			getTags ( Query, page ) {
+				this.TagsObj.getTags( Query.tag, page );
 			},
-            'TagsObj.currentPage': function (newValue) {
-				this.TagsObj.pushToQuery(newValue);
-			}
+			errorExists () {
+				return !!this.TagsObj.UpdateListErrors.page.length;
+			},
 		}
 	}
 </script>  

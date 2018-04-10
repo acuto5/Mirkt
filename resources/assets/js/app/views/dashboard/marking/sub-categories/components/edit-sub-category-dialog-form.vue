@@ -7,28 +7,26 @@
             <v-form @submit.prevent="editSubCategory()">
 
                 <!-- Title -->
-                <v-card-title class="warning" v-text="'Redaguoti: ' + subCategory.name"/>
+                <v-card-title class="warning title">Redaguoti: {{ subCategory.name }}</v-card-title>
 
                 <!-- Content -->
                 <v-card-text>
                     <!-- Category -->
-                    <v-list>
-                        <v-list-tile>
-                            <v-select
-                                    single-line
-                                    item-value="id"
-                                    item-text="name"
-                                    label="Kategorija"
-                                    :items="SubCategoriesObj.categories"
-                                    v-model="tempSubCategory.category_id"
-                                    :error-messages="SubCategoriesObj.EditSubCategoryErrors.category_id"
-                            />
-                        </v-list-tile>
-                    </v-list>
+                    <v-select
+                            single-line
+                            item-value="id"
+                            item-text="name"
+                            label="Kategorija"
+                            color="teal accent-2"
+                            :items="SubCategoriesObj.categories"
+                            v-model="tempSubCategory.category_id"
+                            :error-messages="SubCategoriesObj.EditSubCategoryErrors.category_id"
+                    />
 
                     <!-- Name -->
                     <v-text-field
                             label="Pavadinimas"
+                            color="teal accent-2"
                             v-model="tempSubCategory.name"
                             :error-messages="SubCategoriesObj.EditSubCategoryErrors.name"
                     />
@@ -46,7 +44,7 @@
 </template>
 
 <script>
-	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import ErrorCaptionList from "../../../../../components/errors/error-caption-list";
 
 	export default {
 		components: {ErrorCaptionList},

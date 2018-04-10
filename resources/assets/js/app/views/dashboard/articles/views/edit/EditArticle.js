@@ -1,15 +1,12 @@
-import {getArticle} from "../../../../main/articles/single/SingleArticle";
+import { getArticle }                         from "../../../../articles/single/SingleArticle";
 import {getSubCategoriesWithCategoryAsHeader} from "../../../marking/categories/Categories";
-import {getAllTagsPromise} from "../../../marking/tags/Tags";
+import {getAllTagsPromise}                    from "../../../marking/tags/Tags";
 
 //--------------------------------------
 // Private vars
 //--------------------------------------
 // FormData
 const $_FormData = Symbol();
-
-// Errors
-const $_FlashMessages = Symbol();
 
 // Router
 const $_Router = Symbol();
@@ -28,9 +25,6 @@ const $_generateFormData = function () {
 	for (let key in this.EditArticleInputs) {
 		if (key === 'images') {
 			this.EditArticleInputs.images.forEach(image => this[$_FormData].append('images[]', image));
-			// _.forEach(this.EditArticleInputs.images, function (value) {
-			// 	vm[$_FormData].append('images[]', value);
-			// });
 		} else if (key === 'old_images') {
 			_.forEach(this.EditArticleInputs.old_images, function (value) {
 				vm[$_FormData].append('old_images_ids[]', value.id);
@@ -80,7 +74,9 @@ const $_disableButtons = function () {
 //--------------------------------------
 
 const $_goToArticle = function (articleID) {
-	return this[$_Router].push({name: 'dashboard.articles.single', params: {id: articleID}});
+	window.FlashMessages.setSuccess('Atnaujinta.');
+
+	this[$_Router].push({name: 'articles.single', params: {id: articleID}});
 };
 
 //--------------------------------------
@@ -88,12 +84,13 @@ const $_goToArticle = function (articleID) {
 //--------------------------------------
 const $_setErrors = function (error) {
 	this.Errors.setLarevelErrors(error);
-	this[$_FlashMessages].setError(error.response.data.message);
+
+	$_enableButtons.call(this);
+	this.isRequestInProgress = false;
 };
 
 const $_clearErrors = function () {
 	this.Errors.clear();
-	this[$_FlashMessages].clear();
 };
 
 class EditArticle {
@@ -126,8 +123,9 @@ class EditArticle {
 		// Buttons visibility
 		this.isButtonsDisabled = true;
 
+		this.isRequestInProgress = true;
+
 		// Errors
-		this[$_FlashMessages] = window.FlashMessages;
 		this.Errors = new window.Errors({
 			title: [],
 			sub_category_id: [],
@@ -158,6 +156,8 @@ class EditArticle {
 	// Categories
 	//--------------------------------------
 	getArticle(articleID) {
+		this.isRequestInProgress = true;
+
 		$_clearErrors.call(this);
 		$_disableButtons.call(this);
 
@@ -170,13 +170,24 @@ class EditArticle {
 	// Sub-categories
 	//--------------------------------------
 	async getSubCategoriesForSelectInput() {
+		this.isRequestInProgress = true;
+
 		this.subCategoriesForSelectInput = await getSubCategoriesWithCategoryAsHeader();
+
+		this.isRequestInProgress = false;
 	}
 
 	getTags() {
+		this.isRequestInProgress = true;
+
 		getAllTagsPromise()
-			.then(response => this.Tags = response.data)
-			.catch(error => $_setErrors.call(this, error))
+			.then(response => {
+				this.Tags = response.data;
+
+				this.isRequestInProgress = false;
+			})
+			.catch(error => $_setErrors.call(this, error));
+
 	}
 
 	//--------------------------------------

@@ -22,22 +22,24 @@
     </head>
     <body>
         <div id="app">
-            <router-view :messages="messages"></router-view>
+            <router-view></router-view>
         </div>
-
         <script>
-            window.URLS = {!! App\Http\Controllers\RoutesController::getRoutes() !!};
+            window.CategoriesWithSubCategories = Object.freeze({!! getAllCategoriesWithSubCategories() !!});
+            window.CategoriesWithSubCategories.map( category => Object.freeze( category ) );
+
+            window.URLS = Object.freeze({!! getAllRoutes() !!});
 
             @if(Auth::check())
-                window.USER = {!! Auth::user() !!};
+                window.USER = Object.freeze({!! Auth::user() !!});
             @else
-                window.USER = {};
+                window.USER = Object.freeze( {} );
             @endif
         </script>
 
         @if(Auth::check())
             @if(Auth::user()->isAdmin() || Auth::user()->isModerator())
-                <script src="{{mix('js/appAndDashboard.js')}}"></script> {{-- Admin or Moderator --}}
+                <script src="{{mix('js/appWithDashboard.js')}}"></script> {{-- Admin or Moderator --}}
             @else
                 <script src="{{ mix('js/app.js') }}"></script> {{-- Auth --}}
             @endif

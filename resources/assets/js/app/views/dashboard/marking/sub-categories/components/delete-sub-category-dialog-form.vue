@@ -22,9 +22,7 @@
                         Trinti visam laikui
                     </v-btn>
                     <!-- Close dialog -->
-                    <v-btn flat @click="isDialogVisible = false" :loading="isLoading">
-                        Atgal
-                    </v-btn>
+                    <v-btn flat @click="isDialogVisible = false" :loading="isLoading">Atgal</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -32,7 +30,7 @@
 </template>
 
 <script>
-	import ErrorCaptionList from "../../../../components/error-caption-list";
+	import ErrorCaptionList from "../../../../../components/errors/error-caption-list";
 
 	export default {
 		components: {ErrorCaptionList},

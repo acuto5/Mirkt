@@ -7,6 +7,7 @@
                 color="grey lighten-1"
                 title="Perkelti į juodraštį"
                 @click.native="markArticleAsDraft()"
+                :loading="PublishedArticlesObj.isButtonsLoadingStyle"
         >
             <v-icon color="error">directions</v-icon>
         </v-btn>
@@ -27,13 +28,16 @@
             }
         },
         methods: {
-			markArticleAsDraft(){
-				this.PublishedArticlesObj.markArticleAsDraft(this.id)
+			async markArticleAsDraft(){
+				let $_result = await this.PublishedArticlesObj.markArticleAsDraft(this.id);
+
+				if($_result){
+					let $_query = Object.assign({}, this.$route.query);
+
+					window.FlashMessages.setSuccess('Straipsnis perkeltas į juodraštį');
+					this.PublishedArticlesObj.searchArticles($_query);
+				}
             }
         }
 	}
 </script>
-
-<style scoped>
-
-</style>

@@ -34,7 +34,7 @@ const $_disableButtons = function () {
 // Publish new Article
 //------------------------------------
 const $_goToArticle = function (articleID) {
-	return this[$_Router].push({name: 'dashboard.articles.single', params: {id: articleID}});
+	return this[$_Router].push({name: 'articles.single', params: {id: articleID}});
 };
 
 //------------------------------------
@@ -107,7 +107,7 @@ class NewArticle {
 		// New article inputs
 		this[$_FormData] = {};
 		this.NewArticleInputs = {
-			title: '', sub_category_id: -1, tags_ids: [], images: [], default_image_id: null, is_default_img_old: 0
+			title: '', content: '', sub_category_id: -1, tags_ids: [], images: [], default_image_id: null, is_default_img_old: 0
 		};
 
 		// Router

@@ -1,62 +1,87 @@
 <template>
     <v-container>
         <v-layout row wrap justify-space-around>
+            <!-- Title -->
+            <v-flex xs12 mb-2 class="text-xs-center">
+                <h2 class="headline">Publikuoti straipsniai</h2>
+            </v-flex>
+
+            <!-- Search form -->
             <v-flex xs12 lg10>
                 <search-articles-form
-                        :searchMethod="searchArticles"
                         :title-errors="PublishedArticlesObj.Errors.title"
                         :sub-category-errors="PublishedArticlesObj.Errors.sub_category_id"
                 />
             </v-flex>
-            <v-flex xs12 lg10 my-2>
-                <order-by :onOrderChange="onOrderChange"/>
-                <alert-component class="my-2" type="error" :messages="PublishedArticlesObj.Errors.order_by"/>
-            </v-flex>
-            <v-flex xs12 lg10 class="text-xs-center">
-                <published-articles-table :published-articles-obj="PublishedArticlesObj"/>
-            </v-flex>
-            <v-flex xs12 lg6 my-2 v-if="PublishedArticlesObj.Articles.length" class="text-xs-center">
-                <v-pagination
-                        v-model="PublishedArticlesObj.currentPage"
-                        :length="PublishedArticlesObj.lastPage"/>
-                <alert-component :messages="PublishedArticlesObj.Errors.page" type="error" class="my-2" />
+
+            <template v-if="showContent">
+                <!-- Order by -->
+                <v-flex xs12 lg10 my-2>
+                    <order-by/>
+                </v-flex>
+
+                <!-- Articles table -->
+                <v-flex xs12 lg10 class="text-xs-center" v-show="PublishedArticlesObj.Articles.length">
+                    <published-articles-table :published-articles-obj="PublishedArticlesObj"/>
+                </v-flex>
+            </template>
+
+            <!-- Pagination -->
+            <v-flex xs12 lg6 my-2 class="text-xs-center">
+                <pagination-with-page-query
+                        :last-page="PublishedArticlesObj.lastPage"
+                        :on-query-change="searchArticles"
+                />
             </v-flex>
         </v-layout>
+
+        <!-- Errors -->
+        <v-layout row wrap justify-space-around v-if="errorExists()">
+            <v-flex xs12 sm10 md8 lg6 xl4>
+                <alert-component :messages="PublishedArticlesObj.Errors.order_by" type="error"/>
+                <alert-component :messages="PublishedArticlesObj.Errors.page" type="error"/>
+            </v-flex>
+        </v-layout>
+
+        <!-- Progress circular -->
+        <progress-circular v-if="PublishedArticlesObj.isRequestInProgress"/>
     </v-container>
 </template>
 <script>
-	import ArticlesListClass from '../../ArticlesList';
-	import AlertComponent from "../../../../components/alert-component";
-	import OrderBy from '../../components/order-by.vue';
-	import SearchArticlesForm from '../../components/search-form.vue';
-	import PublishedArticlesTable from "../../components/published-articles-table";
+	import AlertComponent          from "../../../../../components/alert-component";
+	import PaginationWithPageQuery from "../../../../../components/pagination-with-page-query";
+	import ProgressCircular        from "../../../../../components/progress-circular";
+	import ArticlesListClass       from '../../ArticlesList';
+	import OrderBy                 from '../../components/order-by.vue';
+	import PublishedArticlesTable  from "../../components/published-articles-table";
+	import SearchArticlesForm      from '../../components/search-form.vue';
 
 	export default {
 		components: {
+			OrderBy,
+			SearchArticlesForm,
+			AlertComponent,
+			ProgressCircular,
 			PublishedArticlesTable,
-			AlertComponent, OrderBy, SearchArticlesForm},
+			PaginationWithPageQuery,
+		},
 		data() {
 			return {
-				PublishedArticlesObj: new ArticlesListClass(this.$router, this.$route, true)
+				PublishedArticlesObj: new ArticlesListClass(true)
 			}
 		},
-		mounted() {
-			this.PublishedArticlesObj.viewMounted();
-		},
-		methods: {
-			searchArticles: function (SearchFormInputs) {
-				this.PublishedArticlesObj.pushToQuery(1, SearchFormInputs); // show results from first page
+		computed  : {
+			showContent () {
+				return !this.PublishedArticlesObj.isRequestInProgress && !this.errorExists();
 			},
-			onOrderChange: function (value) {
-				this.PublishedArticlesObj.changeArticlesOrder(value);
-			}
+
 		},
-		watch: {
-			'$route'($route) {
-				this.PublishedArticlesObj.goToPage($route.query.page);
+		methods   : {
+			searchArticles(SearchFormInputs, page) {
+				this.PublishedArticlesObj.searchArticles(SearchFormInputs, page);
 			},
-			'PublishedArticlesObj.currentPage'(newValue) {
-				this.PublishedArticlesObj.pushToQuery(newValue);
+			errorExists () {
+				return !!this.PublishedArticlesObj.Errors.page.length || !!this.PublishedArticlesObj.Errors.order_by.length;
 			}
 		}
 	}

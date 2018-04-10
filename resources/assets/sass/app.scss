@@ -1,8 +1,73 @@
 @import '~vuetify/dist/vuetify.min.css';
+@import "~medium-editor/dist/css/medium-editor.min.css";
+@import "~medium-editor/dist/css/themes/Beagle.min.css";
 
-// Vue
+/**
+  Vue-router
+ */
+.router-link {
+  text-decoration: none;
+}
+
+.router-link:hover {
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+/**
+  Vue
+ */
 [v-cloak] {
   display: none;
 }
 
+/**
+  Vuetify
+ */
+// Toolbar articles drop down
+.remove-left-padding {
+  div.list__tile {
+    padding-left: 0;
+  }
+}
 
+/**
+  Vue2-medium-editor
+ */
+.medium-editor-button-active, .medium-editor-toolbar li button:hover{
+  color: #64FFDA !important;
+}
+.text-editor {
+  min-height: 200px;
+  height: 100%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(0, 0%, 100%, 0.5);
+}
+.text-editor:hover{
+  border-color: hsla(0, 0%, 100%, 0.7);
+}
+.text-editor:focus{
+  outline-color: #64FFDA;
+}
+.medium-editor-placeholder{
+  font-size: 15px;
+  color: hsla(0,0%,100%,.7);
+}
+.medium-list{
+  list-style-type: none;
+}
+
+.medium-list, .inline li {
+  display: inline;
+}
+
+// radio-input component
+.radio-input-disabled {
+  opacity: 0.3
+}
+
+// images-input-panel
+.custom-img {
+  opacity: 0.2;
+}

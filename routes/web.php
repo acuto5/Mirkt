@@ -1,25 +1,46 @@
 <?php
+// Auth routes
+require 'web-routes/auth/auth.php';
 
+// User
+require 'web-routes/user/user.php';
 
-//Route::get('/test', 'testas@getRoutes');
+// Home routes
+require 'web-routes/home/home.php';
 
-require_once 'web-routes/auth.php';                	// Auth
-require_once 'web-routes/tags.php';                	// Tags
-require_once 'web-routes/categories.php';        	// Categories
-require_once 'web-routes/sub-categories.php';    	// Sub categories
-require_once 'web-routes/articles.php';        		// Articles
-require_once 'web-routes/users.php';                // User
+//Info
+require 'web-routes/info/contacts.php';
+require 'web-routes/info/website-info.php';
 
+//Tags routes
+require 'web-routes/tags/tags.php';
+require 'web-routes/tags/tag-articles.php';
+
+// Categories routes
+require 'web-routes/categories/categories.php';
+require 'web-routes/categories/category-level.php';
+require 'web-routes/categories/category-articles.php';
+require 'web-routes/categories/categories-with-sub-categories.php';
+
+// Sub-category routes
+require 'web-routes/sub-categories/sub-categories.php';
+require 'web-routes/sub-categories/sub-category-articles.php';
+require 'web-routes/sub-categories/sub-categories-levels.php';
+
+// Articles
+require 'web-routes/articles/articles.php';
+require 'web-routes/articles/articles-draft.php';
+require 'web-routes/articles/articles-published.php';
+require 'web-routes/articles/articles-search-draft.php';
+require 'web-routes/articles/articles-search-published.php';
+require 'web-routes/articles/article-mark-as-draft.php';
+require 'web-routes/articles/article-mark-as-published.php';
 
 // Allow access files from storage
-Route::match(['get'], '/storage/{fileName}', function ($fileName){
-	return response(file_get_contents('./storage/' . $fileName));
-})->where(['fileName' => '.*']);
+Route::match(['get'], '/storage/{fileName}', 'Storage\StorageController@index')->where(['fileName' => '.*']);
 
-/**************************************/
-/* No GET routes below this will work */
-/**************************************/
-Route::match(['get'], '{all}', function () {
-	return view('app');
-})->where(['all' => '.*']); // Need regex filter witch data can be passed
+/*********************************/
+/* No GET routes below will work */
+/*********************************/
+Route::match(['get'], '{all}', 'Home\HomeController@index')->where(['all' => '.*']); // Need regex filter witch data can be passed
 

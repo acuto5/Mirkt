@@ -1,42 +1,56 @@
 <template>
-    <v-container fluid>
-        <v-layout row wrap justify-space-around>
-            <v-flex d-flex xs12 sm10>
+    <v-container>
+        <v-layout row wrap v-show="!CategoriesObj.isRequestInProgress && !errorExists()">
+            <!-- Title -->
+            <v-flex xs12 mb-2 class="text-xs-center">
+                <h2 class="headline">Kategorijos</h2>
+            </v-flex>
+
+            <!-- Categories table -->
+            <v-flex xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3 v-show="CategoriesObj.Categories.length">
                 <categories-table :categories-obj="CategoriesObj"/>
             </v-flex>
-            <v-flex d-flex xs10 sm8 md6 lg4>
+
+            <!-- Add category dialog form -->
+            <v-flex d-flex xs12 sm8 offset-sm2 md6 offset-md3 lg4 offset-lg4>
                 <add-category-form-dialog :categories-obj="CategoriesObj"/>
             </v-flex>
         </v-layout>
+
+        <!-- Errors -->
+        <v-layout row wrap justify-space-around v-if="errorExists()">
+            <v-flex xs12 sm10 md8 lg6 xl4>
+                <alert-component :messages="CategoriesObj.LevelUpErrors.id" type="error"/>
+                <alert-component :messages="CategoriesObj.LevelDownErrors.id" type="error"/>
+            </v-flex>
+        </v-layout>
+
+        <!-- Progress circular -->
+        <progress-circular v-if="CategoriesObj.isRequestInProgress"/>
     </v-container>
-    <!--<div>-->
-        <!--<help-list type="danger" :messages="CategoriesObj.LevelUpErrors.id"></help-list>-->
-        <!--<help-list type="danger" :messages="CategoriesObj.LevelDownErrors.id"></help-list>-->
-
-        <!--<categories-table :CategoriesObj="CategoriesObj"></categories-table>-->
-
-        <!--<hr/>-->
-
-        <!--<add-category-form :CategoriesObj="CategoriesObj"></add-category-form>-->
-
-        <!--<edit-category-modal-form :CategoriesObj="CategoriesObj"></edit-category-modal-form>-->
-
-        <!--<delete-category-modal-form :CategoriesObj="CategoriesObj"></delete-category-modal-form>-->
-    <!--</div>-->
 </template>
 <script>
-	import Categories from './Categories';
-	import CategoriesTable from "./components/categories-table";
+	import AlertComponent        from "../../../../components/alert-component";
+	import ProgressCircular      from "../../../../components/progress-circular";
+	import Categories            from './Categories';
 	import AddCategoryFormDialog from "./components/add-category-form-dialog";
+	import CategoriesTable       from "./components/categories-table";
 
 	export default{
 		components: {
+			ProgressCircular,
+			AlertComponent,
 			AddCategoryFormDialog,
 			CategoriesTable},
 		data(){
 			return {
 				CategoriesObj: new Categories()
 			}
-		}
+		},
+		methods   : {
+			errorExists () {
+				return !!this.CategoriesObj.LevelUpErrors.id.length || !!this.CategoriesObj.LevelDownErrors.id.length;
+			},
+		},
 	}
 </script>  

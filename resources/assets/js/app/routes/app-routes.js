@@ -1,8 +1,7 @@
-import VueRouter from 'vue-router'
+import VueRouter  from 'vue-router';
+import MainRoutes from '../views/routes';
 
 let routes = [];
-
-import MainRoutes from '../views/main/routes';
 
 routes = routes.concat(MainRoutes);
 
@@ -12,5 +11,5 @@ routes = routes.concat([{path: '*', redirect: {name: 'home'}}]);
 export default new VueRouter({
 	routes: routes,
 	mode: 'history',
-	linkActiveClass: 'is-active'
+	linkActiveClass: 'is-active',
 });

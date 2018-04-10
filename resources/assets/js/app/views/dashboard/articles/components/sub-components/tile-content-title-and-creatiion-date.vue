@@ -1,19 +1,15 @@
 <template>
     <v-list-tile-content>
-        <!-- Title as link -->
-        <v-list-tile-title>
-            <router-link
-                    tag="span"
-                    class="white--text"
-                    v-text="title"
-                    :to="routerLinkParamsToSingleArticlePage"
-            />
-        </v-list-tile-title>
+            <router-link  class="router-link white--text" :to="routerLinkParamsToSingleArticlePage">
+                <!-- Title as link -->
+                <v-list-tile-title>
+                    <span v-text="title"></span>
+                </v-list-tile-title>
 
-        <!-- Article created at -->
-        <v-list-tile-sub-title v-text="createdAt"/>
+                <!-- Article created at -->
+                <v-list-tile-sub-title v-text="createdAt"/>
+            </router-link>
     </v-list-tile-content>
-
 </template>
 
 <script>
@@ -35,7 +31,7 @@
 		},
 		computed: {
 			routerLinkParamsToSingleArticlePage() {
-				return {name: 'dashboard.articles.single', params: {id: this.id}};
+				return {name: 'articles.single', params: {id: this.id}};
 			}
 		}
 	}

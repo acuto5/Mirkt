@@ -1,6 +1,6 @@
 <template>
-    <v-form @submit.prevent="searchMethod(searchInputs)">
-        <v-list dark class="brown darken-3">
+    <v-form @submit.prevent="search()">
+        <v-list dark>
             <v-list-tile>
                 <v-list-tile-action>
                     <v-btn icon large type="submit">
@@ -13,6 +13,7 @@
                             <v-text-field
                                     v-model="searchInputs.title"
                                     label="Paieška"
+                                    color="teal accent-2"
                                     :error-messages="titleErrors"
                             />
                         </v-list-tile-content>
@@ -26,6 +27,7 @@
                                     item-text="name"
                                     item-value="id"
                                     label="Sub-kategorija"
+                                    color="teal accent-2"
                                     :items="selectItems"
                                     :error-messages="subCategoryErrors"
                             />
@@ -42,10 +44,6 @@
 	export default {
 		name: 'SearchArticlesForm',
 		props: {
-			searchMethod: {
-				type: Function,
-				required: true
-			},
 			titleErrors: {
 				type: Array,
 				required: true
@@ -59,18 +57,31 @@
 			return {
 				selectItems: [],
 				searchInputs: {
-					sub_category_id: parseInt(this.$route.query.sub_category_id),
+					// For future, parse all numbers
+					sub_category_id: parseInt(this.$route.query.sub_category_id) || undefined,
 					title: this.$route.query.title,
 					order_by: this.$route.query.order_by
 				}
 			}
 		},
+		watch: {
+			'$route.query': function (newQuery) {
+				this.searchInputs.sub_category_id = parseInt(newQuery.sub_category_id) || undefined;
+                this.searchInputs.title = newQuery.title;
+                this.searchInputs.order_by = newQuery.order_by;
+			}
+        },
 		created() {
 			this.getSelectItems();
 		},
 		methods: {
 			async getSelectItems() {
 				this.selectItems = await getSubCategoriesWithCategoryAsHeader();
+			},
+			search() {
+				let $_query = Object.assign({}, this.searchInputs);
+
+				this.$router.push({query: $_query});
 			}
 		}
 	}
