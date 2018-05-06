@@ -1,0 +1,37 @@
+version: '3.6'
+
+services:
+  nginx:
+    build: ./docker/nginx
+    volumes:
+      - ./docker/nginx/logs:/var/log/nginx
+      - ./:/var/www
+    links:
+      - php
+    ports:
+      - 80:80
+  php:
+    build: ./docker/php
+    restart: always
+    volumes:
+      - ./docker/php/log:/var/log
+      - ./:/var/www
+    environment:
+      - PHP_IDE_CONFIG=serverName=Docker
+    tty: true
+    stdin_open: true
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  db:
+    image: mysql:5
+    restart: always
+#    volumes:
+#      - ./docker/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: homestead
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3307:3306
