@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "11d90b74f34ed1f01cad932820516b83",
-    "content-hash": "fbdbb5d5376f0fd7d5456b86ba741969",
+    "hash": "cca06673d7d79300df4f94de80cd6bd7",
+    "content-hash": "7d61d9cfcaa6559846f0f6eef5dbc2f4",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -641,16 +641,16 @@
         },
         {
             "name": "laravel/scout",
-            "version": "v3.0.14",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/scout.git",
-                "reference": "154beb9255cef7e341c5838824ed1234e71e194d"
+                "reference": "297d9c5ef94c3f70e9c76b87a02d4b527698956e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/scout/zipball/154beb9255cef7e341c5838824ed1234e71e194d",
-                "reference": "154beb9255cef7e341c5838824ed1234e71e194d",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/297d9c5ef94c3f70e9c76b87a02d4b527698956e",
+                "reference": "297d9c5ef94c3f70e9c76b87a02d4b527698956e",
                 "shasum": ""
             },
             "require": {
@@ -660,12 +660,12 @@
                 "illuminate/pagination": "~5.4",
                 "illuminate/queue": "~5.4",
                 "illuminate/support": "~5.4",
-                "php": ">=5.6.4"
+                "php": ">=7.0"
             },
             "require-dev": {
                 "algolia/algoliasearch-client-php": "^1.10",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~5.0"
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~6.0"
             },
             "suggest": {
                 "algolia/algoliasearch-client-php": "Required to use the Algolia engine (^1.10)."
@@ -702,7 +702,7 @@
                 "laravel",
                 "search"
             ],
-            "time": "2018-01-26 22:15:03"
+            "time": "2018-03-16 18:00:44"
         },
         {
             "name": "laravel/tinker",
@@ -769,16 +769,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.44",
+            "version": "1.0.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "168dbe519737221dc87d17385cde33073881fd02"
+                "reference": "a99f94e63b512d75f851b181afcdf0ee9ebef7e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/168dbe519737221dc87d17385cde33073881fd02",
-                "reference": "168dbe519737221dc87d17385cde33073881fd02",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
+                "reference": "a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
                 "shasum": ""
             },
             "require": {
@@ -849,7 +849,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2018-04-06 09:58:14"
+            "time": "2018-05-07 08:44:23"
         },
         {
             "name": "mews/purifier",

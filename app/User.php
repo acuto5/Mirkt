@@ -35,7 +35,7 @@ class User extends Authenticatable
      * Check if user has at least admin, moderator or super-admin role.
      * @return bool
      */
-    public function isBlessed(): bool
+    public function isBlessed(): ?bool
     {
         return $this->isSuperAdmin() || $this->isAdmin() || $this->isModerator();
     }
@@ -44,7 +44,7 @@ class User extends Authenticatable
      * Check if user has super admin role.
      * @return mixed
      */
-    public function isSuperAdmin(): bool
+    public function isSuperAdmin(): ?bool
     {
         return $this->is_super_admin;
     }
@@ -53,7 +53,7 @@ class User extends Authenticatable
      * Check if user has admin role.
      * @return bool
      */
-    public function isAdmin(): bool
+    public function isAdmin(): ?bool
     {
         return $this->is_admin;
     }
@@ -62,7 +62,7 @@ class User extends Authenticatable
      * Check if user has moderator role.
      * @return bool
      */
-    public function isModerator(): bool
+    public function isModerator(): ?bool
     {
         return $this->is_moderator;
     }

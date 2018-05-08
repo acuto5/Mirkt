@@ -34,6 +34,6 @@ class Role
 		}
 		
 		// Not passed
-		return response()->json(['message' => 'You don\'t have ' . $role . ' role.'], 500);
+		return response()->json(['message' => 'You don\'t have ' . $role . ' role.'], 401);
 	}
 }
