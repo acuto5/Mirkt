@@ -21,11 +21,12 @@ class HomeArticlesController extends Controller
             'subCategories' => function ($query) {
                 $query->orderBy('level', 'desc');
             },
-        ])->orderBy('level', 'desc')->get();
+        ])->orderBy('level', 'desc')
+            ->get();
         
         foreach ($categories as $category) {
             foreach ($category->subCategories as $subCategory) {
-                $subCategory->latestEightPublishedArticles;
+                $subCategory['articles'] = $subCategory->latestEightPublishedArticles()->get();
             }
         }
         

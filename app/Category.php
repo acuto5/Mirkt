@@ -11,7 +11,7 @@ class Category extends Model
      * The attributes that should be visible in arrays.
      * @var array
      */
-	protected $visible = ['id', 'name', 'subCategories', 'level'];
+	protected $visible = ['id', 'name', 'subCategories', 'sub_categories', 'level'];
     
     /**
      * Field in database will be available for mass assignment.

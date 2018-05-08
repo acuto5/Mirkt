@@ -57,6 +57,7 @@ class SubCategory extends Model
     public function latestEightPublishedArticles(): HasMany
     {
         return $this->hasMany('App\Article', 'sub_category_id')
+            ->select(['id', 'title', 'sub_category_id'])
             ->where('is_draft', 0)
             ->with('headerImage')
             ->latest()

@@ -12,7 +12,7 @@
             <v-flex xs12 v-for="(subCategory,subIndex) in category.sub_categories" :key="subIndex">
 
                 <!-- Breadcrumbs -->
-                <div v-if="subCategory.latest_eight_published_articles.length" class="ma-2">
+                <div v-if="subCategory.articles.length" class="ma-2">
 
                     <!-- Divider -->
                     <v-divider v-if="!(!catIndex && !subIndex)" class="mb-2"/>
@@ -43,7 +43,7 @@
                     <v-flex
                             pa-2
                             xs6 sm4 lg3
-                            v-for="(article,artIndex) in subCategory.latest_eight_published_articles"
+                            v-for="(article,artIndex) in subCategory.articles"
                             :key="artIndex"
                     >
                         <article-card
