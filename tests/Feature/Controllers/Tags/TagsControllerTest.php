@@ -22,11 +22,6 @@ class TagsControllerTest extends TestCase
     /**
      * @var User
      */
-    private $simpleUser;
-
-    /**
-     * @var User
-     */
     private $moderatorUser;
 
     /**
@@ -72,11 +67,15 @@ class TagsControllerTest extends TestCase
         $this->updateRoute = route('updateTag');
         $this->deleteRoute = route('destroyTag');
         $this->tags = factory(Tag::class, 15)->create();
-        $this->simpleUser = factory(User::class)->create();
         $this->getAllTagsRoute = route('getAllTags');
         $this->adminUser = factory(User::class)->states('admin')->create();
         $this->moderatorUser = factory(User::class)->states('moderator')->create();
         $this->superAdminUser = factory(User::class)->states('superAdmin')->create();
+
+        /**
+         * Login user as moderator
+         */
+        Auth::login($this->moderatorUser);
     }
 
     /**
@@ -88,16 +87,6 @@ class TagsControllerTest extends TestCase
          * Params for request
          */
         $requestParams = ['get', $this->getAllTagsRoute];
-
-        /**
-         * Check is method protected and available user with moderator role
-         */
-        $this->checkIsUserHasAtLeastModeratorRole(...$requestParams);
-
-        /**
-         * Login user as moderator
-         */
-        Auth::login($this->moderatorUser);
 
         /**
          * Make new request
@@ -119,16 +108,6 @@ class TagsControllerTest extends TestCase
          * Request params
          */
         $requestParams = ['get', $this->indexRoute];
-
-        /**
-         * Check is method protected and available user with moderator role
-         */
-        $this->checkIsUserHasAtLeastModeratorRole(...$requestParams);
-
-        /**
-         * Login user as moderator
-         */
-        Auth::login($this->moderatorUser);
 
         /**
          * Make request
@@ -171,16 +150,6 @@ class TagsControllerTest extends TestCase
         $requestParams = ['post', $this->storeRoute, ['name' => 'storeTagTest']];
 
         /**
-         * Check is method protected and available user with moderator role
-         */
-        $this->checkIsUserHasAtLeastModeratorRole(...$requestParams);
-
-        /**
-         * Login user as Moderator
-         */
-        Auth::login($this->moderatorUser);
-
-        /**
          * Make request
          */
         $response = $this->json(...$requestParams);
@@ -202,16 +171,6 @@ class TagsControllerTest extends TestCase
         $requestParams = ['patch', $this->updateRoute, ['id' => $this->tags->first()->id, 'name' => 'updateTagTest']];
 
         /**
-         * Check is method protected and available user with moderator role
-         */
-        $this->checkIsUserHasAtLeastModeratorRole(...$requestParams);
-
-        /**
-         * Login user as moderator
-         */
-        Auth::login($this->moderatorUser);
-
-        /**
          * Make request
          */
         $response = $this->json(...$requestParams);
@@ -230,16 +189,6 @@ class TagsControllerTest extends TestCase
     public function testDestroyTag()
     {
         /**
-         * Check is method protected and available user with moderator role
-         */
-        $this->checkIsUserHasAtLeastModeratorRole('delete', $this->deleteRoute, ['id' => Tag::first()->id]);
-
-        /**
-         * Login user as moderator
-         */
-        Auth::login($this->moderatorUser);
-
-        /**
          * Make request
          */
         $response = $this->json('delete', $this->deleteRoute, ['id' => Tag::first()->id]);
@@ -248,121 +197,5 @@ class TagsControllerTest extends TestCase
          * Check is request has successful
          */
         $response->assertSuccessful();
-    }
-
-    //---------------------------------
-    // Private
-    //---------------------------------
-
-    /**
-     * Check is method protected and available user with moderator role
-     *
-     * @param string $method
-     * @param string $route
-     * @param array $data
-     */
-    private function checkIsUserHasAtLeastModeratorRole(string $method, string $route, array $data = []): void
-    {
-        $this->checkIsGuestGetUnauthorizedResponse($method, $route, $data);
-        $this->checkIsSimpleUserUnauthorizedResponse($method, $route, $data);
-        $this->checkIsModeratorCanMakeRequest($method, $route, $data);
-    }
-
-    /**
-     * Check is guest get unauthorized response
-     *
-     * @param string $method
-     * @param string $route
-     * @param array $data
-     */
-    private function checkIsGuestGetUnauthorizedResponse(string $method, string $route, array $data = []): void
-    {
-        /**
-         * Check is no one is logged in
-         */
-        $this->assertGuest();
-
-        /**
-         * Make unauthorized request
-         */
-        $response = $this->json($method, $route, $data);
-
-        /**
-         * Check if request is denied
-         */
-        $response->assertStatus(401);
-    }
-
-    /**
-     * Check is simple user unauthorized response
-     *
-     * @param string $method
-     * @param string $route
-     * @param array $data
-     */
-    private function checkIsSimpleUserUnauthorizedResponse(string $method, string $route, array $data = []): void
-    {
-        /**
-         * Make request as simple user
-         */
-        Auth::login($this->simpleUser);
-
-        /**
-         * Check is user logged in
-         */
-        $this->assertAuthenticatedAs($this->simpleUser);
-
-        /**
-         * Make request
-         */
-        $response = $this->json($method, $route, $data);
-
-        /**
-         * Check if request is denied
-         */
-        $response->assertStatus(401);
-
-        /**
-         * Check is error code is the same
-         */
-        $response->assertExactJson(['message' => 'You don\'t have moderator role.']);
-
-        /**
-         * Logout user
-         */
-        Auth::logout();
-    }
-
-    /**
-     * @param string $method
-     * @param string $route
-     * @param array $data
-     */
-    private function checkIsModeratorCanMakeRequest(string $method, string $route, array $data = []): void
-    {
-        /**
-         * Make request as simple user
-         */
-        Auth::login($this->moderatorUser);
-
-        /**
-         * Check is user logged in
-         */
-        $this->assertAuthenticatedAs($this->moderatorUser);
-
-        /**
-         * Make request
-         */
-        $response = $this->json($method, $route, $data);
-
-        /**
-         * Check if request is denied
-         */
-        $response->assertStatus(200);
-
-        /**
-         * Logout user
-         */
-        Auth::logout();
     }
 }
