@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Middleware;
+namespace Tests\Feature\Routes;
 
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class RoutesTest extends TestCase
+class RoutesMiddlewareTest extends TestCase
 {
     /**
      * @var RouteCollection
@@ -181,7 +181,7 @@ class RoutesTest extends TestCase
      * @param array $routeNames
      * @param array $hasMiddleware
      */
-    private function assertRouteMiddleware(array $routeNames, array $hasMiddleware): void
+    private function assertRouteMiddleware(array $routeNames, array $expectedMiddleware): void
     {
         foreach ($routeNames as $routeName) {
             // Assert is route names is set
@@ -191,7 +191,7 @@ class RoutesTest extends TestCase
                 $route = $this->routesCollection->getByName($routeName);
 
                 // Assert route contains given middleware
-                $this->assertEquals($hasMiddleware, $route->gatherMiddleware());
+                $this->assertEquals($expectedMiddleware, $route->gatherMiddleware());
             }
         }
     }
