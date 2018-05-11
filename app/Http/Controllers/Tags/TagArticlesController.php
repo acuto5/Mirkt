@@ -8,8 +8,6 @@ use App\Tag;
 
 class TagArticlesController extends Controller
 {
-    const PER_PAGE = 10;
-    
     /**
      * Get tag articles
      *
@@ -22,7 +20,7 @@ class TagArticlesController extends Controller
         $tag = Tag::where(['name' => $request->get('tag_name')])->first();
     
         // Return only published articles
-        $articles = $tag->articles()->published()->with('headerImage')->latest()->paginate(self::PER_PAGE);
+        $articles = $tag->articles()->published()->with('headerImage')->latest()->paginate(env('ARTICLES_PER_PAGE', 12));
     
         return response()->json($articles);
     }

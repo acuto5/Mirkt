@@ -8,7 +8,6 @@ use App\Http\Requests\Articles\DraftArticlesIndexRequest;
 
 class DraftArticlesController extends Controller
 {
-    const ARTICLES_PER_PAGE = 12;
     
     /**
      * Get all draft articles
@@ -29,7 +28,7 @@ class DraftArticlesController extends Controller
             ->where($where)
             ->with($with)
             ->orderBy($orderBy, $isDesc)
-            ->paginate(self::ARTICLES_PER_PAGE);
+            ->paginate(env('ARTICLES_PER_PAGE', 12));
         
         return response()->json($articlesCollection);
     }

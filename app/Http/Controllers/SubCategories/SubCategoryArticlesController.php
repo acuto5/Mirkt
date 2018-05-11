@@ -8,8 +8,6 @@ use App\SubCategory;
 
 class SubCategoryArticlesController extends Controller
 {
-    const ARTICLES_PER_PAGE = 12;
-    
     /**
      * Get all sub-category articles
      *
@@ -25,7 +23,7 @@ class SubCategoryArticlesController extends Controller
             ->where('is_draft', 0)
             ->with('headerImage')
             ->latest()
-            ->paginate(self::ARTICLES_PER_PAGE);
+            ->paginate(env('ARTICLES_PER_PAGE', 12));
     
         return response()->json($articles);
     }

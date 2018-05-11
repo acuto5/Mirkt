@@ -29,7 +29,7 @@ class WebsiteInfo extends Model
      *
      * @param $content
      */
-    public function setContentAttribute(string $content): void
+    public function setContentAttribute(?string $content): void
 	{
 		$this->attributes['content'] = clean($content);
 	}

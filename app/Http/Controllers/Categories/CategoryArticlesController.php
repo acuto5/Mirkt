@@ -9,8 +9,6 @@ use App\Http\Controllers\Controller;
 
 class CategoryArticlesController extends Controller
 {
-    const ARTICLES_PER_PAGE = 12;
-    
     /**
      * Get category articles by category name
      *
@@ -30,7 +28,7 @@ class CategoryArticlesController extends Controller
             ->whereIn('sub_category_id', $subCategoriesIds)
             ->with('headerImage')
             ->orderBy('created_at', 'desc')
-            ->paginate(self::ARTICLES_PER_PAGE);
+            ->paginate(env('ARTICLES_PER_PAGE', 12));
     
         return response()->json($articles);
     }

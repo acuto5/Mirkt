@@ -8,8 +8,6 @@ use App\Http\Requests\Articles\PublishedArticlesIndexRequest;
 
 class PublishedArticlesController extends Controller
 {
-    const ARTICLES_PER_PAGE = 12;
-    
     /**
      * Get all published articles
      *
@@ -35,7 +33,7 @@ class PublishedArticlesController extends Controller
             ->where($where)
             ->with($with)
             ->orderBy($orderBy, $isDesc)
-            ->paginate(self::ARTICLES_PER_PAGE);
+            ->paginate(env('ARTICLES_PER_PAGE', 12));
     
         return response()->json($articles);
     }

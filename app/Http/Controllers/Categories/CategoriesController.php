@@ -11,8 +11,6 @@ use App\Jobs\DeleteCategory;
 
 class CategoriesController extends Controller
 {
-    const DELETE_AFTER_MINUTES = 15;
-    
     /**
      * Get all categories
      * @return \Illuminate\Http\JsonResponse
@@ -38,9 +36,11 @@ class CategoriesController extends Controller
         
         // Level app all categories by 1
         $this->levelUpAllCategories();
-        
-        DeleteCategory::dispatch($category)->delay(now()->addMinutes(self::DELETE_AFTER_MINUTES));
-        
+
+        if(env('DELETE_NEW_CONTENT')){
+            DeleteCategory::dispatch($category)->delay(now()->addMinutes(env('DELETE_CONTENT_AFTER_MINUTES', 5)));
+        }
+
         return response()->json(true);
     }
     

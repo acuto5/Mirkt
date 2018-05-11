@@ -12,9 +12,6 @@ use App\Tag;
 
 class TagsController extends Controller
 {
-    const PER_PAGE                 = 10;
-    const DELETE_TAG_AFTER_MINUTES = 15;
-    
     /**
      * Get all tags
      *
@@ -34,9 +31,9 @@ class TagsController extends Controller
     public function index(TagsIndexRequest $request)
     {
         if (isset($request->tag)) {
-            $tags = Tag::search($request->tag)->paginate(self::PER_PAGE);
+            $tags = Tag::search($request->tag)->paginate(env('TAGS_PER_PAGE', 10));
         } else {
-            $tags = Tag::paginate(self::PER_PAGE);
+            $tags = Tag::paginate(env('TAGS_PER_PAGE', 10));
         }
         
         return response()->json($tags);
@@ -53,8 +50,10 @@ class TagsController extends Controller
     {
         
         $tag = Tag::create($request->all());
-        
-        DeleteTag::dispatch($tag)->delay(now()->addMinutes(self::DELETE_TAG_AFTER_MINUTES));
+
+        if (env('DELETE_NEW_CONTENT')) {
+            DeleteTag::dispatch($tag)->delay(now()->addMinutes(env('DELETE_CONTENT_AFTER_MINUTES', 5)));
+        }
         
         return response()->json(true);
     }

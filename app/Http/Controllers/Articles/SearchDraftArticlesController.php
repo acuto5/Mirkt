@@ -9,8 +9,6 @@ class SearchDraftArticlesController extends Controller
 {
     use SearchArticles, SortArticles, HideArticlesColumns;
     
-    const ARTICLES_PER_PAGE = 12;
-    
     protected $request;
     protected $articles;
     

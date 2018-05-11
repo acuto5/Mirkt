@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    const DELETE_AFTER_MINUTES = 15;
-    
     /**
      * Get single article
      *
@@ -77,7 +75,7 @@ class ArticleController extends Controller
         $article               = new Article();
         $additionalRequestData = [
             'user_id'     => Auth::id(),
-            'deletion_at' => now()->addMinutes(self::DELETE_AFTER_MINUTES),
+            'deletion_at' => env('DELETE_NEW_CONTENT') ? now()->addMinutes(env('DELETE_CONTENT_AFTER_MINUTES', 5)) : null,
             'content'     => $request->get('content'),
         ];
     
@@ -98,7 +96,9 @@ class ArticleController extends Controller
         );
     
         // Create job
-        DeleteArticle::dispatch($article)->delay($request->get('deletion_at'));
+        if(env('DELETE_NEW_CONTENT')) {
+            DeleteArticle::dispatch($article)->delay($request->get('deletion_at'));
+        }
     
         return response()->json($article->id);
     }

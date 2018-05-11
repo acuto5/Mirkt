@@ -13,8 +13,6 @@ use App\SubCategory;
 
 class SubCategoriesController extends Controller
 {
-    const DELETE_AFTER_MINUTES = 15;
-    
     /**
      * Get all sub-categories by category id
      *
@@ -25,10 +23,10 @@ class SubCategoriesController extends Controller
     public function index(SubCategoriesIndexRequest $request)
     {
         $subCategories = Category::find($request->id)->subCategories()->orderBy('level', 'desc')->get();
-        
+
         return response()->json($subCategories);
     }
-    
+
     /**
      * Create new sub-category
      *
@@ -40,16 +38,18 @@ class SubCategoriesController extends Controller
     {
         $subCategory = new SubCategory();
         $subCategory->fill($request->all())->save();
-    
+
         // Level up all subCategories
         $this->levelUpAllSubCategories($subCategory->category_id);
-    
+
         // queue work
-        DeleteSubCategory::dispatch($subCategory)->delay(now()->addMinutes(self::DELETE_AFTER_MINUTES));
-    
+        if (env('DELETE_NEW_CONTENT')) {
+            DeleteSubCategory::dispatch($subCategory)->delay(now()->addMinutes(env('DELETE_CONTENT_AFTER_MINUTES', 5)));
+        }
+
         return response()->json(true);
     }
-    
+
     /**
      * Update sub-category
      *
@@ -60,20 +60,20 @@ class SubCategoriesController extends Controller
     public function update(SubCategoriesUpdateRequest $request)
     {
         $subCategory = SubCategory::find($request->id);
-    
+
         // Check if category change
         if ($subCategory->category_id !== $request->get('category_id')) {
             $this->levelDownAllSubCategories($subCategory->category_id, $subCategory->level + 1);
             $this->levelUpAllSubCategories($request->get('category_id'));
             $request['level'] = 1;
         }
-    
+
         // Update subCategory
         $subCategory->update($request->all());
-    
+
         return response()->json(true);
     }
-    
+
     /**
      * Delete sub-category
      *
@@ -84,23 +84,23 @@ class SubCategoriesController extends Controller
     public function destroy(SubCategoriesDeleteRequest $request)
     {
         $subCategory = SubCategory::where('id', $request->id)->withCount('articles')->first();
-    
+
         if ($subCategory->articles_count > 0) {
             return response()->json(['message' => 'Cant delete sub-category. This sub-category has articles.'], 500);
         }
-    
+
         $subCategory->delete();
-    
+
         $this->levelDownAllSubCategories($subCategory->category_id, $subCategory->level);
-    
+
         return response()->json(true);
     }
-    
-    
+
+
     //------------------------------
     // Private methods
     //------------------------------
-    
+
     /**
      * Level up all sub-categories by category id
      *
@@ -109,13 +109,13 @@ class SubCategoriesController extends Controller
     private function levelUpAllSubCategories($category_id)
     {
         $subCategories = SubCategory::where('category_id', $category_id)->get();
-        
+
         $subCategories->map(function ($subCategory) {
             $subCategory->level++;
             $subCategory->save();
         });
     }
-    
+
     /**
      * Level down all sub-categories by category id and sub-category id
      *
@@ -125,7 +125,7 @@ class SubCategoriesController extends Controller
     private function levelDownAllSubCategories($category_id, $levelDownFrom)
     {
         $subCategories = SubCategory::where([['level', '>', $levelDownFrom], ['category_id', $category_id]])->get();
-        
+
         $subCategories->map(function ($subCategory) {
             $subCategory->level--;
             $subCategory->save();
