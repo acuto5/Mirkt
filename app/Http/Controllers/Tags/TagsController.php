@@ -31,9 +31,9 @@ class TagsController extends Controller
     public function index(TagsIndexRequest $request)
     {
         if (isset($request->tag)) {
-            $tags = Tag::search($request->tag)->paginate(env('TAGS_PER_PAGE', 10));
+            $tags = Tag::search($request->tag)->paginate(config('app.tags_per_page', 10));
         } else {
-            $tags = Tag::paginate(env('TAGS_PER_PAGE', 10));
+            $tags = Tag::paginate(config('app.tags_per_page', 10));
         }
         
         return response()->json($tags);
@@ -51,8 +51,8 @@ class TagsController extends Controller
         
         $tag = Tag::create($request->all());
 
-        if (env('DELETE_NEW_CONTENT')) {
-            DeleteTag::dispatch($tag)->delay(now()->addMinutes(env('DELETE_CONTENT_AFTER_MINUTES', 5)));
+        if (config('app.delete_new_content')) {
+            DeleteTag::dispatch($tag)->delay(now()->addMinutes(config('app.delete_content_after_minutes', 5)));
         }
         
         return response()->json(true);

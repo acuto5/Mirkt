@@ -20,7 +20,7 @@ class TagArticlesController extends Controller
         $tag = Tag::where(['name' => $request->get('tag_name')])->first();
     
         // Return only published articles
-        $articles = $tag->articles()->published()->with('headerImage')->latest()->paginate(env('ARTICLES_PER_PAGE', 12));
+        $articles = $tag->articles()->published()->with('headerImage')->latest()->paginate(config('app.articles_per_page', 12));
     
         return response()->json($articles);
     }

@@ -23,7 +23,7 @@ class SubCategoryArticlesController extends Controller
             ->where('is_draft', 0)
             ->with('headerImage')
             ->latest()
-            ->paginate(env('ARTICLES_PER_PAGE', 12));
+            ->paginate(config('app.articles_per_page', 12));
     
         return response()->json($articles);
     }

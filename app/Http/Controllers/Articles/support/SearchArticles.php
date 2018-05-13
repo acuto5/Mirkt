@@ -31,7 +31,7 @@ trait SearchArticles
     {
         return Article::search($this->request->get('title'))
             ->where('is_draft', (int)$searchInDraft)
-            ->paginate(env('ARTICLES_PER_PAGE', 12));
+            ->paginate(config('app.articles_per_page', 12));
     }
     
     /**
@@ -46,6 +46,6 @@ trait SearchArticles
         return Article::search($this->request->get('title'))
             ->where('is_draft', (int)$searchInDraft)
             ->where('sub_category_id', $this->request->get('sub_category_id'))
-            ->paginate(env('ARTICLES_PER_PAGE', 12));
+            ->paginate(config('app.articles_per_page', 12));
     }
 }

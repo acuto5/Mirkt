@@ -28,7 +28,7 @@ class CategoryArticlesController extends Controller
             ->whereIn('sub_category_id', $subCategoriesIds)
             ->with('headerImage')
             ->orderBy('created_at', 'desc')
-            ->paginate(env('ARTICLES_PER_PAGE', 12));
+            ->paginate(config('app.articles_per_page', 12));
     
         return response()->json($articles);
     }

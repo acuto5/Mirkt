@@ -37,8 +37,8 @@ class CategoriesController extends Controller
         // Level app all categories by 1
         $this->levelUpAllCategories();
 
-        if(env('DELETE_NEW_CONTENT')){
-            DeleteCategory::dispatch($category)->delay(now()->addMinutes(env('DELETE_CONTENT_AFTER_MINUTES', 5)));
+        if(config('app.delete_new_content')){
+            DeleteCategory::dispatch($category)->delay(now()->addMinutes(config('app.delete_content_after_minutes', 5)));
         }
 
         return response()->json(true);

@@ -33,7 +33,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 $factory->state(App\User::class, 'superAdmin', [
     'name' => 'Super',
     'email' => 'super@mirkt.lt',
-    'password' => bcrypt(env('SUPER_ADMIN_PASS', 'password')),
+    'password' => bcrypt(config('app.super_admin_pass', 'password')),
     'is_super_admin' => 1,
     'is_moderator' => 1,
     'is_admin' => 1,

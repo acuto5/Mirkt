@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.5'
 
 services:
   nginx:
@@ -28,8 +28,8 @@ services:
   db:
     image: mysql:5
     restart: always
-#    volumes:
-#      - ./docker/mysql:/var/lib/mysql
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: homestead
       MYSQL_ROOT_PASSWORD: password

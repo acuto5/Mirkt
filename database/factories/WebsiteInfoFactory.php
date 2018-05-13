@@ -6,7 +6,7 @@ $factory->define(\App\WebsiteInfo::class, function (Faker $faker) {
     return [
         'content' => '<p><span class="ma-0">Galima išbandyti Admin/Moderator galimybes, sukūrus paskyrą ir profilio redagavimo puslapyje pasirinkti Admin/Moderator privilegija.</span>
 
-<br><sub>Kiekvienas sukurtas straipsnis, žymė, kategorija ar sub-kategorija, bus ištrinta po '. env('DELETE_AFTER_MINUTES', 5) .'min.</sub></p><h3>Taip pat galima prisijungti:</h3><ul class="medium-list"><li class="pl-2"><span class="teal--text text--accent-2"><b>admin@mirkt.lt</b></span> <span class="blue--text text--lighten-2">password</span></li>
+<br><sub>Kiekvienas sukurtas straipsnis, žymė, kategorija ar sub-kategorija, bus ištrinta po '. config('app.delete_content_after_minutes', 5) .'min.</sub></p><h3>Taip pat galima prisijungti:</h3><ul class="medium-list"><li class="pl-2"><span class="teal--text text--accent-2"><b>admin@mirkt.lt</b></span> <span class="blue--text text--lighten-2">password</span></li>
 
 <li class="pl-2"><span class="teal--text text--accent-2"><b>moderator@mirkt.lt</b></span> <span class="blue--text text--lighten-2">password</span></li>
 

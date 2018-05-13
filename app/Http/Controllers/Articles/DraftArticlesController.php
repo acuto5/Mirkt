@@ -28,7 +28,7 @@ class DraftArticlesController extends Controller
             ->where($where)
             ->with($with)
             ->orderBy($orderBy, $isDesc)
-            ->paginate(env('ARTICLES_PER_PAGE', 12));
+            ->paginate(config('app.articles_per_page', 12));
         
         return response()->json($articlesCollection);
     }

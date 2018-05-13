@@ -230,4 +230,11 @@ return [
 
     ],
 
+    'super_admin_pass' => env('SUPER_ADMIN_PASS', 'password'),
+
+    'delete_new_content' => env('DELETE_NEW_CONTENT', false),
+    'delete_content_after_minutes' => env('DELETE_CONTENT_AFTER_MINUTES', 5),
+
+    'tags_per_page' => env('TAGS_PER_PAGE', 10),
+    'articles_per_page' => env('ARTICLES_PER_PAGE', 12)
 ];

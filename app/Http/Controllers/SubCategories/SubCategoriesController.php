@@ -43,8 +43,8 @@ class SubCategoriesController extends Controller
         $this->levelUpAllSubCategories($subCategory->category_id);
 
         // queue work
-        if (env('DELETE_NEW_CONTENT')) {
-            DeleteSubCategory::dispatch($subCategory)->delay(now()->addMinutes(env('DELETE_CONTENT_AFTER_MINUTES', 5)));
+        if (config('app.delete_new_content')) {
+            DeleteSubCategory::dispatch($subCategory)->delay(now()->addMinutes(config('app.delete_content_after_minutes', 5)));
         }
 
         return response()->json(true);
