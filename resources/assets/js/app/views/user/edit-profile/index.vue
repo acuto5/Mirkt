@@ -1,7 +1,12 @@
 <template>
     <v-container>
-        <v-layout row wrap justify-space-around>
-            <v-flex d-flex xs12 sm8 md6 class="text-xs-center">
+        <v-layout row wrap>
+            <v-flex d-flex xs12 sm8 offset-sm2 md6 offset-md3 class="text-xs-center">
+                <v-alert :value="isUserCanBeUpdated" type="error">
+                    admin@mirkt.lt ir moderator@mirkt.lt vartotojai negali redaguoti savo profilio
+                </v-alert>
+            </v-flex>
+            <v-flex d-flex xs12 sm8 offset-sm2 md6 offset-md3 class="text-xs-center">
                 <v-form @submit.prevent="updateProfile()">
                     <v-text-field
                             autofocus
@@ -9,13 +14,14 @@
                             label="El. Paštas"
                             color="teal accent-2"
                             v-model="inputs.email"
+                            :disabled="isUserCanBeUpdated"
                             :error-messages="Errors.email"
-
                     />
                     <v-text-field
                             type="password"
                             color="teal accent-2"
                             v-model="inputs.password"
+                            :disabled="isUserCanBeUpdated"
                             label="Dabartinis slaptažodis"
                             :error-messages="Errors.password"
                     />
@@ -24,11 +30,13 @@
                             color="teal accent-2"
                             label="Naujas slaptažodis"
                             v-model="inputs.new_password"
+                            :disabled="isUserCanBeUpdated"
                             :error-messages="Errors.new_password"
                     />
                     <v-text-field
                             type="password"
                             color="teal accent-2"
+                            :disabled="isUserCanBeUpdated"
                             label="Pakartokite naują slaptažodį"
                             v-model="inputs.new_password_confirmation"
                             :error-messages="Errors.new_password_confirmation"
@@ -36,17 +44,20 @@
                     <v-checkbox
                             label="Adminas"
                             v-model="inputs.is_admin"
+                            :disabled="isUserCanBeUpdated"
                             :error-messages="Errors.is_admin"
                     />
                     <v-checkbox
                             label="Moderatorius"
                             v-model="inputs.is_moderator"
+                            :disabled="isUserCanBeUpdated"
                             :error-messages="Errors.is_moderator"
                     />
                     <v-btn
                             outline
                             type="submit"
                             color="warning"
+                            :disabled="isUserCanBeUpdated"
                     >
                         Atnaujinti
                     </v-btn>
@@ -74,11 +85,18 @@
 					new_password: [],
 					new_password_confirmation: [],
 				}),
-				updateUserProfileURL: window.URLS.updateUserProfile
+				updateUserProfileURL: window.URLS.updateUserProfile,
 			}
 		},
         mounted(){
 			this.redirectIfGuest();
+        },
+        computed: {
+            isUserCanBeUpdated(){
+                let name = this.User.name.toLowerCase();
+
+                return (name === 'admin' || name === 'moderator');
+            }
         },
 		methods: {
 			updateProfile: function () {
