@@ -18,7 +18,11 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
 
         {{--Styles --}}
-        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+        @if(config('app.env') === 'local')
+            <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+        @else
+            <link href="https://static.mirkt.lt/css/app.css" rel="stylesheet">
+        @endif
     </head>
     <body>
         <div id="app">
@@ -39,12 +43,24 @@
 
         @if(Auth::check())
             @if(Auth::user()->isAdmin() || Auth::user()->isModerator())
-                <script src="{{mix('js/appWithDashboard.js')}}"></script> {{-- Admin or Moderator --}}
+                @if(config('app.env') === 'local')
+                    <script src="{{mix('js/appWithDashboard.js')}}"></script> {{-- Admin or Moderator --}}
+                @else
+                    <script src="https://static.mirkt.lt/js/appWithDashboard.js"></script> {{-- Admin or Moderator --}}
+                @endif
             @else
-                <script src="{{ mix('js/app.js') }}"></script> {{-- Auth --}}
+                @if(config('app.env') === 'local')
+                    <script src="{{ mix('js/app.js') }}"></script> {{-- Auth --}}
+                @else
+                    <script src="https://static.mirkt.lt/js/app.js"></script> {{-- Auth --}}
+                @endif
             @endif
         @else
-            <script src="{{ mix('js/app.js') }}"></script> {{-- Guest --}}
+            @if(config('app.env') === 'local')
+                <script src="{{ mix('js/app.js') }}"></script> {{-- Auth --}}
+            @else
+                <script src="https://static.mirkt.lt/js/app.js"></script> {{-- Auth --}}
+            @endif
         @endif
     </body>
 </html>
