@@ -1,7 +1,7 @@
 <template>
     <v-toolbar app dark dense fixed clipped-left>
         <v-btn icon v-if="inDashboardLayout" @click.native="toggleDashboardMenu()">
-            <v-icon>dashboard</v-icon>
+            <v-icon class="lime--text text--darken-1">dashboard</v-icon>
         </v-btn>
 
         <v-toolbar-title v-if="!inDashboardLayout || $vuetify.breakpoint.smAndUp">
