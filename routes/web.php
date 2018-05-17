@@ -37,7 +37,7 @@ require 'web-routes/articles/article-mark-as-draft.php';
 require 'web-routes/articles/article-mark-as-published.php';
 
 // Allow access files from storage
-Route::match(['get'], '/storage/{fileName}', 'Storage\StorageController@index');
+Route::match(['get'], '/storage/{fileName}', 'Storage\StorageController@get');
 
 /*********************************/
 /* No GET routes below will work */

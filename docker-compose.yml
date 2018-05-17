@@ -5,10 +5,13 @@ services:
     build: ./docker/nginx
     volumes:
       - ./docker/nginx/logs:/var/log/nginx
+      - ./docker/nginx/ssl/localhost.crt:/etc/ssl/certs/localhost.crt
+      - ./docker/nginx/ssl/localhost.key:/etc/ssl/private/localhost.key
       - ./:/var/www
     links:
       - php
     ports:
+      - 443:443
       - 80:80
   php:
     build: ./docker/php

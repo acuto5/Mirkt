@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class StorageController extends Controller
 {
-    public function index($fileName)
+    public function get($fileName)
     {
         if (Storage::exists($fileName)){
             return response(Storage::get($fileName));

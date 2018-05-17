@@ -1,3 +1,5 @@
 /mysql/
 /php/log
 /nginx/logs
+/nginx/ssl/localhost.crt
+/nginx/ssl/localhost.key
